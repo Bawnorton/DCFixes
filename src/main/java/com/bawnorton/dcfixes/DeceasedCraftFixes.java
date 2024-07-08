@@ -19,13 +19,12 @@ import java.util.Set;
 public final class DeceasedCraftFixes {
     public static final String MOD_ID = "dcfixes";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static final ThreadLocal<Boolean> READING = ThreadLocal.withInitial(() -> false);
 
     public DeceasedCraftFixes() {
         LOGGER.info("Fixing DeceasedCraft");
     }
 
     public static void onChunkLoaded(ServerWorld world, Chunk chunk) {
-        FasterLostCities.executeAndClearTodo(world, chunk);
+        FasterLostCities.getData(world).executeAndClearTodo(world, chunk);
     }
 }

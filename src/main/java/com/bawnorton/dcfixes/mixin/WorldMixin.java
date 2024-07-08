@@ -13,16 +13,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(World.class)
 public abstract class WorldMixin {
+    /**
+     * Last ditch effort to stop a deadlock
+     */
     @Inject(method = "getChunk(IILnet/minecraft/world/chunk/ChunkStatus;Z)Lnet/minecraft/world/chunk/Chunk;", at = @At("HEAD"), cancellable = true)
     private void getFasterLostCitiesWorldGenChunk(int chunkX, int chunkZ, ChunkStatus leastStatus, boolean create, CallbackInfoReturnable<Chunk> cir) {
-        if(DeceasedCraftFixes.READING.get()) return;
-
         Chunk chunk = FasterLostCities.CHUNK.get();
         if(chunk == null) return;
 
         ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
         if (chunk.getPos().equals(chunkPos)) {
             cir.setReturnValue(chunk);
+            return;
         }
+        DeceasedCraftFixes.LOGGER.error("Deadlock likely to occur", new IllegalStateException());
     }
 }
