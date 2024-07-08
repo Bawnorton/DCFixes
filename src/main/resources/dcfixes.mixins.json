@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "com.bawnorton.dcfixes.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "mixins": [
+    "GlobalTodoMixin",
+    "HungerManagerMixin",
+    "InventoryButtonHandlerMixin",
+    "InventoryTransfterHandlerMixin",
+    "LostCityTerrainFeatureMixin",
+    "MinecraftServerMixin",
+    "QuarkButtonProviderMixin",
+    "SpawnerSystemMixin",
+    "ThreadedAnvilChunkStorageMixin",
+    "WorldChunkMixin",
+    "WorldMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
