@@ -1,6 +1,8 @@
 package com.bawnorton.dcfixes;
 
 import com.bawnorton.dcfixes.mixin.accessor.WorldChunkAccessor;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.Create;
 import com.simibubi.create.infrastructure.worldgen.BuiltinRegistration;
 import com.starfish_studios.another_furniture.registry.AFBlocks;
 import mcjty.lostcities.setup.Config;
@@ -12,6 +14,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -136,16 +139,15 @@ public final class FasterLostCities extends GlobalTodo {
 
     public void executeAndClearTodo(ServerWorld world, Chunk chunk) {
         ChunkPos chunkPos = chunk.getPos();
-        int todoSize = Config.TODO_QUEUE_SIZE.get();
         var todoQueue = todo.remove(chunkPos);
         var todoSpawnersQueue = todoSpawners.remove(chunkPos);
         var todoBlockEntitiesQueue = todoBlockEntities.remove(chunkPos);
         var todoPoiQueue = todoPoi.remove(chunkPos);
         if(todoQueue != null) {
-            todoQueue.forEach(todoSize, (pos, code) -> attachData(() -> code.accept(world), chunk));
+            todoQueue.forEach((pos, code) -> attachData(() -> code.accept(world), chunk));
         }
         if(todoSpawnersQueue != null) {
-            todoSpawnersQueue.forEach(todoSize, (pos, pair) -> attachData(() -> {
+            todoSpawnersQueue.forEach((pos, pair) -> attachData(() -> {
                 BlockState spawnerState = pair.getLeft();
                 Identifier randomEntity = pair.getRight();
                 if (chunk.getBlockState(pos).getBlock() == spawnerState.getBlock()) {
@@ -165,30 +167,12 @@ public final class FasterLostCities extends GlobalTodo {
             }, chunk));
         }
         if(todoBlockEntitiesQueue != null) {
-            todoBlockEntitiesQueue.forEach(todoSize, (pos, pair) -> attachData(() -> {
+            todoBlockEntitiesQueue.forEach((pos, pair) -> attachData(() -> {
                 NbtCompound tag = pair.getRight();
                 if(chunk instanceof WorldChunk worldChunk) {
                     BlockState state = worldChunk.getBlockState(pos);
-                    if (tag.contains("id")) {
-                        // ensure the correct block is present, it may be overwritten by other structures
-                        Identifier blockId = Identifier.tryParse(tag.getString("id"));
-                        if(blockId != null) {
-                            Block expected = ForgeRegistries.BLOCKS.getValue(blockId);
-                            if(expected == null || !state.isOf(expected)) {
-                                return;
-                            } else if (expected instanceof BlockWithEntity blockWithEntity) {
-                                // correct incorrect block entity ids
-                                BlockEntity dummyBlockEntity = blockWithEntity.createBlockEntity(pos, state);
-                                if(dummyBlockEntity != null) {
-                                    Identifier blockEntityId = ForgeRegistries.BLOCK_ENTITIES.getKey(dummyBlockEntity.getType());
-                                    if(blockEntityId != null && !blockId.equals(blockEntityId)) {
-                                        tag.putString("id", blockEntityId.toString());
-                                    }
-                                }
-                            }
-                        }
-                    } else if(state.getBlock() instanceof BlockWithEntity blockWithEntity) {
-                        // get the id from the block entity
+                    if(state.getBlock() instanceof BlockWithEntity blockWithEntity) {
+                        // get the id from the block entity, don't assume it's correct
                         BlockEntity dummyBlockEntity = blockWithEntity.createBlockEntity(pos, state);
                         if(dummyBlockEntity != null) {
                             Identifier blockId = ForgeRegistries.BLOCK_ENTITIES.getKey(dummyBlockEntity.getType());
@@ -196,12 +180,16 @@ public final class FasterLostCities extends GlobalTodo {
                                 tag.putString("id", blockId.toString());
                             }
                         }
-                    } else {
+                    } else if (!tag.contains("id")) {
                         // get the id from the block
                         Identifier blockId = ForgeRegistries.BLOCKS.getKey(state.getBlock());
                         if(blockId != null) {
                             tag.putString("id", blockId.toString());
                         }
+                    }
+                    if(state.isOf(AllBlocks.COGWHEEL.get()) || state.isOf(AllBlocks.SHAFT.get())) {
+                        // redudnant, and just spam the logs when trying to load
+                        return;
                     }
 
                     // in world block entity
@@ -215,7 +203,7 @@ public final class FasterLostCities extends GlobalTodo {
             }, chunk));
         }
         if (todoPoiQueue != null) {
-            todoPoiQueue.forEach(todoSize, (pos, state) -> attachData(() -> {
+            todoPoiQueue.forEach((pos, state) -> attachData(() -> {
                 if (world.getPointOfInterestStorage().getType(pos).isEmpty() && chunk.getBlockState(pos).getBlock() == state.getBlock()) {
                     chunk.setBlockState(pos, state, false);
                 }

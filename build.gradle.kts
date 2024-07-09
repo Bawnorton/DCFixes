@@ -54,6 +54,7 @@ repositories {
     maven("https://maven.minecraftforge.net/")
     maven("https://maven.neoforged.net/releases/")
     maven("https://jitpack.io/")
+    maven("https://maven.tterrag.com/")
 }
 
 dependencies {
@@ -67,6 +68,8 @@ dependencies {
 
     compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:${property("mixin_squared")}")!!)
     implementation(include("com.github.bawnorton.mixinsquared:mixinsquared-forge:${property("mixin_squared")}")!!)
+
+    modCompileOnly("com.tterrag.registrate:Registrate:MC1.18.2-1.1.3")
 
     modCompileOnly(fileTree(rootProject.file("libs")) {
         include("*.jar")
