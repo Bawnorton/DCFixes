@@ -21,6 +21,7 @@ import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -32,10 +33,10 @@ import java.util.function.Consumer;
 public final class FasterLostCities extends GlobalTodo {
     public static final ThreadLocal<Chunk> CHUNK = ThreadLocal.withInitial(() -> null);
 
-    private final Map<ChunkPos, TodoQueue<Consumer<ServerWorld>>> todo = new HashMap<>();
-    private final Map<ChunkPos, TodoQueue<Pair<BlockState, Identifier>>> todoSpawners = new HashMap<>();
-    private final Map<ChunkPos, TodoQueue<Pair<BlockState, NbtCompound>>> todoBlockEntities = new HashMap<>();
-    private final Map<ChunkPos, TodoQueue<BlockState>> todoPoi = new HashMap<>();
+    private final Map<ChunkPos, TodoQueue<Consumer<ServerWorld>>> todo = Collections.synchronizedMap(new HashMap<>());
+    private final Map<ChunkPos, TodoQueue<Pair<BlockState, Identifier>>> todoSpawners = Collections.synchronizedMap(new HashMap<>());
+    private final Map<ChunkPos, TodoQueue<Pair<BlockState, NbtCompound>>> todoBlockEntities = Collections.synchronizedMap(new HashMap<>());
+    private final Map<ChunkPos, TodoQueue<BlockState>> todoPoi = Collections.synchronizedMap(new HashMap<>());
 
     public static FasterLostCities getData(ServerWorld world) {
         PersistentStateManager manager = world.getPersistentStateManager();
@@ -129,12 +130,15 @@ public final class FasterLostCities extends GlobalTodo {
     public void executeAndClearTodo(ServerWorld world, Chunk chunk) {
         ChunkPos chunkPos = chunk.getPos();
         int todoSize = Config.TODO_QUEUE_SIZE.get();
-        todo.computeIfPresent(chunkPos, (c, queue) -> {
-            queue.forEach(todoSize, (pos, code) -> attachData(() -> code.accept(world), chunk));
-            return null;
-        });
-        todoSpawners.computeIfPresent(chunkPos, (c, queue) -> {
-            queue.forEach(todoSize, (pos, pair) -> attachData(() -> {
+        var todoQueue = todo.remove(chunkPos);
+        var todoSpawnersQueue = todoSpawners.remove(chunkPos);
+        var todoBlockEntitiesQueue = todoBlockEntities.remove(chunkPos);
+        var todoPoiQueue = todoPoi.remove(chunkPos);
+        if(todoQueue != null) {
+            todoQueue.forEach(todoSize, (pos, code) -> attachData(() -> code.accept(world), chunk));
+        }
+        if(todoSpawnersQueue != null) {
+            todoSpawnersQueue.forEach(todoSize, (pos, pair) -> attachData(() -> {
                 BlockState spawnerState = pair.getLeft();
                 Identifier randomEntity = pair.getRight();
                 if (chunk.getBlockState(pos).getBlock() == spawnerState.getBlock()) {
@@ -146,32 +150,32 @@ public final class FasterLostCities extends GlobalTodo {
                         MobSpawnerLogic logic = spawner.getLogic();
                         logic.setEntityId(ForgeRegistries.ENTITIES.getValue(randomEntity));
                     } else if (tileentity != null) {
-                        ModSetup.getLogger().error("The mob spawner at ({}, {}, {}) has a TileEntity of incorrect type {}!", pos.getX(), pos.getY(), pos.getZ(), tileentity.getClass().getName());
+                        ModSetup.getLogger()
+                                .error("The mob spawner at ({}, {}, {}) has a TileEntity of incorrect type {}!", pos.getX(), pos.getY(), pos.getZ(), tileentity.getClass()
+                                        .getName());
                     } else {
-                        ModSetup.getLogger().error("The mob spawner at ({}, {}, {}) is missing its TileEntity!", pos.getX(), pos.getY(), pos.getZ());
+                        ModSetup.getLogger()
+                                .error("The mob spawner at ({}, {}, {}) is missing its TileEntity!", pos.getX(), pos.getY(), pos.getZ());
                     }
                 }
             }, chunk));
-            return null;
-        });
-        todoBlockEntities.computeIfPresent(chunkPos, (c, queue) -> {
-            queue.forEach(todoSize, (pos, pair) -> attachData(() -> {
+        }
+        if(todoBlockEntitiesQueue != null) {
+            todoBlockEntitiesQueue.forEach(todoSize, (pos, pair) -> attachData(() -> {
                 NbtCompound tag = pair.getRight();
                 BlockEntity be = chunk.getBlockEntity(pos);
                 if (be != null) {
                     be.readNbt(tag);
                 }
             }, chunk));
-            return null;
-        });
-        todoPoi.computeIfPresent(chunkPos, (c, queue) -> {
-            queue.forEach(todoSize, (pos, state) -> attachData(() -> {
+        }
+        if (todoPoiQueue != null) {
+            todoPoiQueue.forEach(todoSize, (pos, state) -> attachData(() -> {
                 if (world.getPointOfInterestStorage().getType(pos).isEmpty() && chunk.getBlockState(pos).getBlock() == state.getBlock()) {
                     chunk.setBlockState(pos, state, false);
                 }
             }, chunk));
-            return null;
-        });
+        }
         markDirty();
     }
 
