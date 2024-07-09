@@ -1,10 +1,15 @@
 package com.bawnorton.dcfixes;
 
+import com.bawnorton.dcfixes.mixin.accessor.WorldChunkAccessor;
+import com.simibubi.create.infrastructure.worldgen.BuiltinRegistration;
+import com.starfish_studios.another_furniture.registry.AFBlocks;
 import mcjty.lostcities.setup.Config;
 import mcjty.lostcities.setup.ModSetup;
 import mcjty.lostcities.varia.TodoQueue;
 import mcjty.lostcities.worldgen.GlobalTodo;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
@@ -16,9 +21,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.WorldChunk;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 import java.util.Collections;
@@ -150,12 +157,9 @@ public final class FasterLostCities extends GlobalTodo {
                         MobSpawnerLogic logic = spawner.getLogic();
                         logic.setEntityId(ForgeRegistries.ENTITIES.getValue(randomEntity));
                     } else if (tileentity != null) {
-                        ModSetup.getLogger()
-                                .error("The mob spawner at ({}, {}, {}) has a TileEntity of incorrect type {}!", pos.getX(), pos.getY(), pos.getZ(), tileentity.getClass()
-                                        .getName());
+                        ModSetup.getLogger().error("The mob spawner at ({}, {}, {}) has a TileEntity of incorrect type {}!", pos.getX(), pos.getY(), pos.getZ(), tileentity.getClass().getName());
                     } else {
-                        ModSetup.getLogger()
-                                .error("The mob spawner at ({}, {}, {}) is missing its TileEntity!", pos.getX(), pos.getY(), pos.getZ());
+                        ModSetup.getLogger().error("The mob spawner at ({}, {}, {}) is missing its TileEntity!", pos.getX(), pos.getY(), pos.getZ());
                     }
                 }
             }, chunk));
@@ -163,9 +167,50 @@ public final class FasterLostCities extends GlobalTodo {
         if(todoBlockEntitiesQueue != null) {
             todoBlockEntitiesQueue.forEach(todoSize, (pos, pair) -> attachData(() -> {
                 NbtCompound tag = pair.getRight();
-                BlockEntity be = chunk.getBlockEntity(pos);
-                if (be != null) {
-                    be.readNbt(tag);
+                if(chunk instanceof WorldChunk worldChunk) {
+                    BlockState state = worldChunk.getBlockState(pos);
+                    if (tag.contains("id")) {
+                        // ensure the correct block is present, it may be overwritten by other structures
+                        Identifier blockId = Identifier.tryParse(tag.getString("id"));
+                        if(blockId != null) {
+                            Block expected = ForgeRegistries.BLOCKS.getValue(blockId);
+                            if(expected == null || !state.isOf(expected)) {
+                                return;
+                            } else if (expected instanceof BlockWithEntity blockWithEntity) {
+                                // correct incorrect block entity ids
+                                BlockEntity dummyBlockEntity = blockWithEntity.createBlockEntity(pos, state);
+                                if(dummyBlockEntity != null) {
+                                    Identifier blockEntityId = ForgeRegistries.BLOCK_ENTITIES.getKey(dummyBlockEntity.getType());
+                                    if(blockEntityId != null && !blockId.equals(blockEntityId)) {
+                                        tag.putString("id", blockEntityId.toString());
+                                    }
+                                }
+                            }
+                        }
+                    } else if(state.getBlock() instanceof BlockWithEntity blockWithEntity) {
+                        // get the id from the block entity
+                        BlockEntity dummyBlockEntity = blockWithEntity.createBlockEntity(pos, state);
+                        if(dummyBlockEntity != null) {
+                            Identifier blockId = ForgeRegistries.BLOCK_ENTITIES.getKey(dummyBlockEntity.getType());
+                            if(blockId != null) {
+                                tag.putString("id", blockId.toString());
+                            }
+                        }
+                    } else {
+                        // get the id from the block
+                        Identifier blockId = ForgeRegistries.BLOCKS.getKey(state.getBlock());
+                        if(blockId != null) {
+                            tag.putString("id", blockId.toString());
+                        }
+                    }
+
+                    // in world block entity
+                    BlockEntity be = ((WorldChunkAccessor) worldChunk).callLoadBlockEntity(pos, tag);
+                    if(be != null) {
+                        // manually trigger block update
+                        world.getChunkManager().markForUpdate(pos);
+                        world.createAndScheduleBlockTick(pos, state.getBlock(), 1);
+                    }
                 }
             }, chunk));
         }

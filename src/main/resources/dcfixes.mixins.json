@@ -14,7 +14,8 @@
     "SpawnerSystemMixin",
     "ThreadedAnvilChunkStorageMixin",
     "WorldChunkMixin",
-    "WorldMixin"
+    "WorldMixin",
+    "accessor.WorldChunkAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
