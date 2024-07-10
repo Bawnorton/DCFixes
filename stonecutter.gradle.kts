@@ -20,6 +20,6 @@ stonecutter registerChiseled tasks.register("chiseledPublishMods", stonecutter.c
 }
 
 stonecutter configureEach {
-    val isDev = "dev" to !gradle.startParameter.taskNames.stream().anyMatch { it.lowercase().contains("build") }
+    val isDev = "dev" to !gradle.startParameter.taskNames.stream().anyMatch { it.lowercase().contains("build") || it.lowercase().contains("publish") }
     consts(isDev)
 }

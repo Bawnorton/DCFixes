@@ -11,11 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(BlockEntity.class)
 public abstract class BlockEntityMixin {
     @WrapOperation(
-            //? if dev {
-            method = "method_17898",
-            //?} else {
-            /*method = "m_58881_",
-            *///?}
+            method = "m_58881_",
             at = @At(
                     value = "INVOKE",
                     target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V"

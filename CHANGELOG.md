@@ -1,3 +1,6 @@
+# 1.0.5
+- Fix published build using dev name
+
 # 1.0.4
 - Fix quark buttons appearing where they shouldn't and crashing the game if clicked in inventories that shouldn't 
   have them (creative inv for example)
