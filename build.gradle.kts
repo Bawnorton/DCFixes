@@ -137,7 +137,7 @@ val buildAndCollect = tasks.register<Copy>("buildAndCollect") {
 publishMods {
     file = tasks.remapJar.get().archiveFile
     val tag = "$loader-${mod.version}+$minecraftVersion"
-    changelog = "[Changelog](https://github.com/Bawnorton/DCFixes/blob/stonecutter/CHANGELOG.md)"
+    changelog = "[Changelog](https://github.com/Bawnorton/DCFixes/blob/main/CHANGELOG.md)"
     displayName = "${mod.name} ${loader.toString().replaceFirstChar { it.uppercase() }} ${mod.version} for $minecraftVersion"
     type = STABLE
     modLoaders.add(loader.toString())
@@ -147,7 +147,7 @@ publishMods {
     github {
         accessToken = providers.gradleProperty("GITHUB_TOKEN")
         repository = "Bawnorton/DCFixes"
-        commitish = "stonecutter"
+        commitish = "main"
         changelog = getRootProject().file("CHANGELOG.md").readLines().joinToString("\n")
         tagName = tag
     }

@@ -14,6 +14,11 @@ stonecutter registerChiseled tasks.register("chiseledBuildAndCollect", stonecutt
     ofTask("buildAndCollect")
 }
 
+stonecutter registerChiseled tasks.register("chiseledPublishMods", stonecutter.chiseled) {
+    group = "project"
+    ofTask("publishMods")
+}
+
 stonecutter configureEach {
     val isDev = "dev" to !gradle.startParameter.taskNames.stream().anyMatch { it.lowercase().contains("build") }
     consts(isDev)
