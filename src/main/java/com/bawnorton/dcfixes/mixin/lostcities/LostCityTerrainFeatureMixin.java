@@ -1,4 +1,4 @@
-package com.bawnorton.dcfixes.mixin;
+package com.bawnorton.dcfixes.mixin.lostcities;
 
 import com.bawnorton.dcfixes.FasterLostCities;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

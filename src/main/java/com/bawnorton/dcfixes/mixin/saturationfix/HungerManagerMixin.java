@@ -1,4 +1,4 @@
-package com.bawnorton.dcfixes.mixin;
+package com.bawnorton.dcfixes.mixin.saturationfix;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

@@ -55,6 +55,7 @@ repositories {
     maven("https://maven.neoforged.net/releases/")
     maven("https://jitpack.io/")
     maven("https://maven.tterrag.com/")
+    maven("https://maven.blamejared.com")
 }
 
 dependencies {
@@ -69,25 +70,19 @@ dependencies {
     compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:${property("mixin_squared")}")!!)
     implementation(include("com.github.bawnorton.mixinsquared:mixinsquared-forge:${property("mixin_squared")}")!!)
 
-    modCompileOnly("com.tterrag.registrate:Registrate:MC1.18.2-1.1.3")
-
-    modCompileOnly(fileTree(rootProject.file("libs")) {
-        include("*.jar")
-    })
+    modCompileOnly("com.simibubi.create:create-$minecraftVersion:${property("create")}:slim") { isTransitive = false }
+    modCompileOnly("com.jozufozu.flywheel:flywheel-forge-$minecraftVersion:${property("flywheel")}")
+    modCompileOnly("com.tterrag.registrate:Registrate:${property("registrate")}")
+    modCompileOnly("curse.maven:the-lost-cities-269024:${property("lost_cities")}")
+    modCompileOnly("curse.maven:in-control-257356:${property("in_control")}")
+    modCompileOnly("curse.maven:quark-243121:${property("quark")}")
+    modCompileOnly("curse.maven:immersive-engineering-231951:${property("immersive_engineering")}")
+    modCompileOnly("curse.maven:apocalypse-now-448410:${property("apocalypse_now")}")
+    modCompileOnly("curse.maven:zombie-extreme-392809:${property("zombie_extreme")}")
 }
 
 loom {
     accessWidenerPath.set(rootProject.file("src/main/resources/$awName"))
-
-    runConfigs.all {
-        ideConfigGenerated(true)
-        runDir = "../../run"
-    }
-
-    runConfigs["client"].apply {
-        vmArgs("-Dmixin.debug.export=true")
-        programArgs("--username Bawnorton")
-    }
 
     forge {
         convertAccessWideners = true
@@ -117,4 +112,11 @@ java {
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+}
+
+val buildAndCollect = tasks.register<Copy>("buildAndCollect") {
+    group = "build"
+    from(tasks.remapJar.get().archiveFile)
+    into(rootProject.layout.buildDirectory.file("libs/${mod.version}"))
+    dependsOn("build")
 }

@@ -1,4 +1,4 @@
-package com.bawnorton.dcfixes.mixin;
+package com.bawnorton.dcfixes.mixin.quark;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import org.spongepowered.asm.mixin.Mixin;

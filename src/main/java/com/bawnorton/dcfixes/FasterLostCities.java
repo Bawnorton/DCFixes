@@ -2,19 +2,13 @@ package com.bawnorton.dcfixes;
 
 import com.bawnorton.dcfixes.mixin.accessor.WorldChunkAccessor;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.Create;
-import com.simibubi.create.infrastructure.worldgen.BuiltinRegistration;
-import com.starfish_studios.another_furniture.registry.AFBlocks;
-import mcjty.lostcities.setup.Config;
 import mcjty.lostcities.setup.ModSetup;
 import mcjty.lostcities.varia.TodoQueue;
 import mcjty.lostcities.worldgen.GlobalTodo;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -24,7 +18,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.chunk.Chunk;
@@ -157,7 +150,11 @@ public final class FasterLostCities extends GlobalTodo {
                     BlockEntity tileentity = chunk.getBlockEntity(pos);
                     if (tileentity instanceof MobSpawnerBlockEntity spawner) {
                         MobSpawnerLogic logic = spawner.getLogic();
-                        logic.setEntityId(ForgeRegistries.ENTITIES.getValue(randomEntity));
+                        //? if 1.18.2 {
+                        /*logic.setEntityId(ForgeRegistries.ENTITIES.getValue(randomEntity));
+                        *///?} else {
+                        logic.setEntityId(ForgeRegistries.ENTITY_TYPES.getValue(randomEntity));
+                        //?}
                     } else if (tileentity != null) {
                         ModSetup.getLogger().error("The mob spawner at ({}, {}, {}) has a TileEntity of incorrect type {}!", pos.getX(), pos.getY(), pos.getZ(), tileentity.getClass().getName());
                     } else {
@@ -175,7 +172,11 @@ public final class FasterLostCities extends GlobalTodo {
                         // get the id from the block entity, don't assume it's correct
                         BlockEntity dummyBlockEntity = blockWithEntity.createBlockEntity(pos, state);
                         if(dummyBlockEntity != null) {
-                            Identifier blockId = ForgeRegistries.BLOCK_ENTITIES.getKey(dummyBlockEntity.getType());
+                            //? if 1.18.2 {
+                            /*Identifier blockId = ForgeRegistries.BLOCK_ENTITIES.getKey(dummyBlockEntity.getType());
+                            *///?} else {
+                            Identifier blockId = ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(dummyBlockEntity.getType());
+                            //?}
                             if(blockId != null) {
                                 tag.putString("id", blockId.toString());
                             }
