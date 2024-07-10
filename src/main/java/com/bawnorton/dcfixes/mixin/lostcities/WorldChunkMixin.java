@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
+import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,6 +30,21 @@ public abstract class WorldChunkMixin {
             }
         } else {
             original.call(instance, world, blockPos, newState, b);
+        }
+    }
+
+    @WrapOperation(
+            method = "loadBlockEntity",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V",
+                    remap = false,
+                    ordinal = 1
+            )
+    )
+    private void dontLogOnGen(Logger instance, String message, Object arg1, Object arg2, Operation<Void> original) {
+        if(FasterLostCities.CHUNK.get() == null) {
+            original.call(instance, message, arg1, arg2);
         }
     }
 }

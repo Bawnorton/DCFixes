@@ -79,10 +79,23 @@ dependencies {
     modCompileOnly("curse.maven:immersive-engineering-231951:${property("immersive_engineering")}")
     modCompileOnly("curse.maven:apocalypse-now-448410:${property("apocalypse_now")}")
     modCompileOnly("curse.maven:zombie-extreme-392809:${property("zombie_extreme")}")
+    modCompileOnly("curse.maven:mrcrayfish-furniture-mod-55438:${property("mrcrayfish_furniture")}")
+
+    modImplementation("curse.maven:physics-mod-442735:${property("physics_mod")}")
 }
 
 loom {
     accessWidenerPath.set(rootProject.file("src/main/resources/$awName"))
+
+    runConfigs.all {
+        ideConfigGenerated(true)
+        runDir = "../../run"
+    }
+
+    runConfigs["client"].apply {
+        vmArgs("-Dmixin.debug.export=true")
+        programArgs("--username Bawnorton")
+    }
 
     forge {
         convertAccessWideners = true

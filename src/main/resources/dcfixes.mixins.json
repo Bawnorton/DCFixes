@@ -4,17 +4,19 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "mixins": [
+    "accessor.WorldChunkAccessor",
+    "lostcities.BlockEntityMixin",
     "lostcities.GlobalTodoMixin",
-    "saturationfix.HungerManagerMixin",
-    "quark.InventoryButtonHandlerMixin",
-    "quark.InventoryTransfterHandlerMixin",
     "lostcities.LostCityTerrainFeatureMixin",
-    "quark.QuarkButtonProviderMixin",
     "lostcities.SpawnerSystemMixin",
     "lostcities.ThreadedAnvilChunkStorageMixin",
     "lostcities.WorldChunkMixin",
     "lostcities.WorldMixin",
-    "accessor.WorldChunkAccessor"
+    "physicsmod.ModExecutorMixin",
+    "quark.InventoryButtonHandlerMixin",
+    "quark.InventoryTransfterHandlerMixin",
+    "quark.QuarkButtonProviderMixin",
+    "saturationfix.HungerManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -5,9 +5,11 @@ import com.simibubi.create.AllBlocks;
 import mcjty.lostcities.setup.ModSetup;
 import mcjty.lostcities.varia.TodoQueue;
 import mcjty.lostcities.worldgen.GlobalTodo;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CommandBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -150,7 +152,7 @@ public final class FasterLostCities extends GlobalTodo {
                     BlockEntity tileentity = chunk.getBlockEntity(pos);
                     if (tileentity instanceof MobSpawnerBlockEntity spawner) {
                         MobSpawnerLogic logic = spawner.getLogic();
-                        //? if 1.18.2 {
+                        //? if <=1.18.2 {
                         /*logic.setEntityId(ForgeRegistries.ENTITIES.getValue(randomEntity));
                         *///?} else {
                         logic.setEntityId(ForgeRegistries.ENTITY_TYPES.getValue(randomEntity));
@@ -168,11 +170,12 @@ public final class FasterLostCities extends GlobalTodo {
                 NbtCompound tag = pair.getRight();
                 if(chunk instanceof WorldChunk worldChunk) {
                     BlockState state = worldChunk.getBlockState(pos);
-                    if(state.getBlock() instanceof BlockWithEntity blockWithEntity) {
+                    Block block = state.getBlock();
+                    if(block instanceof BlockWithEntity blockWithEntity) {
                         // get the id from the block entity, don't assume it's correct
                         BlockEntity dummyBlockEntity = blockWithEntity.createBlockEntity(pos, state);
                         if(dummyBlockEntity != null) {
-                            //? if 1.18.2 {
+                            //? if <=1.18.2 {
                             /*Identifier blockId = ForgeRegistries.BLOCK_ENTITIES.getKey(dummyBlockEntity.getType());
                             *///?} else {
                             Identifier blockId = ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(dummyBlockEntity.getType());
@@ -183,12 +186,12 @@ public final class FasterLostCities extends GlobalTodo {
                         }
                     } else if (!tag.contains("id")) {
                         // get the id from the block
-                        Identifier blockId = ForgeRegistries.BLOCKS.getKey(state.getBlock());
+                        Identifier blockId = ForgeRegistries.BLOCKS.getKey(block);
                         if(blockId != null) {
                             tag.putString("id", blockId.toString());
                         }
                     }
-                    if(state.isOf(AllBlocks.COGWHEEL.get()) || state.isOf(AllBlocks.SHAFT.get())) {
+                    if(block == AllBlocks.COGWHEEL.get() || block == AllBlocks.SHAFT.get()) {
                         // redudnant, and just spam the logs when trying to load
                         return;
                     }
@@ -198,7 +201,7 @@ public final class FasterLostCities extends GlobalTodo {
                     if(be != null) {
                         // manually trigger block update
                         world.getChunkManager().markForUpdate(pos);
-                        world.createAndScheduleBlockTick(pos, state.getBlock(), 1);
+                        world.createAndScheduleBlockTick(pos, block, 1);
                     }
                 }
             }, chunk));
