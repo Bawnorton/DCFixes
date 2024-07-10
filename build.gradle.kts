@@ -133,3 +133,28 @@ val buildAndCollect = tasks.register<Copy>("buildAndCollect") {
     into(rootProject.layout.buildDirectory.file("libs/${mod.version}"))
     dependsOn("build")
 }
+
+publishMods {
+    file = tasks.remapJar.get().archiveFile
+    val tag = "$loader-${mod.version}+$minecraftVersion"
+    changelog = "[Changelog](https://github.com/Bawnorton/DCFixes/blob/stonecutter/CHANGELOG.md)"
+    displayName = "${mod.name} ${loader.toString().replaceFirstChar { it.uppercase() }} ${mod.version} for $minecraftVersion"
+    type = STABLE
+    modLoaders.add(loader.toString())
+
+    dryRun = false
+
+    github {
+        accessToken = providers.gradleProperty("GITHUB_TOKEN")
+        repository = "Bawnorton/DCFixes"
+        commitish = "stonecutter"
+        changelog = getRootProject().file("CHANGELOG.md").readLines().joinToString("\n")
+        tagName = tag
+    }
+
+    curseforge {
+        accessToken = providers.gradleProperty("CURSEFORGE_TOKEN")
+        projectId = "1059881"
+        minecraftVersions.add(minecraftVersion.toString())
+    }
+}
