@@ -6,11 +6,11 @@ import mcjty.lostcities.setup.ModSetup;
 import mcjty.lostcities.varia.TodoQueue;
 import mcjty.lostcities.worldgen.GlobalTodo;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.CommandBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -171,9 +171,9 @@ public final class FasterLostCities extends GlobalTodo {
                 if(chunk instanceof WorldChunk worldChunk) {
                     BlockState state = worldChunk.getBlockState(pos);
                     Block block = state.getBlock();
-                    if(block instanceof BlockWithEntity blockWithEntity) {
+                    if(block instanceof BlockEntityProvider blockEntityProvider) {
                         // get the id from the block entity, don't assume it's correct
-                        BlockEntity dummyBlockEntity = blockWithEntity.createBlockEntity(pos, state);
+                        BlockEntity dummyBlockEntity = blockEntityProvider.createBlockEntity(pos, state);
                         if(dummyBlockEntity != null) {
                             //? if <=1.18.2 {
                             Identifier blockId = ForgeRegistries.BLOCK_ENTITIES.getKey(dummyBlockEntity.getType());
@@ -184,13 +184,26 @@ public final class FasterLostCities extends GlobalTodo {
                                 tag.putString("id", blockId.toString());
                             }
                         }
-                    } else if (!tag.contains("id")) {
-                        // get the id from the block
-                        Identifier blockId = ForgeRegistries.BLOCKS.getKey(block);
-                        if(blockId != null) {
-                            tag.putString("id", blockId.toString());
+                    } else if (tag.contains("id")) {
+                        Identifier blockEntityId = Identifier.tryParse(tag.getString("id"));
+                        if(blockEntityId != null) {
+                            //? if <=1.18.2 {
+                            BlockEntityType<?> type = ForgeRegistries.BLOCK_ENTITIES.getValue(blockEntityId);
+                            //?} else {
+                            /*BlockEntityType<?> type = ForgeRegistries.BLOCK_ENTITY_TYPES.getValue(blockEntityId);
+                             *///?}
+                            if(type != null) {
+                                if(!type.supports(state)) {
+                                    return;
+                                }
+                            }
                         }
+                    } else {
+                        // not a block with an entity, has no id, this may have been overwritten
+                        DeceasedCraftFixes.LOGGER.warn("Block {} at {} was scheduled to create a block entity with data {}, but failed.", state.getBlock(), pos.toShortString(), tag);
+                        return;
                     }
+
                     if(block == AllBlocks.COGWHEEL.get() || block == AllBlocks.SHAFT.get()) {
                         // redudnant, and just spam the logs when trying to load
                         return;
