@@ -1,8 +1,8 @@
 package com.bawnorton.dcfixes.mixin.quark;
 
+import com.bawnorton.dcfixes.DeceasedCraftFixes;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +14,7 @@ public abstract class InventoryTransfterHandlerMixin {
             method = "accepts",
             at = @At("RETURN")
     )
-    private static boolean allowGenericContainers(boolean original, @Local(argsOnly = true) ScreenHandler screenHandler) {
-        return original || screenHandler instanceof GenericContainerScreenHandler;
+    private static boolean allowOtherContainers(boolean original, @Local(argsOnly = true) ScreenHandler screenHandler) {
+        return original || DeceasedCraftFixes.QUARK_ALLOWED_HANDLERS.contains(screenHandler.getClass());
     }
 }

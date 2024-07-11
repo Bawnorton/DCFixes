@@ -1,4 +1,4 @@
-package com.bawnorton.dcfixes.mixin.quark;
+package com.bawnorton.dcfixes.client.mixin.quark;
 
 import blusunrize.immersiveengineering.client.gui.IEContainerScreen;
 import net.mcreator.apocalypsenow.client.gui.*;

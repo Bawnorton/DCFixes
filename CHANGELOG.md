@@ -1,3 +1,7 @@
+# 1.0.6
+- Properly respect logical sides
+- Fix inventory handlers not allowing quark sorting if they are too small
+
 # 1.0.5
 - Fix published build using dev name
 

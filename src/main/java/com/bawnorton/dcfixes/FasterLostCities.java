@@ -153,10 +153,10 @@ public final class FasterLostCities extends GlobalTodo {
                     if (tileentity instanceof MobSpawnerBlockEntity spawner) {
                         MobSpawnerLogic logic = spawner.getLogic();
                         //? if <=1.18.2 {
-                        /*logic.setEntityId(ForgeRegistries.ENTITIES.getValue(randomEntity));
-                        *///?} else {
-                        logic.setEntityId(ForgeRegistries.ENTITY_TYPES.getValue(randomEntity));
-                        //?}
+                        logic.setEntityId(ForgeRegistries.ENTITIES.getValue(randomEntity));
+                        //?} else {
+                        /*logic.setEntityId(ForgeRegistries.ENTITY_TYPES.getValue(randomEntity));
+                        *///?}
                     } else if (tileentity != null) {
                         ModSetup.getLogger().error("The mob spawner at ({}, {}, {}) has a TileEntity of incorrect type {}!", pos.getX(), pos.getY(), pos.getZ(), tileentity.getClass().getName());
                     } else {
@@ -176,10 +176,10 @@ public final class FasterLostCities extends GlobalTodo {
                         BlockEntity dummyBlockEntity = blockWithEntity.createBlockEntity(pos, state);
                         if(dummyBlockEntity != null) {
                             //? if <=1.18.2 {
-                            /*Identifier blockId = ForgeRegistries.BLOCK_ENTITIES.getKey(dummyBlockEntity.getType());
-                            *///?} else {
-                            Identifier blockId = ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(dummyBlockEntity.getType());
-                            //?}
+                            Identifier blockId = ForgeRegistries.BLOCK_ENTITIES.getKey(dummyBlockEntity.getType());
+                            //?} else {
+                            /*Identifier blockId = ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(dummyBlockEntity.getType());
+                            *///?}
                             if(blockId != null) {
                                 tag.putString("id", blockId.toString());
                             }

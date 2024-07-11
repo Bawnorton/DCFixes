@@ -1,6 +1,6 @@
-package com.bawnorton.dcfixes.mixin.quark;
+package com.bawnorton.dcfixes.client.mixin.quark;
 
-import com.bawnorton.dcfixes.DeceasedCraftFixes;
+import com.bawnorton.dcfixes.client.DeceasedCraftFixesClient;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -33,10 +33,10 @@ public abstract class InventoryButtonHandlerMixin {
             at = @At(
                     value = "INVOKE",
                     //? if <=1.18.2 {
-                    /*target = "Lnet/minecraftforge/client/event/ScreenEvent$InitScreenEvent$Post;getScreen()Lnet/minecraft/client/gui/screen/Screen;"
-                    *///?} else {
-                    target = "Lnet/minecraftforge/client/event/ScreenEvent$Init$Post;getScreen()Lnet/minecraft/client/gui/screen/Screen;"
-                    //?}
+                    target = "Lnet/minecraftforge/client/event/ScreenEvent$InitScreenEvent$Post;getScreen()Lnet/minecraft/client/gui/screen/Screen;"
+                    //?} else {
+                    /*target = "Lnet/minecraftforge/client/event/ScreenEvent$Init$Post;getScreen()Lnet/minecraft/client/gui/screen/Screen;"
+                    *///?}
             )
     )
     private static Screen captureScreen(Screen original) {
@@ -55,6 +55,6 @@ public abstract class InventoryButtonHandlerMixin {
     private static int changeTargetSlot(int original) {
         Screen screen = dcfixes$CURRENT_SCREEN.get();
         Class<? extends Screen> clazz = screen.getClass();
-        return DeceasedCraftFixes.QUARK_BUTTON_SLOT_INDEX.getOrDefault(clazz, original);
+        return DeceasedCraftFixesClient.QUARK_BUTTON_SLOT_INDEX.getOrDefault(clazz, original);
     }
 }

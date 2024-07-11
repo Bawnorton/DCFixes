@@ -13,9 +13,7 @@
     "lostcities.WorldChunkMixin",
     "lostcities.WorldMixin",
     "physicsmod.ModExecutorMixin",
-    "quark.InventoryButtonHandlerMixin",
     "quark.InventoryTransfterHandlerMixin",
-    "quark.QuarkButtonProviderMixin",
     "saturationfix.HungerManagerMixin"
   ],
   "injectors": {

@@ -99,7 +99,7 @@ loom {
 
     forge {
         convertAccessWideners = true
-        mixinConfig("${mod.id}.mixins.json")
+        mixinConfig("${mod.id}.mixins.json", "${mod.id}-client.mixins.json")
     }
 }
 
