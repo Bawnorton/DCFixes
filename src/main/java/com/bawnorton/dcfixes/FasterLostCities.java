@@ -1,9 +1,9 @@
 package com.bawnorton.dcfixes;
 
 import com.bawnorton.dcfixes.mixin.accessor.WorldChunkAccessor;
+import com.bawnorton.dcfixes.util.ConsumablePosQueue;
 import com.simibubi.create.AllBlocks;
 import mcjty.lostcities.setup.ModSetup;
-import mcjty.lostcities.varia.TodoQueue;
 import mcjty.lostcities.worldgen.GlobalTodo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -38,10 +38,10 @@ import java.util.function.Consumer;
 public final class FasterLostCities extends GlobalTodo {
     public static final ThreadLocal<Chunk> CHUNK = ThreadLocal.withInitial(() -> null);
 
-    private final Map<ChunkPos, TodoQueue<Consumer<ServerWorld>>> todo = Collections.synchronizedMap(new HashMap<>());
-    private final Map<ChunkPos, TodoQueue<Pair<BlockState, Identifier>>> todoSpawners = Collections.synchronizedMap(new HashMap<>());
-    private final Map<ChunkPos, TodoQueue<Pair<BlockState, NbtCompound>>> todoBlockEntities = Collections.synchronizedMap(new HashMap<>());
-    private final Map<ChunkPos, TodoQueue<BlockState>> todoPoi = Collections.synchronizedMap(new HashMap<>());
+    private final Map<ChunkPos, ConsumablePosQueue<Consumer<ServerWorld>>> todo = Collections.synchronizedMap(new HashMap<>());
+    private final Map<ChunkPos, ConsumablePosQueue<Pair<BlockState, Identifier>>> todoSpawners = Collections.synchronizedMap(new HashMap<>());
+    private final Map<ChunkPos, ConsumablePosQueue<Pair<BlockState, NbtCompound>>> todoBlockEntities = Collections.synchronizedMap(new HashMap<>());
+    private final Map<ChunkPos, ConsumablePosQueue<BlockState>> todoPoi = Collections.synchronizedMap(new HashMap<>());
 
     public static FasterLostCities getData(ServerWorld world) {
         PersistentStateManager manager = world.getPersistentStateManager();
@@ -113,22 +113,22 @@ public final class FasterLostCities extends GlobalTodo {
     }
 
     public void addTodo(BlockPos pos, Consumer<ServerWorld> code) {
-        todo.computeIfAbsent(new ChunkPos(pos), chunkPos -> new TodoQueue<>()).add(pos, code);
+        todo.computeIfAbsent(new ChunkPos(pos), chunkPos -> new ConsumablePosQueue<>()).add(pos, code);
         markDirty();
     }
 
     public void addSpawnerTodo(BlockPos pos, BlockState spawnerState, Identifier randomEntity) {
-        todoSpawners.computeIfAbsent(new ChunkPos(pos), chunkPos -> new TodoQueue<>()).add(pos, Pair.of(spawnerState, randomEntity));
+        todoSpawners.computeIfAbsent(new ChunkPos(pos), chunkPos -> new ConsumablePosQueue<>()).add(pos, Pair.of(spawnerState, randomEntity));
         markDirty();
     }
 
     public void addBlockEntityTodo(BlockPos pos, BlockState state, NbtCompound tag) {
-        todoBlockEntities.computeIfAbsent(new ChunkPos(pos), chunkPos -> new TodoQueue<>()).add(pos, Pair.of(state, tag));
+        todoBlockEntities.computeIfAbsent(new ChunkPos(pos), chunkPos -> new ConsumablePosQueue<>()).add(pos, Pair.of(state, tag));
         markDirty();
     }
 
     public void addPoi(BlockPos pos, BlockState state) {
-        todoPoi.computeIfAbsent(new ChunkPos(pos), chunkPos -> new TodoQueue<>()).add(pos, state);
+        todoPoi.computeIfAbsent(new ChunkPos(pos), chunkPos -> new ConsumablePosQueue<>()).add(pos, state);
         markDirty();
     }
 
