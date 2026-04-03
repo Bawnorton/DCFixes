@@ -1,21 +1,24 @@
 modLoader = "javafml"
-loaderVersion = "${loader_version}"
-issueTrackerURL = "https://github.com/Bawnorton/DCFixes/issues"
-license = "MIT"
+loaderVersion = "[47,)"
+license = "${mod_license}"
 
 [[mods]]
-modId = "dcfixes"
-version = "${version}"
-displayName = "DeceasedCraft Fixes"
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+logoFile = "assets/${mod_id}/icon.png"
+description = '''${mod_description}'''
 authors = "Bawnorton"
-description = '''
-Fix issues in DeceasedCraft
-'''
-logoFile = "assets/dcfixes/icon.png"
+issueTrackerURL = "https://github.com/Bawnorton/${mod_name}/issues"
 
-[[dependencies.dcfixes]]
-modId = "minecraft"
+[[dependencies.${mod_id}]]
+modId = "forge"
 mandatory = true
-versionRange = "${minecraft_dependency}"
+versionRange = "[47.4,)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
