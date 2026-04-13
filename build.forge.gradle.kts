@@ -23,6 +23,7 @@ repositories {
     maven("https://maven.minecraftforge.net")
     maven("https://maven.bawnorton.com/releases")
     maven("https://maven.parchmentmc.org")
+    maven("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
 
     strictMaven("https://www.cursemaven.com", "Curseforge", "curse.maven")
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
@@ -47,8 +48,17 @@ dependencies {
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 
     modCompileOnly("curse.maven:engineered-schematics-1207780:7666550")
-
     modImplementation("curse.maven:physics-mod-442735:7781938")
+    modImplementation("curse.maven:theundead-479710:7446558")
+    modImplementation("curse.maven:zombie-extreme-392809:7014500")
+    modImplementation("curse.maven:customnpcs-unofficial-1052708:7694841")
+    modImplementation("curse.maven:apocalypse-now-448410:6364603")
+    modRuntimeOnly("curse.maven:curios-309927:6418456")
+    modImplementation("curse.maven:playeranimator-658587:4587214")
+    modImplementation("curse.maven:deceased-beast-1426968:7640180")
+    modImplementation("curse.maven:naturalist-627986:6863943")
+    modImplementation("software.bernie.geckolib:geckolib-forge-$minecraft:4.8.3")
+    implementation("com.eliotlash.mclib:mclib:20")
 
     // Dev Jars of EMF, ETF
     for (modJar in rootProject.fileTree("libs/jars") { include("*.jar") }) {

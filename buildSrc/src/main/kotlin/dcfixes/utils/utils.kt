@@ -16,6 +16,7 @@ fun Project.mod(name: String): String? = findProperty("mod.${name}") as String?
 fun Project.mod(name: String, consumer: (prop: String) -> Unit) = mod(name)?.let(consumer)
 
 fun Project.applyMixinDebugSettings(vmArgConsumer: Consumer<String>, propertyConsumer: BiConsumer<String, String>) {
+  vmArgConsumer.accept("-XX:+AllowEnhancedClassRedefinition")
   propertyConsumer.accept("mixin.hotSwap", "true")
   propertyConsumer.accept("mixin.debug.export", "true")
 }
