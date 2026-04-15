@@ -4,7 +4,6 @@ import com.bawnorton.dcfixes.config.DCFixesConfig;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.DoubleFieldControllerBuilder;
-import dev.isxander.yacl3.impl.controller.DoubleFieldControllerBuilderImpl;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 

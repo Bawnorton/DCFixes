@@ -8,6 +8,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 public class DeceasedCraftFixesClient {
     private static final ClientCompat COMPAT = new ClientCompat();
 
+    @SuppressWarnings("removal")
     public DeceasedCraftFixesClient() {
         COMPAT.getPhysicsModCompat().registerRagdollHooks();
         ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((client, screen) -> DCFixesConfigScreenHandler.generateConfigScreen(screen)));

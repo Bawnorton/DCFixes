@@ -19,6 +19,7 @@ fun Project.applyMixinDebugSettings(vmArgConsumer: Consumer<String>, propertyCon
   vmArgConsumer.accept("-XX:+AllowEnhancedClassRedefinition")
   propertyConsumer.accept("mixin.hotSwap", "true")
   propertyConsumer.accept("mixin.debug.export", "true")
+  propertyConsumer.accept("mixin.dumpTargetOnFailure", "true")
 }
 
 fun Project.remoteDepBuilder(project: Project, depResolver: (String, String) -> Dependency) : RemoteDepBuilder {

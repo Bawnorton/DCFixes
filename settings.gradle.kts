@@ -6,6 +6,7 @@ pluginManagement {
         maven("https://maven.kikugie.dev/releases/")
         maven("https://maven.kikugie.dev/snapshots/")
         maven("https://maven.isxander.dev/releases/")
+        maven("https://maven.sinytra.org/")
     }
 }
 

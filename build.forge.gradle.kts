@@ -25,6 +25,10 @@ repositories {
     maven("https://maven.parchmentmc.org")
     maven("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
     maven("https://maven.isxander.dev/releases")
+    maven("https://jitpack.io")
+    maven("https://maven.shedaniel.me/")
+    maven("https://maven.terraformersmc.com/releases/")
+    maven("https://maven.sinytra.org/")
 
     strictMaven("https://www.cursemaven.com", "Curseforge", "curse.maven")
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
@@ -57,6 +61,13 @@ dependencies {
 
     modCompileOnly("curse.maven:minecraft-transport-simulator-286703:7423733")
     modRuntimeOnly("curse.maven:spark-361579:4738952")
+
+    // Fabric Mod Compats
+    modImplementation("org.sinytra:Connector:1.0.0-beta.48+1.20.1")
+    implementation("com.github.FxMorin.MoreCulling:moreculling:v0.24.0") {
+        exclude(group = "net.fabricmc")
+        exclude(group = "maven.modrinth")
+    }
 
     // Physics Mod + Geckolib Compats
     modImplementation("curse.maven:physics-mod-442735:7781938")
