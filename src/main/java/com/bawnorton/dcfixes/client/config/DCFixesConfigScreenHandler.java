@@ -1,0 +1,81 @@
+package com.bawnorton.dcfixes.client.config;
+
+import com.bawnorton.dcfixes.config.DCFixesConfig;
+import dev.isxander.yacl3.api.*;
+import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
+import dev.isxander.yacl3.api.controller.DoubleFieldControllerBuilder;
+import dev.isxander.yacl3.impl.controller.DoubleFieldControllerBuilderImpl;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+
+public class DCFixesConfigScreenHandler {
+
+	public static Screen generateConfigScreen(Screen screen) {
+		return YetAnotherConfigLib.createBuilder()
+				.title(Component.translatable("config.dcfixes.title"))
+				.category(ConfigCategory.createBuilder()
+						.name(Component.translatable("config.dcfixes.category.iv"))
+						.tooltip(Component.translatable("config.dcfixes.category.iv.tooltip"))
+						.group(OptionGroup.createBuilder()
+								.name(Component.translatable("config.dcfixes.category.iv.group.rendering"))
+								.description(OptionDescription.of(Component.translatable("config.dcfixes.category.iv.group.rendering.description")))
+								.option(Option.<Double>createBuilder()
+										.name(Component.translatable("config.dcfixes.option.frustum_cull_expansion"))
+										.description(OptionDescription.of(Component.translatable("config.dcfixes.option.frustum_cull_expansion.description")))
+										.binding(2D, () -> DCFixesConfig.get().frustumCullExpansion, value -> DCFixesConfig.get().frustumCullExpansion = value)
+										.controller(option -> DoubleFieldControllerBuilder.create(option).range(0D, 10D))
+										.build()
+								)
+								.option(Option.<Double>createBuilder()
+										.name(Component.translatable("config.dcfixes.option.dormant_dynamic_batch_distance"))
+										.description(OptionDescription.of(Component.translatable("config.dcfixes.option.dormant_dynamic_batch_distance.description")))
+										.binding(16D, () -> DCFixesConfig.get().dormantDynamicBatchDistance, value -> DCFixesConfig.get().dormantDynamicBatchDistance = value)
+										.controller(option -> DoubleFieldControllerBuilder.create(option).range(0D, 512D))
+										.build()
+								)
+								.option(Option.<Double>createBuilder()
+										.name(Component.translatable("config.dcfixes.option.particle_spawn_distance"))
+										.description(OptionDescription.of(Component.translatable("config.dcfixes.option.particle_spawn_distance.description")))
+										.binding(16D, () -> DCFixesConfig.get().particleSpawnDistance, value -> DCFixesConfig.get().particleSpawnDistance = value)
+										.controller(option -> DoubleFieldControllerBuilder.create(option).range(0D, 512D))
+										.build()
+								)
+								.option(Option.<Double>createBuilder()
+										.name(Component.translatable("config.dcfixes.option.instrument_render_distance"))
+										.description(OptionDescription.of(Component.translatable("config.dcfixes.option.instrument_render_distance.description")))
+										.binding(16D, () -> DCFixesConfig.get().instrumentRenderDistance, value -> DCFixesConfig.get().instrumentRenderDistance = value)
+										.controller(option -> DoubleFieldControllerBuilder.create(option).range(0D, 128D))
+										.build()
+								)
+								.option(Option.<Double>createBuilder()
+										.name(Component.translatable("config.dcfixes.option.text_render_distance"))
+										.description(OptionDescription.of(Component.translatable("config.dcfixes.option.text_render_distance.description")))
+										.binding(32D, () -> DCFixesConfig.get().textRenderDistance, value -> DCFixesConfig.get().textRenderDistance = value)
+										.controller(option -> DoubleFieldControllerBuilder.create(option).range(0D, 128D))
+										.build()
+								)
+								.build())
+						.group(OptionGroup.createBuilder()
+								.name(Component.translatable("config.dcfixes.category.iv.group.ticking"))
+								.description(OptionDescription.of(Component.translatable("config.dcfixes.category.iv.group.ticking.description")))
+								.option(Option.<Double>createBuilder()
+										.name(Component.translatable("config.dcfixes.option.dormant_ticking_distance"))
+										.description(OptionDescription.of(Component.translatable("config.dcfixes.option.dormant_ticking_distance.description")))
+										.binding(16D, () -> DCFixesConfig.get().dormatTickingDistance, value -> DCFixesConfig.get().dormatTickingDistance = value)
+										.controller(option -> DoubleFieldControllerBuilder.create(option).range(0D, 512D))
+										.build()
+								)
+								.option(Option.<Boolean>createBuilder()
+										.name(Component.translatable("config.dcfixes.option.aircraft_always_tick"))
+										.description(OptionDescription.of(Component.translatable("config.dcfixes.option.aircraft_always_tick.description")))
+										.binding(true, () -> DCFixesConfig.get().aircraftAlwaysTick, value -> DCFixesConfig.get().aircraftAlwaysTick = value)
+										.controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter())
+										.build()
+								)
+								.build())
+						.build())
+				.save(DCFixesConfig::save)
+				.build()
+				.generateScreen(screen);
+	}
+}

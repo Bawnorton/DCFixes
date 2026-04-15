@@ -24,6 +24,7 @@ repositories {
     maven("https://maven.bawnorton.com/releases")
     maven("https://maven.parchmentmc.org")
     maven("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
+    maven("https://maven.isxander.dev/releases")
 
     strictMaven("https://www.cursemaven.com", "Curseforge", "curse.maven")
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
@@ -39,6 +40,7 @@ val loader: String by project
 base.archivesName = "${mod("id")}-${mod("version")}+$minecraft-$loader"
 
 dependencies {
+    // Mixin
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3")!!)
     jarJar(implementation("io.github.llamalad7:mixinextras-forge:0.5.3")!!)
 
@@ -47,8 +49,19 @@ dependencies {
 
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 
+    // Yacl
+    modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
+
+    // Compats
     modCompileOnly("curse.maven:engineered-schematics-1207780:7666550")
+
+    modCompileOnly("curse.maven:minecraft-transport-simulator-286703:7423733")
+    modRuntimeOnly("curse.maven:spark-361579:4738952")
+
+    // Physics Mod + Geckolib Compats
     modImplementation("curse.maven:physics-mod-442735:7781938")
+    modImplementation("software.bernie.geckolib:geckolib-forge-$minecraft:4.8.3")
+    implementation("com.eliotlash.mclib:mclib:20")
     modImplementation("curse.maven:theundead-479710:7446558")
     modImplementation("curse.maven:zombie-extreme-392809:7014500")
     modImplementation("curse.maven:customnpcs-unofficial-1052708:7694841")
@@ -57,10 +70,8 @@ dependencies {
     modImplementation("curse.maven:playeranimator-658587:4587214")
     modImplementation("curse.maven:deceased-beast-1426968:7640180")
     modImplementation("curse.maven:naturalist-627986:6863943")
-    modImplementation("software.bernie.geckolib:geckolib-forge-$minecraft:4.8.3")
-    implementation("com.eliotlash.mclib:mclib:20")
 
-    // Dev Jars of EMF, ETF
+    // Dev Jars of EMF, ETF and Jars of non maven projs: iv packs, HoldMyItems
     for (modJar in rootProject.fileTree("libs/jars") { include("*.jar") }) {
         val basename = modJar.name.substring(0, modJar.name.length - ".jar".length)
         val versionSep = basename.lastIndexOf('-')

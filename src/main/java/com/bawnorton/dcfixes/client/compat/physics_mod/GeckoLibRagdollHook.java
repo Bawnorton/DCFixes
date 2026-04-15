@@ -889,7 +889,6 @@ public class GeckoLibRagdollHook implements RagdollHook {
                 .connect("body", "right_fin", RagdollAssembler.Type.VISUAL_FIXED)
                 .connect("body", "left_fin", RagdollAssembler.Type.VISUAL_FIXED)
                 .connect("body", "tail", RagdollAssembler.Type.VISUAL_FIXED)
-                .debug()
                 .assemble()
         );
 
@@ -955,7 +954,6 @@ public class GeckoLibRagdollHook implements RagdollHook {
                 .connect("body", "right_fin", RagdollAssembler.Type.VISUAL_FIXED)
                 .connect("body", "left_fin", RagdollAssembler.Type.VISUAL_FIXED)
                 .connect("body", "tail", RagdollAssembler.Type.LOOSE)
-                .debug()
                 .assemble()
         );
 
@@ -1072,7 +1070,7 @@ public class GeckoLibRagdollHook implements RagdollHook {
                     if (entity.hasMane()) {
                         assembler.connect("body_male", "mane", RagdollAssembler.Type.FIXED);
                     }
-                    assembler.debug().assemble();
+                    assembler.assemble();
                 },
                 (entities, entity) -> {
                     entities.remove(6);
@@ -1177,7 +1175,6 @@ public class GeckoLibRagdollHook implements RagdollHook {
                 .connect("body", "left_wing", RagdollAssembler.Type.LOOSE)
                 .connect("body", "right_wing", RagdollAssembler.Type.LOOSE)
                 .connect("body", "tail", RagdollAssembler.Type.VISUAL_FIXED)
-                .debug()
                 .assemble()
         );
     }

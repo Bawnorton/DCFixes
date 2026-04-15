@@ -1,0 +1,23 @@
+{
+  "config.dcfixes.title": "DeceasedCraft Fixes Config",
+  "config.dcfixes.category.iv": "Immersive Vehicles",
+  "config.dcfixes.category.iv.tooltip": "Settings for Immersive Vehicles (Formerly MTS)",
+  "config.dcfixes.category.iv.group.rendering": "Rendering",
+  "config.dcfixes.category.iv.group.rendering.description": "Settings related to rendering of Immersive Vehicles.",
+  "config.dcfixes.option.frustum_cull_expansion": "Frustum Culling Expansion",
+  "config.dcfixes.option.frustum_cull_expansion.description": "How much to expand the frustum culling box for IV entities\nDefault: 2.0",
+  "config.dcfixes.option.dormant_dynamic_batch_distance": "Dormant Dynamic Batch Distance",
+  "config.dcfixes.option.dormant_dynamic_batch_distance.description": "The distance at which dynamic IV entities are rendered with static batching. The distance is calculated from the nearest player to the IV entity.\nDefault: 16.0",
+  "config.dcfixes.option.particle_spawn_distance": "Particle Spawn Distance",
+  "config.dcfixes.option.particle_spawn_distance.description": "The distance at which IV entities will spawn particles. The distance is calculated from the camera to the IV entity.\nDefault: 16.0",
+  "config.dcfixes.option.instrument_render_distance": "Instrument Render Distance",
+  "config.dcfixes.option.instrument_render_distance.description": "The distance at which IV instruments are rendered. The distance is calculated from the camera to the IV entity.\nDefault: 16.0",
+  "config.dcfixes.option.text_render_distance": "Text Render Distance",
+  "config.dcfixes.option.text_render_distance.description": "The distance at which IV text (e.g. number plates) is rendered. The distance is calculated from the camera to the IV entity.\nDefault: 32.0",
+  "config.dcfixes.category.iv.group.ticking": "Ticking",
+  "config.dcfixes.category.iv.group.ticking.description": "Settings related to ticking behavior of Immersive Vehicles.",
+  "config.dcfixes.option.dormant_ticking_distance": "Dormant Ticking Distance",
+  "config.dcfixes.option.dormant_ticking_distance.description": "The distance at which motionless IV entities should be within relative to the nearest player to tick.\nDefault: 16.0",
+  "config.dcfixes.option.aircraft_always_tick": "Aircraft Always Tick",
+  "config.dcfixes.option.aircraft_always_tick.description": "Whether aircraft IV entities should always tick regardless of distance to a player.\nNote: Aircraft will still not tick outside simulated distance if 'tick_outside_simulated_distance' is false.\nDefault: True"
+}
