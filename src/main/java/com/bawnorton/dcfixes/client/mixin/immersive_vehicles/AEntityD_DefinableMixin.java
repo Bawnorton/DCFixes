@@ -313,7 +313,7 @@ abstract class AEntityD_DefinableMixin extends AEntityC_Renderable implements AE
                 }
             }
         });
-        batchableObjects.forEach((cacheKey, data) -> dcfixes$dormantDynamicModelBatches.put(cacheKey, new StaticModelBatch(cacheKey, data.vertices, data.textureOverride, data.windowBatch, data.interiorWindowBatch)));
+        batchableObjects.forEach((cacheKey, data) -> dcfixes$staticModelBatches.put(cacheKey, new StaticModelBatch(cacheKey, data.vertices, data.textureOverride, data.windowBatch, data.interiorWindowBatch)));
         dcfixes$rebuildDormantDynamicModelBatches(0, true);
         dcfixes$cachedStaticBatchCount = dcfixes$staticModelBatches.size();
         dcfixes$cachedDynamicObjectCount = dcfixes$dynamicObjectList.size();
