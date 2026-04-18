@@ -1,6 +1,11 @@
 package com.bawnorton.dcfixes.client.compat.physics_mod;
 
+import com.bawnorton.dcfixes.client.DeceasedCraftFixesClient;
 import com.bawnorton.dcfixes.client.compat.apocalypsenow.ModelReplacingHumanoidRenderer;
+import com.bawnorton.dcfixes.client.compat.deaceased.DeaceasedCompat;
+import com.bawnorton.dcfixes.client.compat.naturalist.NaturalistCompat;
+import com.bawnorton.dcfixes.client.compat.undead_revamp2.UndeadRevampCompat;
+import com.bawnorton.dcfixes.client.compat.zombie_extreme.ZombieExtremeCompat;
 import com.bawnorton.dcfixes.client.extend.HumanoidModelExtender;
 import com.bawnorton.dcfixes.client.extend.ModelPartExtender;
 import com.bawnorton.dcfixes.client.extend.PhysicsEntityExtender;
@@ -12,7 +17,6 @@ import net.diebuddies.physics.Mesh;
 import net.diebuddies.physics.PhysicsEntity;
 import net.diebuddies.physics.PhysicsMod;
 import net.diebuddies.physics.StarterClient;
-import net.diebuddies.physics.ragdoll.RagdollMapper;
 import net.diebuddies.physics.settings.mobs.MobPhysicsType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -39,7 +43,10 @@ public class PhysicsModCompat {
     public static final ThreadLocal<GeoBone> CURRENT_BONE_CAPTURE = new ThreadLocal<>();
 
     public void registerRagdollHooks() {
-        RagdollMapper.addHook(new GeckoLibRagdollHook());
+        DeceasedCraftFixesClient.getCompat().getUndeadRevampCompat().ifPresent(UndeadRevampCompat::registerRagdolls);
+        DeceasedCraftFixesClient.getCompat().getZombieExtremeCompat().ifPresent(ZombieExtremeCompat::registerRagdolls);
+        DeceasedCraftFixesClient.getCompat().getNaturalistCompat().ifPresent(NaturalistCompat::registerRagdolls);
+        DeceasedCraftFixesClient.getCompat().getDeaceasedCompat().ifPresent(DeaceasedCompat::registerRagdolls);
     }
 
     @SuppressWarnings("unchecked")

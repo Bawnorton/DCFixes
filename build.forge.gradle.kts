@@ -64,17 +64,20 @@ dependencies {
     // Compats
     modCompileOnly("curse.maven:engineered-schematics-1207780:7666550")
 
+    withSourcesJar(modImplementation("curse.maven:customnpcs-unofficial-1052708:7694841"))
+    modCompileOnly("curse.maven:sound-physics-remastered-535489:6352920")
+
     modCompileOnly("curse.maven:immersive-engineering-231951:6206989")
     modCompileOnly("curse.maven:timeless-and-classic-zero-1028108:7401617-sources-7401617")
 
-    withSourcesJar(modImplementation("curse.maven:extreme-reactors-250277:7344727"))
+    modImplementation("curse.maven:extreme-reactors-250277:7344727")
     modRuntimeOnly("curse.maven:zerocore-247921:7344725")
 
-    withSourcesJar(modCompileOnly("curse.maven:minecraft-transport-simulator-286703:7423733"))
+    modCompileOnly("curse.maven:minecraft-transport-simulator-286703:7423733")
     modRuntimeOnly("curse.maven:spark-361579:4738952")
 
-    withSourcesJar(modImplementation("curse.maven:the-hordes-485779:6718502"))
-    withSourcesJar(modImplementation("curse.maven:atlas-lib-463826:5254550"))
+    modCompileOnly("curse.maven:the-hordes-485779:6718502")
+    modCompileOnly("curse.maven:atlas-lib-463826:5254550")
 
     // Fabric Mod Compats
     modImplementation("org.sinytra:Connector:1.0.0-beta.48+1.20.1")
@@ -88,14 +91,11 @@ dependencies {
     modImplementation("curse.maven:physics-mod-442735:7781938")
     modImplementation("software.bernie.geckolib:geckolib-forge-$minecraft:4.8.3")
     implementation("com.eliotlash.mclib:mclib:20")
-    modImplementation("curse.maven:theundead-479710:7446558")
-    modImplementation("curse.maven:zombie-extreme-392809:7014500")
-    modImplementation("curse.maven:customnpcs-unofficial-1052708:7694841")
-    modImplementation("curse.maven:apocalypse-now-448410:6364603")
-    modRuntimeOnly("curse.maven:curios-309927:6418456")
-    modImplementation("curse.maven:playeranimator-658587:4587214")
-    modImplementation("curse.maven:deceased-beast-1426968:7640180")
-    modImplementation("curse.maven:naturalist-627986:6863943")
+    modCompileOnly("curse.maven:theundead-479710:7446558")
+    modCompileOnly("curse.maven:zombie-extreme-392809:7014500")
+    modCompileOnly("curse.maven:apocalypse-now-448410:6364603")
+    modCompileOnly("curse.maven:deceased-beast-1426968:7640180")
+    modCompileOnly("curse.maven:naturalist-627986:6863943")
 
     // Dev Jars of EMF, ETF and Jars of non maven projs: iv packs, HoldMyItems
     for (modJar in rootProject.fileTree("libs/jars") { include("*.jar") }) {

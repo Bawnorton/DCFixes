@@ -1,6 +1,14 @@
 {
   "config.dcfixes.title": "DeceasedCraft Fixes Config",
 
+  "config.dcfixes.category.general": "General",
+  "config.dcfixes.category.general.tooltip": "General settings for DeceasedCraft Fixes",
+
+  "config.dcfixes.category.general.group.hordes": "Hordes",
+  "config.dcfixes.category.general.group.hordes.description": "Settings related to the hordes mod.",
+  "config.dcfixes.option.horde_waves_loaded_distance_buffer": "Horde Waves Loaded Distance Buffer",
+  "config.dcfixes.option.horde_waves_loaded_distance_buffer.description": "Determines how far, in blocks, from the furthest loaded block to the player should the horde waves spawn.\nDefault: 32",
+
   "config.dcfixes.category.iv": "Immersive Vehicles",
   "config.dcfixes.category.iv.tooltip": "Settings for Immersive Vehicles (Formerly MTS)",
 

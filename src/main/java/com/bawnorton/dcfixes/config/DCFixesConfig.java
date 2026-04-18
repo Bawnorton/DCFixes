@@ -147,6 +147,12 @@ public class DCFixesConfig {
 	)
 	public int reinforcedMaxFluidCapacity = 300000;
 
+	@SerialEntry(
+			value = "hordes_wave_loaded_distance_buffer",
+			comment = "Determines how far, in blocks, from the furthest loaded block to the player should the horde waves spawn.\nDefault: 32"
+	)
+	public int hordeWavesLoadedDistanceBuffer = 32;
+
 
     public static void init() {
 		if (initialized) return;

@@ -2,6 +2,7 @@ package com.bawnorton.dcfixes;
 
 import com.bawnorton.dcfixes.client.DeceasedCraftFixesClient;
 import com.bawnorton.dcfixes.compat.Compat;
+import com.bawnorton.dcfixes.compat.hordes.HordesCompat;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -17,6 +18,7 @@ public final class DeceasedCraftFixes {
 
     public DeceasedCraftFixes() {
         LOGGER.debug("Fixing DeceasedCraft");
+        COMPAT.getHordesCompat().ifPresent(HordesCompat::init);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> DeceasedCraftFixesClient::new);
     }
 
