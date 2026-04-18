@@ -1,6 +1,12 @@
 ## DeceasedCraft v6 Fixes
 [v5 Fixes Here](https://github.com/Bawnorton/DCFixes/blob/49fc9d49415876f6047585320e04a1252f6bf2c5/README.md)
 
-### Fixes:
-- Fix Engineered Schematics main hand rendering
-- Fix Physics Mod EFT Rendering
+### Content
+- Fixes Engineered Schematics main-hand rendering.
+- Fixes Physics Mod + ETF rendering issues.
+- Adds Physics Mod ragdoll compatibility hooks for GeckoLib-based mobs.
+- Improves Immersive Vehicles rendering and ticking performance with configurable distances and behavior.
+- Adjusts Hordes wave spawn positioning.
+- Makes Extreme Reactors reinforced turbine configurable.
+- Allows MoreCulling to load with Sinytra Connector.
+- Fixes various other misc issues I forgot about.
