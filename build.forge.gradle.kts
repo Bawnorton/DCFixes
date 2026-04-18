@@ -1,6 +1,4 @@
-import dcfixes.utils.applyMixinDebugSettings
-import dcfixes.utils.deps
-import dcfixes.utils.mod
+import dcfixes.utils.*
 import dev.kikugie.fletching_table.annotation.MixinEnvironment
 
 plugins {
@@ -15,6 +13,8 @@ plugins {
 }
 
 repositories {
+    mavenCentral()
+
     fun strictMaven(url: String, alias: String, vararg groups: String) = exclusiveContent {
         forRepository { maven(url) { name = alias } }
         filter { groups.forEach(::includeGroup) }
@@ -25,6 +25,7 @@ repositories {
     maven("https://maven.parchmentmc.org")
     maven("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
     maven("https://maven.isxander.dev/releases")
+    maven("https://maven.fabricmc.net")
     maven("https://jitpack.io")
     maven("https://maven.shedaniel.me/")
     maven("https://maven.terraformersmc.com/releases/")
@@ -40,6 +41,10 @@ repositories {
 
 val minecraft: String by project
 val loader: String by project
+val mixinConfigs = listOf(
+    "${mod("id")}.mixins.json",
+    "${mod("id")}.client.mixins.json"
+)
 
 base.archivesName = "${mod("id")}-${mod("version")}+$minecraft-$loader"
 
@@ -59,14 +64,24 @@ dependencies {
     // Compats
     modCompileOnly("curse.maven:engineered-schematics-1207780:7666550")
 
-    modCompileOnly("curse.maven:minecraft-transport-simulator-286703:7423733")
+    modCompileOnly("curse.maven:immersive-engineering-231951:6206989")
+    modCompileOnly("curse.maven:timeless-and-classic-zero-1028108:7401617-sources-7401617")
+
+    withSourcesJar(modImplementation("curse.maven:extreme-reactors-250277:7344727"))
+    modRuntimeOnly("curse.maven:zerocore-247921:7344725")
+
+    withSourcesJar(modCompileOnly("curse.maven:minecraft-transport-simulator-286703:7423733"))
     modRuntimeOnly("curse.maven:spark-361579:4738952")
+
+    withSourcesJar(modImplementation("curse.maven:the-hordes-485779:6718502"))
+    withSourcesJar(modImplementation("curse.maven:atlas-lib-463826:5254550"))
 
     // Fabric Mod Compats
     modImplementation("org.sinytra:Connector:1.0.0-beta.48+1.20.1")
-    implementation("com.github.FxMorin.MoreCulling:moreculling:v0.24.0") {
+    runtimeOnly("curse.maven:moreculling-630104:7552138")
+    runtimeOnly("me.shedaniel.cloth:cloth-config-fabric:11.0.99") {
+        exclude(group = "net.fabricmc.fabric-api")
         exclude(group = "net.fabricmc")
-        exclude(group = "maven.modrinth")
     }
 
     // Physics Mod + Geckolib Compats
@@ -91,6 +106,20 @@ dependencies {
         modImplementation("libs:$artifactId:$version")
     }
 }
+
+registerIntermediaryToMojmapCompileBridges(
+    specs = listOf(
+        IntermediaryJarBridgeSpec(
+            key = "moreCulling",
+            moduleNotation = "curse.maven:moreculling-630104:7552138",
+            remappedJarBasename = "moreculling-7552138"
+        ) {
+            exclude(group = "net.fabricmc")
+            exclude(group = "maven.modrinth")
+        }
+    ),
+    minecraftVersion = minecraft
+)
 
 java {
     withSourcesJar()
@@ -153,8 +182,6 @@ legacyForge {
 
 mixin {
     add(sourceSets.main.get(), "${mod("id")}.refmap.json")
-    config("${mod("id")}.mixins.json")
-    config("${mod("id")}.client.mixins.json")
 }
 
 fletchingTable {
@@ -172,8 +199,49 @@ sourceSets.main {
 }
 
 tasks {
+    matching { it.name == "kspKotlin" }.configureEach {
+        dependsOn("remapMoreCullingToMojmap")
+    }
+
     named("createMinecraftArtifacts") {
         dependsOn("stonecutterGenerate")
+    }
+
+    val writeDevManifest = register("writeDevManifest") {
+        group = "build"
+        description = "Writes META-INF/MANIFEST.MF into class outputs for Forge dev mixin discovery"
+
+        val classesDirs = sourceSets.main.get().output.classesDirs
+        val mixinConfigEntry = mixinConfigs.joinToString(", ")
+
+        inputs.property("mixinConfigs", mixinConfigEntry)
+        outputs.files(provider {
+            classesDirs.files.map { it.resolve("META-INF/MANIFEST.MF") }
+        })
+
+        doLast {
+            val manifestText = buildString {
+                appendLine("Manifest-Version: 1.0")
+                appendLine("MixinConfigs: $mixinConfigEntry")
+                appendLine()
+            }
+
+            classesDirs.files.forEach { classesDir ->
+                val manifestFile = classesDir.resolve("META-INF/MANIFEST.MF")
+                manifestFile.parentFile.mkdirs()
+                manifestFile.writeText(manifestText)
+            }
+        }
+    }
+
+    named("classes") {
+        finalizedBy("writeDevManifest")
+    }
+
+    configureEach {
+        if(name == "net.neoforged.devlaunch.Main.main()") {
+            dependsOn(writeDevManifest)
+        }
     }
 
     register<Copy>("buildAndCollect") {
@@ -192,12 +260,10 @@ tasks {
                 "Implementation-Title" to project.name,
                 "Implementation-Version" to mod("version")!!,
                 "Implementation-Vendor" to "${mod("author")}",
-                "MixinConfigs" to listOf(
-                    "${mod("id")}.mixins.json",
-                    "${mod("id")}.client.mixins.json"
-                ).joinToString(", ")
+                "MixinConfigs" to mixinConfigs.joinToString(", ")
             )
         }
+        dependsOn("writeDevManifest")
     }
 }
 

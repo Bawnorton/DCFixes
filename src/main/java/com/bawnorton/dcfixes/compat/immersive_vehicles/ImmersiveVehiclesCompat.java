@@ -5,7 +5,6 @@ import minecrafttransportsimulator.baseclasses.Point3D;
 import minecrafttransportsimulator.entities.components.AEntityA_Base;
 import minecrafttransportsimulator.entities.components.AEntityF_Multipart;
 import minecrafttransportsimulator.entities.instances.APart;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 
@@ -46,8 +45,8 @@ public class ImmersiveVehiclesCompat {
                 if (vehicle.shouldTickServer(globalCenter, serverLevel, currentTick)) {
                     action.accept(entity);
                 }
-            } else if (level instanceof ClientLevel clientLevel) {
-                if (vehicle.shouldTickClient(globalCenter, clientLevel, currentTick)) {
+            } else if (level.isClientSide()) {
+                if (vehicle.shouldTickClient(globalCenter, level, currentTick)) {
                     action.accept(entity);
                 }
             } else {

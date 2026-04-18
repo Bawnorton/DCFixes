@@ -1,7 +1,9 @@
 {
   "config.dcfixes.title": "DeceasedCraft Fixes Config",
+
   "config.dcfixes.category.iv": "Immersive Vehicles",
   "config.dcfixes.category.iv.tooltip": "Settings for Immersive Vehicles (Formerly MTS)",
+
   "config.dcfixes.category.iv.group.rendering": "Rendering",
   "config.dcfixes.category.iv.group.rendering.description": "Settings related to rendering of Immersive Vehicles.",
   "config.dcfixes.option.frustum_cull_expansion": "Frustum Culling Expansion",
@@ -14,10 +16,45 @@
   "config.dcfixes.option.instrument_render_distance.description": "The distance at which IV instruments are rendered. The distance is calculated from the camera to the IV entity.\nDefault: 16.0",
   "config.dcfixes.option.text_render_distance": "Text Render Distance",
   "config.dcfixes.option.text_render_distance.description": "The distance at which IV text (e.g. number plates) is rendered. The distance is calculated from the camera to the IV entity.\nDefault: 32.0",
+
   "config.dcfixes.category.iv.group.ticking": "Ticking",
   "config.dcfixes.category.iv.group.ticking.description": "Settings related to ticking behavior of Immersive Vehicles.",
   "config.dcfixes.option.dormant_ticking_distance": "Dormant Ticking Distance",
   "config.dcfixes.option.dormant_ticking_distance.description": "The distance at which motionless IV entities should be within relative to the nearest player to tick.\nDefault: 16.0",
   "config.dcfixes.option.aircraft_always_tick": "Aircraft Always Tick",
-  "config.dcfixes.option.aircraft_always_tick.description": "Whether aircraft IV entities should always tick regardless of distance to a player.\nNote: Aircraft will still not tick outside simulated distance if 'tick_outside_simulated_distance' is false.\nDefault: True"
+  "config.dcfixes.option.aircraft_always_tick.description": "Whether aircraft IV entities should always tick regardless of distance to a player.\nNote: Aircraft will still not tick outside simulated distance if 'tick_outside_simulated_distance' is false.\nDefault: True",
+
+  "config.dcfixes.category.extreme_reactors": "Extreme Reactors",
+  "config.dcfixes.category.extreme_reactors.tooltip": "Settings for Extreme Reactors",
+
+  "config.dcfixes.category.extreme_reactors.group.turbine": "Turbine",
+  "config.dcfixes.category.extreme_reactors.group.turbine.description": "Settings related to Extreme Reactors turbines.",
+  "config.dcfixes.option.part_energy_capacity": "Reinforced Part Energy Capacity",
+  "config.dcfixes.option.part_energy_capacity.description": "Default: 20000",
+  "config.dcfixes.option.reinforced_energy_generation_efficiency": "Reinforced Energy Generation Efficiency",
+  "config.dcfixes.option.reinforced_energy_generation_efficiency.description": "Default: 1.0",
+  "config.dcfixes.option.reinforced_max_energy_extraction_rate": "Reinforced Max Energy Extraction Rate",
+  "config.dcfixes.option.reinforced_max_energy_extraction_rate.description": "Default: 50000000.0",
+  "config.dcfixes.option.reinforced_max_charger_rate": "Reinforced Max Charger Rate",
+  "config.dcfixes.option.reinforced_max_charger_rate.description": "Default: 25000.0",
+  "config.dcfixes.option.reinforced_radiation_attenuation": "Reinforced Radiation Attenuation",
+  "config.dcfixes.option.reinforced_radiation_attenuation.description": "Default: 0.75",
+  "config.dcfixes.option.reinforced_residual_radiation_attenuation": "Reinforced Residual Radiation Attenuation",
+  "config.dcfixes.option.reinforced_residual_radiation_attenuation.description": "Default: 0.15",
+  "config.dcfixes.option.reinforced_max_permitted_flow": "Reinforced Max Permitted Flow",
+  "config.dcfixes.option.reinforced_max_permitted_flow.description": "Default: 2000",
+  "config.dcfixes.option.reinforced_base_fluid_per_blade": "Reinforced Base Fluid Per Blade",
+  "config.dcfixes.option.reinforced_base_fluid_per_blade.description": "Default: 25",
+  "config.dcfixes.option.reinforced_rotor_drag_coefficient": "Reinforced Rotor Drag Coefficient",
+  "config.dcfixes.option.reinforced_rotor_drag_coefficient.description": "Default: 0.01",
+  "config.dcfixes.option.reinforced_max_rotor_speed": "Reinforced Max Rotor Speed",
+  "config.dcfixes.option.reinforced_max_rotor_speed.description": "Default: 2000.0",
+  "config.dcfixes.option.reinforced_rotor_blade_mass": "Reinforced Rotor Blade Mass",
+  "config.dcfixes.option.reinforced_rotor_blade_mass.description": "Default: 10",
+  "config.dcfixes.option.reinforced_rotor_shaft_mass": "Reinforced Rotor Shaft Mass",
+  "config.dcfixes.option.reinforced_rotor_shaft_mass.description": "Default: 10",
+  "config.dcfixes.option.reinforced_part_fluid_capacity": "Reinforced Part Fluid Capacity",
+  "config.dcfixes.option.reinforced_part_fluid_capacity.description": "Default: 500",
+  "config.dcfixes.option.reinforced_max_fluid_capacity": "Reinforced Max Fluid Capacity",
+  "config.dcfixes.option.reinforced_max_fluid_capacity.description": "Default: 300000"
 }

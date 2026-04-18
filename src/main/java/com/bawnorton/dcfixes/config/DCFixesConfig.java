@@ -62,10 +62,93 @@ public class DCFixesConfig {
 			comment = "Whether aircraft IV entities should always tick regardless of distance to a player.\nNote: Aircraft will still not tick outside simulated distance if 'tick_outside_simulated_distance' is false.\nDefault: True"
 	)
 	public boolean aircraftAlwaysTick = true;
-	
-	
 
-	public static void init() {
+	@SerialEntry(
+			value = "reinforced_part_energy_capacity",
+			comment = "Default: 20000"
+	)
+	public int reinforcedPartEnergyCapacity = 20000;
+
+	@SerialEntry(
+			value = "reinforced_energy_generation_efficiency",
+			comment = "Default: 1.0"
+	)
+	public float reinforcedEnergyGenerationEfficiency = 1;
+
+	@SerialEntry(
+			value = "reinforced_max_energy_extraction_rate",
+			comment = "Default: 50000000.0"
+	)
+	public double reinforcedMaxEnergyExtractionRate = 5.0E7;
+
+	@SerialEntry(
+			value = "reinforced_max_charger_rate",
+			comment = "Default: 25000.0"
+	)
+	public double reinforcedMaxChargerRate = 25000;
+
+	@SerialEntry(
+			value = "reinforced_radiation_attenuation",
+			comment = "Default: 0.75"
+	)
+	public float reinforcedRadiationAttenuation = 0.75F;
+
+	@SerialEntry(
+			value = "reinforced_residual_radiation_attenuation",
+			comment = "Default: 0.15"
+	)
+	public float reinforcedResidualRadiationAttenuation = 0.15F;
+
+	@SerialEntry(
+			value = "reinforced_max_permitted_flow",
+			comment = "Default: 2000"
+	)
+	public int reinforcedMaxPermittedFlow = 2000;
+
+	@SerialEntry(
+			value = "reinforced_base_fluid_per_blade",
+			comment = "Default: 25"
+	)
+	public int reinforcedBaseFluidPerBlade = 25;
+
+	@SerialEntry(
+			value = "reinforced_rotor_drag_coefficient",
+			comment = "Default: 0.01"
+	)
+	public float reinforcedRotorDragCoefficient = 0.01F;
+
+	@SerialEntry(
+			value = "reinforced_max_rotor_speed",
+			comment = "Default: 2000.0"
+	)
+	public float reinforcedMaxRotorSpeed = 2000;
+
+	@SerialEntry(
+			value = "reinforced_rotor_blade_mass",
+			comment = "Default: 10"
+	)
+	public int reinforcedRotorBladeMass = 10;
+
+	@SerialEntry(
+			value = "reinforced_rotor_shaft_mass",
+			comment = "Default: 10"
+	)
+	public int reinforcedRotorShaftMass = 10;
+
+	@SerialEntry(
+			value = "reinforced_part_fluid_capacity",
+			comment = "Default: 500"
+	)
+	public int reinforcedPartFluidCapacity = 500;
+
+	@SerialEntry(
+			value = "reinforced_max_fluid_capacity",
+			comment = "Default: 300000"
+	)
+	public int reinforcedMaxFluidCapacity = 300000;
+
+
+    public static void init() {
 		if (initialized) return;
 
 		HANDLER.load();

@@ -5,8 +5,10 @@ plugins {
 
 repositories {
   mavenCentral()
+  maven("https://maven.minecraftforge.net")
 }
 
 dependencies {
   implementation(kotlin("stdlib"))
+  implementation("net.minecraftforge:srgutils:0.4.11")
 }

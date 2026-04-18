@@ -4,7 +4,6 @@ import com.bawnorton.dcfixes.config.DCFixesConfig;
 import minecrafttransportsimulator.baseclasses.Point3D;
 import minecrafttransportsimulator.entities.components.AEntityF_Multipart;
 import minecrafttransportsimulator.jsondefs.JSONVehicle;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -40,7 +39,7 @@ public class IVVehicle {
         return shouldTick(pos, level, currentTick, level::isPositionEntityTicking);
     }
 
-    public boolean shouldTickClient(Point3D pos, ClientLevel level, long currentTick) {
+    public boolean shouldTickClient(Point3D pos, Level level, long currentTick) {
         if (currentTick % 20 == 0) {
             return true;
         }

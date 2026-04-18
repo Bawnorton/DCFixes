@@ -35,13 +35,20 @@ public final class DCFixesAnnotationAdjuster implements MixinAnnotationAdjuster 
                 return null;
             }
         }
+        if(annotationNode.is(WrapOperation.class)) {
+            AdjustableWrapOperationNode wrapOpNode = annotationNode.as(AdjustableWrapOperationNode.class);
+            if(wrapOpNode.getAt().stream().anyMatch(at -> at.getTarget().equals("Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))) {
+                return null;
+            }
+        }
         return annotationNode;
     }
 
     private AdjustableAnnotationNode adjustItemRenderer_faceCullingMixin(String mixinClassName, AdjustableAnnotationNode annotationNode, MethodNode handlerNode) {
         if(annotationNode.is(Inject.class)) {
             return annotationNode.as(AdjustableInjectNode.class).withAt(ats -> ats.stream().map(at -> at.withTarget(target -> {
-                if (target.equals("Lnet/minecraft/client/render/RenderLayers;getItemLayer(Lnet/minecraft/item/ItemStack;Z)Lnet/minecraft/client/render/RenderLayer;")) {
+                if (target.equals("Lnet/minecraft/client/renderer/ItemBlockRenderTypes;getRenderType(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/client/renderer/RenderType;")
+                    || target.equals("Lnet/minecraft/client/renderer/ItemBlockRenderTypes;m_109279_(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/client/renderer/RenderType;")) {
                     return "net/minecraft/client/resources/model/BakedModel.getRenderTypes (Lnet/minecraft/world/item/ItemStack;Z)Ljava/util/List;";
                 }
                 return target;
@@ -49,7 +56,11 @@ public final class DCFixesAnnotationAdjuster implements MixinAnnotationAdjuster 
         }
         if(annotationNode.is(WrapOperation.class)) {
             AdjustableWrapOperationNode wrapOpNode = annotationNode.as(AdjustableWrapOperationNode.class);
-            if(wrapOpNode.getAt().stream().anyMatch(at -> at.getTarget().equals("Lnet/minecraft/client/render/model/json/ModelTransformation;getTransformation(Lnet/minecraft/client/render/model/json/ModelTransformationMode;)Lnet/minecraft/client/render/model/json/Transformation;"))) {
+            if(wrapOpNode.getAt().stream().anyMatch(at -> {
+                String target = at.getTarget();
+                return target.equals("Lnet/minecraft/client/renderer/block/model/ItemTransforms;getTransform(Lnet/minecraft/world/item/ItemDisplayContext;)Lnet/minecraft/client/renderer/block/model/ItemTransform;")
+                        || target.equals("Lnet/minecraft/client/renderer/block/model/ItemTransforms;m_269404_(Lnet/minecraft/world/item/ItemDisplayContext;)Lnet/minecraft/client/renderer/block/model/ItemTransform;");
+            })) {
                 AdjustableModifyExpressionValueNode mevNode = AdjustableModifyExpressionValueNode.defaultNode(
                         wrapOpNode.getMethod(),
                         List.of(AdjustableAtNode.defaultNode(AdjustableAtNode.InjectionPoint.INVOKE)
