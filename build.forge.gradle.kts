@@ -61,14 +61,18 @@ dependencies {
     // Yacl
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
 
-    // Compats
+    // Compats / Fixes
+    modImplementation("curse.maven:global-gamerules-227657:7172469")
+
     modCompileOnly("curse.maven:engineered-schematics-1207780:7666550")
 
-    withSourcesJar(modImplementation("curse.maven:customnpcs-unofficial-1052708:7694841"))
+    modImplementation("curse.maven:customnpcs-unofficial-1052708:7694841")
     modCompileOnly("curse.maven:sound-physics-remastered-535489:6352920")
 
     modCompileOnly("curse.maven:immersive-engineering-231951:6206989")
-    modCompileOnly("curse.maven:timeless-and-classic-zero-1028108:7401617-sources-7401617")
+
+    modImplementation("curse.maven:timeless-and-classic-zero-1028108:7401617-sources-7401617")
+    compileOnly("org.luaj:luaj-jse:3.0.1")
 
     modImplementation("curse.maven:extreme-reactors-250277:7344727")
     modRuntimeOnly("curse.maven:zerocore-247921:7344725")
@@ -88,7 +92,7 @@ dependencies {
     }
 
     // Physics Mod + Geckolib Compats
-    modImplementation("curse.maven:physics-mod-442735:7781938")
+    withSourcesJar(modImplementation("curse.maven:physics-mod-442735:7781938"))
     modImplementation("software.bernie.geckolib:geckolib-forge-$minecraft:4.8.3")
     implementation("com.eliotlash.mclib:mclib:20")
     modCompileOnly("curse.maven:theundead-479710:7446558")

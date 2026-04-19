@@ -1,0 +1,25 @@
+package com.bawnorton.dcfixes.client.mixin.tacz;
+
+import com.bawnorton.dcfixes.client.extend.CommonDataManagerExtender;
+import com.bawnorton.dcfixes.client.mixin.accessor.CommonAssetsManagerAccessor;
+import com.tacz.guns.item.AmmoItem;
+import com.tacz.guns.resource.CommonAssetsManager;
+import dev.kikugie.fletching_table.annotation.MixinEnvironment;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+@MixinEnvironment("client")
+@Mixin(value = AmmoItem.class, remap = false)
+abstract class AmmoItemMixin {
+    @Inject(
+            method = "fillItemCategory",
+            at = @At("HEAD")
+    )
+    private static void loadAllAmmo(CallbackInfoReturnable<NonNullList<ItemStack>> cir) {
+        ((CommonDataManagerExtender) ((CommonAssetsManagerAccessor) CommonAssetsManager.getInstance()).dcfixes$ammoIndex()).dcfixes$loadAll();
+    }
+}
