@@ -56,7 +56,7 @@ dependencies {
     implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.7-beta.1")!!)
     jarJar(implementation("com.github.bawnorton.mixinsquared:mixinsquared-forge:0.3.7-beta.1")!!)
 
-    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
+    annotationProcessor("org.sinytra:sponge-mixin:0.12.11+mixin.0.8.5")
 
     // Yacl
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
@@ -73,6 +73,7 @@ dependencies {
 
     modImplementation("curse.maven:timeless-and-classic-zero-1028108:7401617-sources-7401617")
     compileOnly("org.luaj:luaj-jse:3.0.1")
+    modImplementation("curse.maven:tacz-lesraisins-tactical-equipements-1273094:6751092")
 
     modImplementation("curse.maven:extreme-reactors-250277:7344727")
     modRuntimeOnly("curse.maven:zerocore-247921:7344725")
@@ -83,6 +84,16 @@ dependencies {
     modCompileOnly("curse.maven:the-hordes-485779:6718502")
     modCompileOnly("curse.maven:atlas-lib-463826:5254550")
 
+    modImplementation("curse.maven:geckolibbetterfps-1455983:7609709")
+    modImplementation("curse.maven:flerovium-1142875:6428986")
+    modImplementation("curse.maven:embeddium-908741:5681725")
+    modImplementation("curse.maven:oculus-581495:6020952")
+
+    withSourcesJar(modImplementation("curse.maven:ftb-quests-forge-289412:7909594"))
+    withSourcesJar(modImplementation("curse.maven:ftb-library-forge-404465:7296748"))
+    modImplementation("curse.maven:architectury-api-419699:5137938")
+    modRuntimeOnly("curse.maven:ftb-teams-forge-404468:7499810")
+
     // Fabric Mod Compats
     modImplementation("org.sinytra:Connector:1.0.0-beta.48+1.20.1")
     runtimeOnly("curse.maven:moreculling-630104:7552138")
@@ -92,11 +103,11 @@ dependencies {
     }
 
     // Physics Mod + Geckolib Compats
-    withSourcesJar(modImplementation("curse.maven:physics-mod-442735:7781938"))
+    modImplementation("curse.maven:physics-mod-442735:7781938")
     modImplementation("software.bernie.geckolib:geckolib-forge-$minecraft:4.8.3")
     implementation("com.eliotlash.mclib:mclib:20")
     modCompileOnly("curse.maven:theundead-479710:7446558")
-    modCompileOnly("curse.maven:zombie-extreme-392809:7014500")
+    modImplementation("curse.maven:zombie-extreme-392809:7014500")
     modCompileOnly("curse.maven:apocalypse-now-448410:6364603")
     modCompileOnly("curse.maven:deceased-beast-1426968:7640180")
     modCompileOnly("curse.maven:naturalist-627986:6863943")
@@ -202,6 +213,8 @@ sourceSets.main {
     resources.exclude(".cache")
 }
 
+configureAutomaticIndevVersionBumpOnBuild()
+
 tasks {
     matching { it.name == "kspKotlin" }.configureEach {
         dependsOn("remapMoreCullingToMojmap")
@@ -254,6 +267,7 @@ tasks {
         into(rootProject.layout.buildDirectory.file("libs/${mod("version")}"))
         dependsOn("build")
     }
+
 
     named<Jar>("jar") {
         manifest {

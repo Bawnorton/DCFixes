@@ -4,6 +4,7 @@ import com.bawnorton.dcfixes.client.extend.CommonDataManagerExtender;
 import com.bawnorton.dcfixes.client.mixin.accessor.CommonAssetsManagerAccessor;
 import com.tacz.guns.item.AmmoItem;
 import com.tacz.guns.resource.CommonAssetsManager;
+import com.tacz.guns.resource.ICommonResourceProvider;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +21,9 @@ abstract class AmmoItemMixin {
             at = @At("HEAD")
     )
     private static void loadAllAmmo(CallbackInfoReturnable<NonNullList<ItemStack>> cir) {
-        ((CommonDataManagerExtender) ((CommonAssetsManagerAccessor) CommonAssetsManager.getInstance()).dcfixes$ammoIndex()).dcfixes$loadAll();
+        ICommonResourceProvider provider = CommonAssetsManager.get();
+        if (provider instanceof CommonAssetsManagerAccessor accessor) {
+            ((CommonDataManagerExtender) accessor.dcfixes$ammoIndex()).dcfixes$loadAll();
+        }
     }
 }

@@ -153,6 +153,12 @@ public class DCFixesConfig {
 	)
 	public int hordeWavesLoadedDistanceBuffer = 32;
 
+	@SerialEntry(
+			value = "ragdoll_debug",
+			comment = "Enable ragdoll part debug rendering and logging.\nDefault: False"
+	)
+	public boolean ragdollDebug = false;
+
 
     public static void init() {
 		if (initialized) return;

@@ -241,24 +241,20 @@ public class ZombieExtremeGeckoLibRagdollHook extends GeckoLibRagdollHook {
             connect(ragdoll, 14, false, 4, 0, 12, 2, 10);
         });
 
-        register(GoonEntity.class, (ragdoll, entity) -> {
-            // head
-            connectRange(ragdoll, 18, true, 19, 25);
-            // right arm
-            connectRange(ragdoll, 0, true, 1, 4);
-            connectRange(ragdoll, 5, true, 6, 11);
-            connect(ragdoll, 0, false, 5);
-            // left arm
-            connect(ragdoll, 28, false, 29);
-            // right leg
-            connectRange(ragdoll, 12, true, 13, 16);
-            connect(ragdoll, 17, false, 12);
-            // left leg
-            connect(ragdoll, 26, false, 27);
-            // chest
-            connect(ragdoll, 31, true, 30);
-            connect(ragdoll, 31, false, 18, 0, 28, 12, 26);
-        });
+        register(GoonEntity.class, (ragdoll, entity) -> new RagdollAssembler(ragdoll)
+                .merge("head", "Rarm1", "Rarm2", "Rleg2")
+                .connect("Rarm1", "Rarm2", RagdollAssembler.Type.LOOSE)
+                .connect("Larm1", "Larm2", RagdollAssembler.Type.LOOSE)
+                .connect("Rleg1", "Rleg2", RagdollAssembler.Type.LOOSE)
+                .connect("Lleg1", "Lleg2", RagdollAssembler.Type.LOOSE)
+                .connect("chest1", "chest2", RagdollAssembler.Type.FIXED)
+                .connect("chest1", "head", RagdollAssembler.Type.LOOSE)
+                .connect("chest1", "Rarm1", RagdollAssembler.Type.LOOSE)
+                .connect("chest1", "Larm1", RagdollAssembler.Type.LOOSE)
+                .connect("chest1", "Rleg1", RagdollAssembler.Type.LOOSE)
+                .connect("chest1", "Lleg1", RagdollAssembler.Type.LOOSE)
+                .assemble()
+        );
 
         register(InfectedEntity.class, (ragdoll, entity) -> new RagdollAssembler(ragdoll)
                 .connect(0, 2, RagdollAssembler.Type.LOOSE)

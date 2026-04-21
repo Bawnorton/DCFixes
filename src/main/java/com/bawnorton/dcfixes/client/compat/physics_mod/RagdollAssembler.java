@@ -2,9 +2,9 @@ package com.bawnorton.dcfixes.client.compat.physics_mod;
 
 import com.bawnorton.dcfixes.DeceasedCraftFixes;
 import com.bawnorton.dcfixes.client.extend.PhysicsEntityExtender;
+import com.bawnorton.dcfixes.config.DCFixesConfig;
 import net.diebuddies.physics.PhysicsEntity;
 import net.diebuddies.physics.ragdoll.Ragdoll;
-import net.diebuddies.physics.ragdoll.RagdollJoint;
 import software.bernie.geckolib.cache.object.GeoBone;
 
 import java.util.ArrayList;
@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public class RagdollAssembler {
-    private boolean debug;
-
     private final Ragdoll ragdoll;
     private final Map<String, List<Integer>> boneIndices = new HashMap<>();
     private final Map<Integer, String> indexMap = new HashMap<>();
@@ -46,16 +44,14 @@ public class RagdollAssembler {
                 boneIndices.computeIfAbsent(bone.getName(), k -> new ArrayList<>()).add(i);
             }
         }
-    }
 
-    public RagdollAssembler debug() {
-        this.debug = true;
-        boneIndices.forEach((key, value) -> {
-            for (Integer i : value) {
-                indexMap.put(i, key);
-            }
-        });
-        return this;
+        if(DCFixesConfig.get().ragdollDebug) {
+            boneIndices.forEach((key, value) -> {
+                for (Integer i : value) {
+                    indexMap.put(i, key);
+                }
+            });
+        }
     }
 
     public RagdollAssembler merge(String... partNames) {
@@ -67,7 +63,7 @@ public class RagdollAssembler {
             queue.add(() -> {
                 List<Integer> indices = boneIndices.get(partName);
                 if (indices == null || indices.size() <= 1) {
-                    if(debug) {
+                    if(DCFixesConfig.get().ragdollDebug) {
                         DeceasedCraftFixes.LOGGER.warn("Ragdoll Merge Warning: Part '{}' has {} associated bodies. Merge skipped.", partName, indices == null ? "n/a" : indices.size());
                     }
                     return;
@@ -87,7 +83,7 @@ public class RagdollAssembler {
             List<Integer> targets = boneIndices.get(targetName);
             List<Integer> sources = boneIndices.get(sourceName);
             if (targets == null || sources == null || targets.isEmpty() || sources.isEmpty()) {
-                if (debug) {
+                if (DCFixesConfig.get().ragdollDebug) {
                     DeceasedCraftFixes.LOGGER.warn("Ragdoll Connect Warning: Target part '{}' has {} bodies, Source part '{}' has {} bodies. Connection skipped.", targetName, targets == null ? "n/a" : targets.size(), sourceName, sources == null ? "n/a" : sources.size());
                 }
                 return;
@@ -104,7 +100,7 @@ public class RagdollAssembler {
     }
 
     private void validateAndConnect(int source, int target, boolean fixed, boolean visual) {
-        if(debug) {
+        if(DCFixesConfig.get().ragdollDebug) {
             DeceasedCraftFixes.LOGGER.info(
                     "Source {} ({}) -> Target {} ({}) - f:{} v:{}",
                     source,
@@ -141,7 +137,7 @@ public class RagdollAssembler {
     }
 
     public void assemble() {
-        if(debug) {
+        if(DCFixesConfig.get().ragdollDebug) {
             for (int i = 0; i < ragdoll.bodies.size(); i++) {
                 PhysicsEntity physicsEntity = ragdoll.bodies.get(i);
                 PhysicsEntityExtender extender = (PhysicsEntityExtender) physicsEntity;

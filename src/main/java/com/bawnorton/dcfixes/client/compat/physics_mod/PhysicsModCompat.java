@@ -1,6 +1,7 @@
 package com.bawnorton.dcfixes.client.compat.physics_mod;
 
 import com.bawnorton.dcfixes.client.DeceasedCraftFixesClient;
+import com.bawnorton.dcfixes.client.compat.ClientCompat;
 import com.bawnorton.dcfixes.client.compat.apocalypsenow.ModelReplacingHumanoidRenderer;
 import com.bawnorton.dcfixes.client.compat.deaceased.DeaceasedCompat;
 import com.bawnorton.dcfixes.client.compat.naturalist.NaturalistCompat;
@@ -43,10 +44,11 @@ public class PhysicsModCompat {
     public static final ThreadLocal<GeoBone> CURRENT_BONE_CAPTURE = new ThreadLocal<>();
 
     public void registerRagdollHooks() {
-        DeceasedCraftFixesClient.getCompat().getUndeadRevampCompat().ifPresent(UndeadRevampCompat::registerRagdolls);
-        DeceasedCraftFixesClient.getCompat().getZombieExtremeCompat().ifPresent(ZombieExtremeCompat::registerRagdolls);
-        DeceasedCraftFixesClient.getCompat().getNaturalistCompat().ifPresent(NaturalistCompat::registerRagdolls);
-        DeceasedCraftFixesClient.getCompat().getDeaceasedCompat().ifPresent(DeaceasedCompat::registerRagdolls);
+        ClientCompat compat = DeceasedCraftFixesClient.getCompat();
+        compat.getUndeadRevampCompat().ifPresent(UndeadRevampCompat::registerRagdolls);
+        compat.getZombieExtremeCompat().ifPresent(ZombieExtremeCompat::registerRagdolls);
+        compat.getNaturalistCompat().ifPresent(NaturalistCompat::registerRagdolls);
+        compat.getDeaceasedCompat().ifPresent(DeaceasedCompat::registerRagdolls);
     }
 
     @SuppressWarnings("unchecked")

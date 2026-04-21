@@ -11,6 +11,7 @@ public class DeceasedCraftFixesClient {
     @SuppressWarnings("removal")
     public DeceasedCraftFixesClient() {
         COMPAT.getPhysicsModCompat().registerRagdollHooks();
+        COMPAT.getGeckoLibCompat().registerRenderTypeReplacers();
         ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((client, screen) -> DCFixesConfigScreenHandler.generateConfigScreen(screen)));
     }
 

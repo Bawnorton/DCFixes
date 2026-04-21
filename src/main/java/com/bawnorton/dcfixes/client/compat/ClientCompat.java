@@ -2,10 +2,12 @@ package com.bawnorton.dcfixes.client.compat;
 
 import com.bawnorton.dcfixes.client.compat.deaceased.DeaceasedCompat;
 import com.bawnorton.dcfixes.client.compat.emf.EMFCompat;
+import com.bawnorton.dcfixes.client.compat.geckolib.GeckoLibCompat;
 import com.bawnorton.dcfixes.client.compat.naturalist.NaturalistCompat;
 import com.bawnorton.dcfixes.client.compat.physics_mod.PhysicsModCompat;
 import com.bawnorton.dcfixes.client.compat.undead_revamp2.UndeadRevampCompat;
 import com.bawnorton.dcfixes.client.compat.zombie_extreme.ZombieExtremeCompat;
+import com.bawnorton.dcfixes.client.mixin.geckolib.GeoRendererMixin;
 import net.minecraftforge.fml.ModList;
 
 import java.util.Optional;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class ClientCompat {
     private final PhysicsModCompat physicsModCompat;
     private final EMFCompat emfCompat;
+    private final GeckoLibCompat geckoLibCompat;
     private UndeadRevampCompat undeadRevampCompat;
     private ZombieExtremeCompat zombieExtremeCompat;
     private NaturalistCompat naturalistCompat;
@@ -21,6 +24,7 @@ public class ClientCompat {
     public ClientCompat() {
         physicsModCompat = new PhysicsModCompat();
         emfCompat = new EMFCompat();
+        geckoLibCompat = new GeckoLibCompat();
     }
 
     public PhysicsModCompat getPhysicsModCompat() {
@@ -29,6 +33,10 @@ public class ClientCompat {
 
     public EMFCompat getEmfCompat() {
         return emfCompat;
+    }
+
+    public GeckoLibCompat getGeckoLibCompat() {
+        return geckoLibCompat;
     }
 
     public Optional<UndeadRevampCompat> getUndeadRevampCompat() {

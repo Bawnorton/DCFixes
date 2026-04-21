@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @MixinEnvironment("client")
-@Mixin(CommonAssetsManager.class)
+@Mixin(value = CommonAssetsManager.class, remap = false)
 public interface CommonAssetsManagerAccessor {
     @Accessor("ammoIndex")
     CommonDataManager<CommonAmmoIndex> dcfixes$ammoIndex();

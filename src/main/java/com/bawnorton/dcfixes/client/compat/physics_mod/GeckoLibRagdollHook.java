@@ -52,12 +52,7 @@ public class GeckoLibRagdollHook implements RagdollHook {
 
     @SuppressWarnings("unchecked")
     private InternalHandler<Entity> getHandler(Class<?> entityClass) {
-        for (Map.Entry<Class<? extends Entity>, InternalHandler<?>> entry : handlers.entrySet()) {
-            if (entry.getKey().isAssignableFrom(entityClass)) {
-                return (InternalHandler<Entity>) entry.getValue();
-            }
-        }
-        return null;
+        return (InternalHandler<Entity>) handlers.get(entityClass);
     }
 
     @Override
