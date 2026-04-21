@@ -53,14 +53,14 @@ public class PhysicsModCompat {
 
     @SuppressWarnings("unchecked")
     public <T extends Entity> void replaceRenderer(EntityRenderer<T> instance, T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, Operation<Void> original) {
-        if(entity instanceof Mob mob && instance instanceof HumanoidMobRenderer<?,?>) {
+        if (entity instanceof Mob mob && instance instanceof HumanoidMobRenderer<?, ?>) {
             HumanoidMobRenderer<Mob, HumanoidModel<Mob>> humanoidMobRenderer = (HumanoidMobRenderer<Mob, HumanoidModel<Mob>>) instance;
             Object model = humanoidMobRenderer.getModel();
-            if(model instanceof HumanoidModelExtender humanoidModel) {
+            if (model instanceof HumanoidModelExtender humanoidModel) {
                 ModelPart modelPart = humanoidModel.dcfixes$getRoot();
-                if(modelPart instanceof ModelPartExtender extender) {
+                if (modelPart instanceof ModelPartExtender extender) {
                     ModelLayerLocation layerLocation = extender.dcfixes$getLocation();
-                    if(ModelLayers.PLAYER.equals(layerLocation)) {
+                    if (ModelLayers.PLAYER.equals(layerLocation)) {
                         ModelReplacingHumanoidRenderer<Mob, HumanoidModel<Mob>> newRenderer = ModelReplacingHumanoidRenderer.create(
                                 humanoidMobRenderer,
                                 context -> new HumanoidModel<>(context.bakeLayer(ModelLayers.ZOMBIE)),

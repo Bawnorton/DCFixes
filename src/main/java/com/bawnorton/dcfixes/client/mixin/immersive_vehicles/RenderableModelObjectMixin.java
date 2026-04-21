@@ -28,24 +28,19 @@ import java.util.*;
 abstract class RenderableModelObjectMixin implements RenderableModelObjectExtender {
     @Shadow
     @Final
-    public RenderableData renderable;
-
-    @Shadow
-    @Final
     private static Map<String, String> erroredTextures;
-
     @Shadow
     @Final
     private static String ERROR_TEXTURE_NAME;
-
     @Shadow
     @Final
     private static Set<String> downloadedTextures;
-
     @Shadow
     @Final
     private static Set<String> downloadingTextures;
-
+    @Shadow
+    @Final
+    public RenderableData renderable;
     @Shadow
     @Final
     private boolean isWindow;

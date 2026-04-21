@@ -20,8 +20,8 @@ public class GeckoLibCompat {
         clientCompat.getDeaceasedCompat().ifPresent(compat -> compat.registerRenderTypeReplacers(registrar));
     }
 
-    private <E extends GeoAnimatable, R extends GeoRenderer<E>> void registerRenderTypeReplacer(Class<R> rendererClass, RenderTypeReplacer<E,R> typeReplacer) {
-        if(renderTypeReplacers.containsKey(rendererClass)) {
+    private <E extends GeoAnimatable, R extends GeoRenderer<E>> void registerRenderTypeReplacer(Class<R> rendererClass, RenderTypeReplacer<E, R> typeReplacer) {
+        if (renderTypeReplacers.containsKey(rendererClass)) {
             throw new IllegalStateException("Renderer class " + rendererClass.getName() + " already has a render type replacer registered");
         }
         renderTypeReplacers.put(rendererClass, typeReplacer);
@@ -30,7 +30,7 @@ public class GeckoLibCompat {
     @SuppressWarnings("unchecked")
     public <E extends GeoAnimatable, R extends GeoRenderer<E>> RenderType replaceRenderType(E entity, R renderer, RenderType renderType) {
         RenderTypeReplacer<E, R> renderTypeReplacer = (RenderTypeReplacer<E, R>) renderTypeReplacers.get(renderer.getClass());
-        if(renderTypeReplacer != null) {
+        if (renderTypeReplacer != null) {
             return renderTypeReplacer.apply(entity, renderer, renderType);
         }
         return renderType;

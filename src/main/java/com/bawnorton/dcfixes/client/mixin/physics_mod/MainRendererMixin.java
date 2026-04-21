@@ -43,7 +43,7 @@ abstract class MainRendererMixin {
 
     @Unique
     private void dcfixes$renderIndicesOnFaces(PoseStack poseStack, Vector3f pivot, int num) {
-        if(num == -1) return;
+        if (num == -1) return;
 
         String text = String.valueOf(num);
         poseStack.pushPose();
@@ -75,9 +75,9 @@ abstract class MainRendererMixin {
     private void dcfixes$drawIndexFace(PoseStack stack, MultiBufferSource.BufferSource buffer, Font font, String text, float tx, float ty, float ox, float oy, float oz, float rx, float ry, float rz, float scale, int colour) {
         stack.pushPose();
         stack.translate(ox, oy, oz);
-        if (rx != 0) stack.mulPose(new Quaternionf().rotationX(rx * (float)(Math.PI / 180.0)));
-        if (ry != 0) stack.mulPose(new Quaternionf().rotationY(ry * (float)(Math.PI / 180.0)));
-        if (rz != 0) stack.mulPose(new Quaternionf().rotationZ(rz * (float)(Math.PI / 180.0)));
+        if (rx != 0) stack.mulPose(new Quaternionf().rotationX(rx * (float) (Math.PI / 180.0)));
+        if (ry != 0) stack.mulPose(new Quaternionf().rotationY(ry * (float) (Math.PI / 180.0)));
+        if (rz != 0) stack.mulPose(new Quaternionf().rotationZ(rz * (float) (Math.PI / 180.0)));
 
         stack.scale(scale, -scale, scale);
 

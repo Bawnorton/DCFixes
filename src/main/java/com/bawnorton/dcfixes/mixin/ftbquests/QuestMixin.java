@@ -57,10 +57,10 @@ abstract class QuestMixin implements QuestExtender {
             at = @At("TAIL")
     )
     private void writeAddedFields(CompoundTag nbt, CallbackInfo ci) {
-        if(!this.dcfixes$rawTaskTitle.isEmpty()) {
+        if (!this.dcfixes$rawTaskTitle.isEmpty()) {
             nbt.putString("dcfixes$task_title", dcfixes$rawTaskTitle);
         }
-        if(!this.dcfixes$rawRewardsTitle.isEmpty()) {
+        if (!this.dcfixes$rawRewardsTitle.isEmpty()) {
             nbt.putString("dcfixes$rewards_title", dcfixes$rawRewardsTitle);
         }
     }
@@ -110,6 +110,7 @@ abstract class QuestMixin implements QuestExtender {
         }
         return dcfixes$cachedTaskTitle;
     }
+
     @Override
     public Component dcfixes$getRewardsTitle() {
         if (dcfixes$cachedRewardsTitle == null) {

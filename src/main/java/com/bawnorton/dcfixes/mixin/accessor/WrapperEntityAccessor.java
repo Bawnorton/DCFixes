@@ -8,11 +8,11 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(value = WrapperEntity.class, remap = false)
 public interface WrapperEntityAccessor {
-    @Accessor("entity")
-    Entity dcfixes$entity();
-
     @Invoker("<init>")
     static WrapperEntity dcfixes$create(Entity entity) {
         throw new AssertionError();
     }
+
+    @Accessor("entity")
+    Entity dcfixes$entity();
 }

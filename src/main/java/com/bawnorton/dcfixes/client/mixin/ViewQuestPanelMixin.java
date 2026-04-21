@@ -33,6 +33,11 @@ import java.util.List;
 @MixinEnvironment("client")
 @Mixin(value = ViewQuestPanel.class, remap = false)
 abstract class ViewQuestPanelMixin extends ModalPanel {
+    @Shadow
+    private Quest quest;
+    @Shadow
+    private BlankPanel panelText;
+
     protected ViewQuestPanelMixin(Panel panel) {
         super(panel);
     }
@@ -41,12 +46,6 @@ abstract class ViewQuestPanelMixin extends ModalPanel {
     private static Component hotkey(String key) {
         throw new AssertionError();
     }
-
-    @Shadow
-    private Quest quest;
-
-    @Shadow
-    private BlankPanel panelText;
 
     @Definition(id = "setText", method = "Ldev/ftb/mods/ftblibrary/ui/TextField;setText(Lnet/minecraft/network/chat/Component;)Ldev/ftb/mods/ftblibrary/ui/TextField;", remap = true)
     @Expression("?.setText(?('ftbquests.tasks'))")
@@ -57,7 +56,7 @@ abstract class ViewQuestPanelMixin extends ModalPanel {
     private Component replaceWithSpecifiedTask(Component original) {
         QuestExtender extender = (QuestExtender) (Object) quest;
         String rawTaskTitle = extender.dcfixes$getRawTaskTitle();
-        if(rawTaskTitle.isEmpty()) {
+        if (rawTaskTitle.isEmpty()) {
             return original;
         } else {
             return extender.dcfixes$getTaskTitle();
@@ -73,7 +72,7 @@ abstract class ViewQuestPanelMixin extends ModalPanel {
     private Component replaceWithSpecifiedReward(Component original) {
         QuestExtender extender = (QuestExtender) (Object) quest;
         String rawTaskTitle = extender.dcfixes$getRawRewardsTitle();
-        if(rawTaskTitle.isEmpty()) {
+        if (rawTaskTitle.isEmpty()) {
             return original;
         } else {
             return extender.dcfixes$getRewardsTitle();
@@ -90,9 +89,9 @@ abstract class ViewQuestPanelMixin extends ModalPanel {
             )
     )
     private void addNewFieldHotkeys(Key key, CallbackInfo ci) {
-        if(key.is(InputConstants.KEY_J)) {
+        if (key.is(InputConstants.KEY_J)) {
             dcfixes$editTasks();
-        } else if(key.is(InputConstants.KEY_K)) {
+        } else if (key.is(InputConstants.KEY_K)) {
             dcfixes$editRewards();
         }
     }

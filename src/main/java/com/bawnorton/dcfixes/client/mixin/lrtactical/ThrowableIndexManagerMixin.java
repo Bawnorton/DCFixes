@@ -8,9 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.tacz.guns.GunMod;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
-import me.xjqsh.lrtactical.item.index.MeleeWeaponIndex;
 import me.xjqsh.lrtactical.item.index.ThrowableIndex;
-import me.xjqsh.lrtactical.resource.manager.MeleeIndexManager;
 import me.xjqsh.lrtactical.resource.manager.ThrowableIndexManager;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,6 +25,8 @@ import java.util.Map;
 @MixinEnvironment("client")
 @Mixin(value = ThrowableIndexManager.class, remap = false)
 abstract class ThrowableIndexManagerMixin extends JsonDataManagerMixin<ThrowableIndex<?, ?>> implements CommonDataManagerExtender {
+    @Unique
+    private final Map<ResourceLocation, String> dcfixes$elementMap = new HashMap<>();
     @Shadow
     private Map<ResourceLocation, String> networkCache;
 
@@ -34,9 +34,6 @@ abstract class ThrowableIndexManagerMixin extends JsonDataManagerMixin<Throwable
     public static ThrowableIndex<?, ?> parse(JsonObject pJson, ResourceLocation id) throws JsonParseException {
         throw new AssertionError();
     }
-
-    @Unique
-    private final Map<ResourceLocation, String> dcfixes$elementMap = new HashMap<>();
 
     @Override
     public ThrowableIndex<?, ?> dcfixes$parseReader(Reader reader, ResourceLocation location) {

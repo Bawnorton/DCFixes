@@ -1,6 +1,5 @@
 package com.bawnorton.dcfixes.client.mixin.tacz;
 
-import com.bawnorton.dcfixes.DeceasedCraftFixes;
 import com.bawnorton.dcfixes.collection.StandardLambdaMap;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.tacz.guns.GunMod;
@@ -9,7 +8,6 @@ import com.tacz.guns.client.resource.ClientAssetsManager;
 import com.tacz.guns.client.resource.manager.GltfManager;
 import com.tacz.guns.client.resource.pojo.animation.gltf.RawAnimationStructure;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
-import dev.kikugie.fletching_table.annotation.MixinIgnore;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -29,17 +27,18 @@ import java.util.Map;
 @MixinEnvironment("client")
 @Mixin(value = GltfManager.class, remap = false)
 abstract class GltfManagerMixin {
-    @Shadow @Final @Mutable
-    private Map<ResourceLocation, AnimationStructure> dataMap;
-
-    @Shadow @Final
+    @Shadow
+    @Final
     private static Marker MARKER;
-
-    @Shadow @Final
-    private FileToIdConverter filetoidconverter;
-
     @Unique
     private final Map<ResourceLocation, Resource> dcfixes$resourceMap = new HashMap<>();
+    @Shadow
+    @Final
+    @Mutable
+    private Map<ResourceLocation, AnimationStructure> dataMap;
+    @Shadow
+    @Final
+    private FileToIdConverter filetoidconverter;
 
     @Inject(
             method = "<init>",
@@ -48,9 +47,9 @@ abstract class GltfManagerMixin {
     private void useLambdaMap(CallbackInfo ci) {
         dataMap = new StandardLambdaMap<>(location -> {
             Resource resource = dcfixes$resourceMap.get(location);
-            if(resource == null) return null;
+            if (resource == null) return null;
 
-            try(Reader reader = resource.openAsReader()) {
+            try (Reader reader = resource.openAsReader()) {
                 RawAnimationStructure rawStructure = ClientAssetsManager.GSON.fromJson(reader, RawAnimationStructure.class);
                 return new AnimationStructure(rawStructure);
             } catch (IOException e) {

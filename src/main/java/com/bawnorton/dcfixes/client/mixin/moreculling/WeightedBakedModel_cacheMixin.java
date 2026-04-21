@@ -6,8 +6,6 @@ import ca.fxco.moreculling.api.quad.QuadOpacity;
 import ca.fxco.moreculling.utils.BitUtils;
 import ca.fxco.moreculling.utils.CullingUtils;
 import ca.fxco.moreculling.utils.DirectionUtils;
-import java.util.List;
-
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -20,6 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.List;
+
 @MixinEnvironment("client")
 @Mixin(value = WeightedBakedModel.class, priority = 1010)
 abstract class WeightedBakedModel_cacheMixin implements BakedOpacity {
@@ -30,13 +30,13 @@ abstract class WeightedBakedModel_cacheMixin implements BakedOpacity {
         byte emptyFaces = 0;
         boolean translucency = false;
 
-        for(Direction face : DirectionUtils.DIRECTIONS) {
+        for (Direction face : DirectionUtils.DIRECTIONS) {
             List<BakedQuad> quads = this.getQuads(state, face, CullingUtils.RANDOM, ModelData.EMPTY, null);
             if (quads.isEmpty()) {
                 emptyFaces = BitUtils.set(emptyFaces, face.ordinal());
             } else if (!translucency) {
-                for(BakedQuad quad : quads) {
-                    if (((QuadOpacity)quad).getTextureTranslucency()) {
+                for (BakedQuad quad : quads) {
+                    if (((QuadOpacity) quad).getTextureTranslucency()) {
                         translucency = true;
                         break;
                     }
@@ -44,7 +44,7 @@ abstract class WeightedBakedModel_cacheMixin implements BakedOpacity {
             }
         }
 
-        ((MoreStateCulling)state).moreculling$setHasQuadsOnSide(emptyFaces);
-        ((MoreStateCulling)state).moreculling$setHasTextureTranslucency(translucency);
+        ((MoreStateCulling) state).moreculling$setHasQuadsOnSide(emptyFaces);
+        ((MoreStateCulling) state).moreculling$setHasTextureTranslucency(translucency);
     }
 }

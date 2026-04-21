@@ -22,7 +22,7 @@ abstract class Config$CommonMixin {
     )
     private <T extends GameRules.Value<T>> void useCMESafeIteration(GameRules.GameRuleTypeVisitor visitor, Operation<Void> original) {
         Map<GameRules.Key<T>, GameRules.Type<T>> gameRuleTypes = ImmutableMap.copyOf(GameRulesAcessor.dcfixes$GAME_RULE_TYPES());
-        for(Map.Entry<GameRules.Key<T>, GameRules.Type<T>> entry : gameRuleTypes.entrySet()) {
+        for (Map.Entry<GameRules.Key<T>, GameRules.Type<T>> entry : gameRuleTypes.entrySet()) {
             visitor.visit(entry.getKey(), entry.getValue());
         }
     }

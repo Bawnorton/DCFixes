@@ -20,11 +20,6 @@ abstract class ClientGunIndexMixin implements ClientGunIndexExtender {
     @Unique
     private ResourceLocation dcfixes$id;
 
-    @Override
-    public void dcfixes$setId(ResourceLocation id) {
-        this.dcfixes$id = id;
-    }
-
     @WrapOperation(
             method = "getInstance",
             at = @At(
@@ -34,6 +29,11 @@ abstract class ClientGunIndexMixin implements ClientGunIndexExtender {
     )
     private static GunDisplayInstance useLazyLoadedDisplayInstance(GunDisplay display, Operation<GunDisplayInstance> original) {
         return null;
+    }
+
+    @Override
+    public void dcfixes$setId(ResourceLocation id) {
+        this.dcfixes$id = id;
     }
 
     @ModifyReturnValue(

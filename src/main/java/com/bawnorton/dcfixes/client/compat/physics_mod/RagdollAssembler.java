@@ -19,24 +19,9 @@ public class RagdollAssembler {
     private final List<Runnable> queue = new ArrayList<>();
     private final Map<Integer, Integer> parentMap = new HashMap<>();
 
-    public enum Type {
-        FIXED(true, false),
-        LOOSE(false, false),
-        VISUAL_FIXED(true, true),
-        VISUAL_LOOSE(false, true);
-
-        final boolean isFixed;
-        final boolean isVisual;
-
-        Type(boolean isFixed, boolean isVisual) {
-            this.isFixed = isFixed;
-            this.isVisual = isVisual;
-        }
-    }
-
     public RagdollAssembler(Ragdoll ragdoll) {
         this.ragdoll = ragdoll;
-        
+
         for (int i = 0; i < ragdoll.bodies.size(); i++) {
             PhysicsEntityExtender extender = (PhysicsEntityExtender) ragdoll.bodies.get(i);
             GeoBone bone = extender.dcfixes$getGeoBone();
@@ -45,7 +30,7 @@ public class RagdollAssembler {
             }
         }
 
-        if(DCFixesConfig.get().ragdollDebug) {
+        if (DCFixesConfig.get().ragdollDebug) {
             boneIndices.forEach((key, value) -> {
                 for (Integer i : value) {
                     indexMap.put(i, key);
@@ -63,7 +48,7 @@ public class RagdollAssembler {
             queue.add(() -> {
                 List<Integer> indices = boneIndices.get(partName);
                 if (indices == null || indices.size() <= 1) {
-                    if(DCFixesConfig.get().ragdollDebug) {
+                    if (DCFixesConfig.get().ragdollDebug) {
                         DeceasedCraftFixes.LOGGER.warn("Ragdoll Merge Warning: Part '{}' has {} associated bodies. Merge skipped.", partName, indices == null ? "n/a" : indices.size());
                     }
                     return;
@@ -100,7 +85,7 @@ public class RagdollAssembler {
     }
 
     private void validateAndConnect(int source, int target, boolean fixed, boolean visual) {
-        if(DCFixesConfig.get().ragdollDebug) {
+        if (DCFixesConfig.get().ragdollDebug) {
             DeceasedCraftFixes.LOGGER.info(
                     "Source {} ({}) -> Target {} ({}) - f:{} v:{}",
                     source,
@@ -137,7 +122,7 @@ public class RagdollAssembler {
     }
 
     public void assemble() {
-        if(DCFixesConfig.get().ragdollDebug) {
+        if (DCFixesConfig.get().ragdollDebug) {
             for (int i = 0; i < ragdoll.bodies.size(); i++) {
                 PhysicsEntity physicsEntity = ragdoll.bodies.get(i);
                 PhysicsEntityExtender extender = (PhysicsEntityExtender) physicsEntity;
@@ -148,6 +133,21 @@ public class RagdollAssembler {
         }
         for (Runnable action : queue) {
             action.run();
+        }
+    }
+
+    public enum Type {
+        FIXED(true, false),
+        LOOSE(false, false),
+        VISUAL_FIXED(true, true),
+        VISUAL_LOOSE(false, true);
+
+        final boolean isFixed;
+        final boolean isVisual;
+
+        Type(boolean isFixed, boolean isVisual) {
+            this.isFixed = isFixed;
+            this.isVisual = isVisual;
         }
     }
 }

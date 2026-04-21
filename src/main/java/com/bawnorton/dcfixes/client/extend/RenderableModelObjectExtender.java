@@ -65,6 +65,7 @@ public interface RenderableModelObjectExtender {
 
     DormantRenderableSnapshot dcfixes$createDormantSnapshot(AEntityD_Definable<?> entity, float partialTicks);
 
-    record DormantRenderableSnapshot(RenderableVertices baseVertices, RenderableVertices interiorVertices, String texture, boolean windowBatch) {
+    record DormantRenderableSnapshot(RenderableVertices baseVertices, RenderableVertices interiorVertices,
+                                     String texture, boolean windowBatch) {
     }
 }

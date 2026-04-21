@@ -22,18 +22,17 @@ import java.util.Map;
 @MixinEnvironment("client")
 @Mixin(value = CommonDataManager.class, remap = false)
 abstract class CommonDataManagerMixin<T> extends JsonDataManagerMixin<T> implements CommonDataManagerExtender {
-    @Shadow
-    protected Map<ResourceLocation, String> networkCache;
-
     @Unique
     private final Map<ResourceLocation, JsonElement> dcfixes$elementMap = new HashMap<>();
+    @Shadow
+    protected Map<ResourceLocation, String> networkCache;
 
     @Override
     public T dcfixes$parseReader(Reader reader, ResourceLocation location) {
         JsonElement jsonelement = GsonHelper.fromJson(getGson(), reader, JsonElement.class, true);
         dcfixes$elementMap.put(location, jsonelement);
         T data = parseJson(jsonelement);
-        if(data instanceof IDisplay display) {
+        if (data instanceof IDisplay display) {
             display.init();
         }
         return data;

@@ -20,12 +20,12 @@ abstract class ModelPartMixin {
             method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V"
     )
     private void renderWithFastEntityRendererWhenSafe(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha, Operation<Void> original) {
-        if(PhysicsMod.getCurrentInstance() != null && PhysicsMod.getCurrentInstance().blockify) {
+        if (PhysicsMod.getCurrentInstance() != null && PhysicsMod.getCurrentInstance().blockify) {
             original.call(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
             return;
         }
 
-        if((Object) this.getClass() != ModelPart.class) {
+        if ((Object) this.getClass() != ModelPart.class) {
             original.call(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
             return;
         }

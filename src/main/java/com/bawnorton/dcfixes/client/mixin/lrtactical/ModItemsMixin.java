@@ -21,7 +21,7 @@ abstract class ModItemsMixin {
     )
     private static void loadAllThrowables(CreativeModeTab.ItemDisplayParameters pParameters, CreativeModeTab.Output pOutput, CallbackInfo ci) {
         ICommonResourceProvider provider = CommonAssetsManager.get();
-        if(provider instanceof CommonAssetsManagerAccessor accessor) {
+        if (provider instanceof CommonAssetsManagerAccessor accessor) {
             ((CommonDataManagerExtender) accessor.dcfixes$throwableIndexManager()).dcfixes$loadAll();
         }
     }
@@ -32,7 +32,7 @@ abstract class ModItemsMixin {
     )
     private static void loadAllMeleeWeapons(CreativeModeTab.ItemDisplayParameters pParameters, CreativeModeTab.Output pOutput, CallbackInfo ci) {
         ICommonResourceProvider provider = CommonAssetsManager.get();
-        if(provider instanceof CommonAssetsManagerAccessor accessor) {
+        if (provider instanceof CommonAssetsManagerAccessor accessor) {
             ((CommonDataManagerExtender) accessor.dcfixes$meleeIndexManager()).dcfixes$loadAll();
         }
     }

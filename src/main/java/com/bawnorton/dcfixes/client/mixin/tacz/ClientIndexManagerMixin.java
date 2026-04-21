@@ -2,7 +2,6 @@ package com.bawnorton.dcfixes.client.mixin.tacz;
 
 import com.bawnorton.dcfixes.DeceasedCraftFixes;
 import com.bawnorton.dcfixes.client.extend.ClientGunIndexExtender;
-import com.bawnorton.dcfixes.collection.NullSkippingLambdaMap;
 import com.bawnorton.dcfixes.collection.StandardLambdaMap;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.client.resource.ClientAssetsManager;
@@ -37,19 +36,29 @@ import java.util.Map;
 @MixinEnvironment("client")
 @Mixin(value = ClientIndexManager.class, remap = false)
 abstract class ClientIndexManagerMixin {
-    @Shadow @Final @Mutable
+    @Shadow
+    @Final
+    @Mutable
     public static Map<ResourceLocation, GunDisplayInstance> GUN_DISPLAY;
 
-    @Shadow @Final @Mutable
+    @Shadow
+    @Final
+    @Mutable
     public static Map<ResourceLocation, ClientGunIndex> GUN_INDEX;
 
-    @Shadow @Final @Mutable
+    @Shadow
+    @Final
+    @Mutable
     public static Map<ResourceLocation, ClientAmmoIndex> AMMO_INDEX;
 
-    @Shadow @Final @Mutable
+    @Shadow
+    @Final
+    @Mutable
     public static Map<ResourceLocation, ClientAttachmentIndex> ATTACHMENT_INDEX;
 
-    @Shadow @Final @Mutable
+    @Shadow
+    @Final
+    @Mutable
     public static Map<ResourceLocation, ClientBlockIndex> BLOCK_INDEX;
 
     static {

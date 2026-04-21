@@ -30,32 +30,27 @@ import java.util.Map;
 @MixinEnvironment("client")
 @Mixin(value = JsonDataManager.class, remap = false)
 public abstract class JsonDataManagerMixin<T> {
-    @Shadow @Final
-    private FileToIdConverter fileToIdConverter;
-
-    @Shadow @Final
-    private Marker marker;
-
-    @Shadow @Final
-    private Gson gson;
-
-    @Shadow
-    protected abstract T parseJson(JsonElement element);
-
-    @Shadow
-    public abstract Gson getGson();
-
     @Unique
     protected final Map<ResourceLocation, Resource> dcfixes$resourceMap = new HashMap<>();
-
-    @Shadow @Final @Mutable
+    @Shadow
+    @Final
+    private FileToIdConverter fileToIdConverter;
+    @Shadow
+    @Final
+    private Marker marker;
+    @Shadow
+    @Final
+    private Gson gson;
+    @Shadow
+    @Final
+    @Mutable
     protected Map<ResourceLocation, T> dataMap = new NullSkippingLambdaMap<>(location -> {
         Resource resource = dcfixes$resourceMap.get(location);
-        if(resource == null) {
+        if (resource == null) {
             DeceasedCraftFixes.LOGGER.warn("Failed to find json data resource: {}", location);
             return null;
         }
-        try(Reader reader = resource.openAsReader()) {
+        try (Reader reader = resource.openAsReader()) {
             return dcfixes$parseReader(reader, location);
         } catch (IllegalArgumentException | JsonParseException | IOException e) {
             GunMod.LOGGER.error(marker, "Failed to load data file {}", location, e);
@@ -63,6 +58,11 @@ public abstract class JsonDataManagerMixin<T> {
         }
     });
 
+    @Shadow
+    protected abstract T parseJson(JsonElement element);
+
+    @Shadow
+    public abstract Gson getGson();
 
     @Shadow
     public abstract Marker getMarker();
@@ -71,7 +71,7 @@ public abstract class JsonDataManagerMixin<T> {
     public T dcfixes$parseReader(Reader reader, ResourceLocation location) {
         JsonElement jsonelement = GsonHelper.fromJson(gson, reader, JsonElement.class, true);
         T data = parseJson(jsonelement);
-        if(data instanceof IDisplay display) {
+        if (data instanceof IDisplay display) {
             display.init();
         }
         return data;

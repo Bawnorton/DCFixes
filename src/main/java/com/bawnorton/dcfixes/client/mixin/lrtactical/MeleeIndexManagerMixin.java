@@ -25,15 +25,15 @@ import java.util.Map;
 @MixinEnvironment("client")
 @Mixin(value = MeleeIndexManager.class, remap = false)
 abstract class MeleeIndexManagerMixin extends JsonDataManagerMixin<MeleeWeaponIndex<?>> implements CommonDataManagerExtender {
+    @Unique
+    private final Map<ResourceLocation, String> dcfixes$elementMap = new HashMap<>();
+    @Shadow
+    private Map<ResourceLocation, String> networkCache;
+
     @Shadow
     public static MeleeWeaponIndex<?> parse(JsonObject pJson, ResourceLocation id) throws JsonParseException {
         throw new AssertionError();
     }
-
-    @Shadow
-    private Map<ResourceLocation, String> networkCache;
-    @Unique
-    private final Map<ResourceLocation, String> dcfixes$elementMap = new HashMap<>();
 
     @Override
     public MeleeWeaponIndex<?> dcfixes$parseReader(Reader reader, ResourceLocation location) {

@@ -29,15 +29,15 @@ public final class DCFixesAnnotationAdjuster implements MixinAnnotationAdjuster 
     }
 
     private AdjustableAnnotationNode adjustJsonUnbakedModel_cullShapeMixin(AdjustableAnnotationNode annotationNode) {
-        if(annotationNode.is(Redirect.class)) {
+        if (annotationNode.is(Redirect.class)) {
             AdjustableRedirectNode redirectNode = annotationNode.as(AdjustableRedirectNode.class);
-            if(redirectNode.getAt().getTarget().equals("Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;")) {
+            if (redirectNode.getAt().getTarget().equals("Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;")) {
                 return null;
             }
         }
-        if(annotationNode.is(WrapOperation.class)) {
+        if (annotationNode.is(WrapOperation.class)) {
             AdjustableWrapOperationNode wrapOpNode = annotationNode.as(AdjustableWrapOperationNode.class);
-            if(wrapOpNode.getAt().stream().anyMatch(at -> at.getTarget().equals("Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))) {
+            if (wrapOpNode.getAt().stream().anyMatch(at -> at.getTarget().equals("Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))) {
                 return null;
             }
         }
@@ -45,18 +45,18 @@ public final class DCFixesAnnotationAdjuster implements MixinAnnotationAdjuster 
     }
 
     private AdjustableAnnotationNode adjustItemRenderer_faceCullingMixin(String mixinClassName, AdjustableAnnotationNode annotationNode, MethodNode handlerNode) {
-        if(annotationNode.is(Inject.class)) {
+        if (annotationNode.is(Inject.class)) {
             return annotationNode.as(AdjustableInjectNode.class).withAt(ats -> ats.stream().map(at -> at.withTarget(target -> {
                 if (target.equals("Lnet/minecraft/client/renderer/ItemBlockRenderTypes;getRenderType(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/client/renderer/RenderType;")
-                    || target.equals("Lnet/minecraft/client/renderer/ItemBlockRenderTypes;m_109279_(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/client/renderer/RenderType;")) {
+                        || target.equals("Lnet/minecraft/client/renderer/ItemBlockRenderTypes;m_109279_(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/client/renderer/RenderType;")) {
                     return "net/minecraft/client/resources/model/BakedModel.getRenderTypes (Lnet/minecraft/world/item/ItemStack;Z)Ljava/util/List;";
                 }
                 return target;
             })).toList());
         }
-        if(annotationNode.is(WrapOperation.class)) {
+        if (annotationNode.is(WrapOperation.class)) {
             AdjustableWrapOperationNode wrapOpNode = annotationNode.as(AdjustableWrapOperationNode.class);
-            if(wrapOpNode.getAt().stream().anyMatch(at -> {
+            if (wrapOpNode.getAt().stream().anyMatch(at -> {
                 String target = at.getTarget();
                 return target.equals("Lnet/minecraft/client/renderer/block/model/ItemTransforms;getTransform(Lnet/minecraft/world/item/ItemDisplayContext;)Lnet/minecraft/client/renderer/block/model/ItemTransform;")
                         || target.equals("Lnet/minecraft/client/renderer/block/model/ItemTransforms;m_269404_(Lnet/minecraft/world/item/ItemDisplayContext;)Lnet/minecraft/client/renderer/block/model/ItemTransform;");

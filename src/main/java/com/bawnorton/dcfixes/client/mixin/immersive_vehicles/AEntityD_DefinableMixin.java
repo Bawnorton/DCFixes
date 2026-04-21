@@ -7,7 +7,10 @@ import com.bawnorton.dcfixes.mixin.accessor.WrapperWorldAccessor;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
-import minecrafttransportsimulator.baseclasses.*;
+import minecrafttransportsimulator.baseclasses.AnimationSwitchbox;
+import minecrafttransportsimulator.baseclasses.ComputedVariable;
+import minecrafttransportsimulator.baseclasses.Point3D;
+import minecrafttransportsimulator.baseclasses.TransformationMatrix;
 import minecrafttransportsimulator.entities.components.AEntityC_Renderable;
 import minecrafttransportsimulator.entities.components.AEntityD_Definable;
 import minecrafttransportsimulator.entities.instances.EntityParticle;
@@ -32,29 +35,26 @@ import java.util.*;
 @Mixin(value = AEntityD_Definable.class, remap = false)
 abstract class AEntityD_DefinableMixin extends AEntityC_Renderable implements AEntityD_DefinableExtender {
     @Shadow
-    private List<RenderableModelObject> objectList;
+    @Final
+    private static Point3D particleSpawningPosition;
+    @Unique
+    private final Map<String, Double> dcfixes$cachedParticleAnimatedVariableValues = new HashMap<>();
+    @Unique
+    private final Map<String, StaticModelBatch> dcfixes$staticModelBatches = new LinkedHashMap<>();
+    @Unique
+    private final Map<String, StaticModelBatch> dcfixes$dormantDynamicModelBatches = new LinkedHashMap<>();
     @Shadow
     @Final
     public Set<IWrapperPlayer> playersInteracting;
-
-    @Shadow
-    public abstract void updateLightBrightness(float partialTicks);
-
     @Shadow
     @Final
     public Map<JSONText, String> text;
-
     @Shadow
-    public abstract boolean renderTextLit();
-
+    private List<RenderableModelObject> objectList;
     @Shadow
     private long lastTickParticlesSpawned;
     @Shadow
     private float lastPartialTickParticlesSpawned;
-
-    @Shadow
-    public abstract ComputedVariable getOrCreateVariable(String variable);
-
     @Shadow
     @Final
     private Map<JSONParticle, AnimationSwitchbox> particleActiveSwitchboxes;
@@ -66,22 +66,13 @@ abstract class AEntityD_DefinableMixin extends AEntityC_Renderable implements AE
     private Map<JSONParticle, Point3D> lastPositionParticleSpawned;
     @Shadow
     @Final
-    private static Point3D particleSpawningPosition;
-    @Shadow
-    @Final
     private Map<JSONParticle, Long> lastTickParticleSpawned;
-    @Unique
-    private final Map<String, Double> dcfixes$cachedParticleAnimatedVariableValues = new HashMap<>();
     @Unique
     private boolean dcfixes$particleAnimatedVariableCacheActive;
     @Unique
     private float dcfixes$particleAnimatedVariableCachePartialTicks;
     @Unique
     private List<RenderableModelObject> dcfixes$dynamicObjectList;
-    @Unique
-    private final Map<String, StaticModelBatch> dcfixes$staticModelBatches = new LinkedHashMap<>();
-    @Unique
-    private final Map<String, StaticModelBatch> dcfixes$dormantDynamicModelBatches = new LinkedHashMap<>();
     @Unique
     private int dcfixes$cachedStaticBatchCount;
     @Unique
@@ -92,17 +83,35 @@ abstract class AEntityD_DefinableMixin extends AEntityC_Renderable implements AE
     private boolean dcfixes$wasUsingDormantDynamicBatches;
     @Unique
     private boolean dcfixes$dormantBatchRebuildRequested = true;
-
     protected AEntityD_DefinableMixin(AWrapperWorld world, IWrapperNBT data) {
         super(world, data);
     }
+
+    @Unique
+    private static boolean dcfixes$isRandomAnimationVariable(String variableName) {
+        return variableName.startsWith("random") || variableName.startsWith(ComputedVariable.INVERTED_PREFIX + "random");
+    }
+
+    @Unique
+    private static String dcfixes$createStaticBatchKey(String debugType, boolean interiorWindowLayer, boolean translucent, String textureOverride) {
+        return debugType + "|" + (interiorWindowLayer ? "interior" : "base") + "|" + (translucent ? "translucent" : "solid") + "|" + (textureOverride != null ? textureOverride : "entityTexture");
+    }
+
+    @Shadow
+    public abstract void updateLightBrightness(float partialTicks);
+
+    @Shadow
+    public abstract boolean renderTextLit();
+
+    @Shadow
+    public abstract ComputedVariable getOrCreateVariable(String variable);
 
     @Inject(
             method = "remove",
             at = @At("TAIL")
     )
     private void clearCache(CallbackInfo ci) {
-        if(isValid && world.isClient()) {
+        if (isValid && world.isClient()) {
             dcfixes$clearModelRenderCache();
         }
     }
@@ -189,11 +198,6 @@ abstract class AEntityD_DefinableMixin extends AEntityC_Renderable implements AE
             value = getOrCreateVariable(variableName).computeValue(partialTicks);
         }
         return clock.clampAndScale((AEntityD_Definable<?>) (Object) this, value, scaleFactor, offset, partialTicks);
-    }
-
-    @Unique
-    private static boolean dcfixes$isRandomAnimationVariable(String variableName) {
-        return variableName.startsWith("random") || variableName.startsWith(ComputedVariable.INVERTED_PREFIX + "random");
     }
 
     /**
@@ -369,10 +373,5 @@ abstract class AEntityD_DefinableMixin extends AEntityC_Renderable implements AE
     @Unique
     private boolean dcfixes$canUseDormantDynamicBatches() {
         return !dcfixes$dormantDynamicModelBatches.isEmpty();
-    }
-
-    @Unique
-    private static String dcfixes$createStaticBatchKey(String debugType, boolean interiorWindowLayer, boolean translucent, String textureOverride) {
-        return debugType + "|" + (interiorWindowLayer ? "interior" : "base") + "|" + (translucent ? "translucent" : "solid") + "|" + (textureOverride != null ? textureOverride : "entityTexture");
     }
 }

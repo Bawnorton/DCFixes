@@ -4,7 +4,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,11 +26,11 @@ abstract class DividedEffectProcedureMixin {
     )
     private static <T extends Entity> T moveToHead(EntityType<T> instance, ServerLevel level, BlockPos pos, MobSpawnType spawnType, Operation<T> original, LevelAccessor world, double x, double y, double z) {
         T entity = instance.create(level);
-        if(entity == null) return null;
+        if (entity == null) return null;
 
         entity.setPos(x, y + ZombieExtremeModEntities.DIVIDED.get().getHeight() - entity.getBbHeight(), z);
         level.addFreshEntityWithPassengers(entity);
-        if(entity instanceof Mob mob) {
+        if (entity instanceof Mob mob) {
             ForgeEventFactory.onFinalizeSpawn(mob, level, level.getCurrentDifficultyAt(mob.blockPosition()), spawnType, null, null);
             mob.playAmbientSound();
         }

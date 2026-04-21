@@ -7,7 +7,6 @@ import ca.fxco.moreculling.utils.BitUtils;
 import ca.fxco.moreculling.utils.CullingUtils;
 import ca.fxco.moreculling.utils.DirectionUtils;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
@@ -30,24 +29,24 @@ import java.util.function.Predicate;
 @MixinEnvironment("client")
 @Mixin(value = MultiPartBakedModel.class, priority = 1010)
 abstract class MultipartBakedModel_cacheMixin implements BakedOpacity {
-    @Shadow(remap = false)
-    public abstract List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, RandomSource random, ModelData modelData, @Nullable RenderType renderType);
-
     @Shadow
     @Final
     private List<Pair<Predicate<BlockState>, BakedModel>> selectors;
+
+    @Shadow(remap = false)
+    public abstract List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, RandomSource random, ModelData modelData, @Nullable RenderType renderType);
 
     public void resetTranslucencyCache(BlockState state) {
         byte emptyFaces = 0;
         boolean translucency = false;
 
-        for(Direction face : DirectionUtils.DIRECTIONS) {
+        for (Direction face : DirectionUtils.DIRECTIONS) {
             List<BakedQuad> quads = this.getQuads(state, face, CullingUtils.RANDOM, ModelData.EMPTY, null);
             if (quads.isEmpty()) {
                 emptyFaces = BitUtils.set(emptyFaces, face.ordinal());
             } else if (!translucency) {
-                for(BakedQuad quad : quads) {
-                    if (((QuadOpacity)quad).getTextureTranslucency()) {
+                for (BakedQuad quad : quads) {
+                    if (((QuadOpacity) quad).getTextureTranslucency()) {
                         translucency = true;
                         break;
                     }
@@ -55,16 +54,16 @@ abstract class MultipartBakedModel_cacheMixin implements BakedOpacity {
             }
         }
 
-        ((MoreStateCulling)state).moreculling$setHasQuadsOnSide(emptyFaces);
-        ((MoreStateCulling)state).moreculling$setHasTextureTranslucency(translucency);
+        ((MoreStateCulling) state).moreculling$setHasQuadsOnSide(emptyFaces);
+        ((MoreStateCulling) state).moreculling$setHasTextureTranslucency(translucency);
     }
 
     public @Nullable VoxelShape getCullingShape(BlockState state) {
         VoxelShape cachedShape = null;
 
-        for(Pair<Predicate<BlockState>, BakedModel> pair : this.selectors) {
+        for (Pair<Predicate<BlockState>, BakedModel> pair : this.selectors) {
             if (pair.getLeft().test(state)) {
-                VoxelShape shape = ((BakedOpacity)pair.getRight()).getCullingShape(state);
+                VoxelShape shape = ((BakedOpacity) pair.getRight()).getCullingShape(state);
                 if (shape != null) {
                     if (cachedShape == null) {
                         cachedShape = shape;

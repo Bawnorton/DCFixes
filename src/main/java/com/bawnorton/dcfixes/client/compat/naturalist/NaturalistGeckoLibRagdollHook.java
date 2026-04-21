@@ -217,7 +217,7 @@ public class NaturalistGeckoLibRagdollHook extends GeckoLibRagdollHook {
                     entities.remove(6);
                     entities.remove(6);
                     entities.remove(8);
-                    if(entity.hasMane()) {
+                    if (entity.hasMane()) {
                         entities.remove(10);
                     }
                 }

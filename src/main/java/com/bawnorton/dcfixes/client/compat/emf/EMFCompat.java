@@ -2,13 +2,9 @@ package com.bawnorton.dcfixes.client.compat.emf;
 
 import net.minecraft.world.entity.LivingEntity;
 import traben.entity_model_features.EMFManager;
-import traben.entity_model_features.models.animation.EMFAnimationEntityContext;
-import traben.entity_model_features.models.animation.state.EMFEntityRenderState;
 import traben.entity_model_features.utils.EMFEntity;
 import traben.entity_texture_features.ETFApi;
 import traben.entity_texture_features.features.ETFRenderContext;
-import traben.entity_texture_features.features.state.ETFEntityRenderState;
-import traben.entity_texture_features.utils.ETFEntity;
 
 public class EMFCompat {
     private boolean emfModel = false;

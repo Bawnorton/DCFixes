@@ -31,7 +31,7 @@ abstract class EntityManagerMixin {
             remap = false
     )
     private void onTickStart(boolean beforePlayer, CallbackInfo ci) {
-        if(beforePlayer) {
+        if (beforePlayer) {
             DeceasedCraftFixes.getCompat().getImmersiveVehiclesCompat().onTickStart();
         }
     }

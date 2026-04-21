@@ -5,7 +5,6 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.tacz.guns.api.client.animation.statemachine.LuaAnimationStateMachine;
-import com.tacz.guns.api.client.animation.statemachine.LuaStateMachineFactory;
 import com.tacz.guns.client.animation.statemachine.GunAnimationStateContext;
 import com.tacz.guns.client.resource.ClientAssetsManager;
 import com.tacz.guns.client.resource.GunDisplayInstance;
@@ -39,15 +38,13 @@ abstract class GunDisplayInstanceMixin {
 
     @Shadow
     private boolean is3rdFixedHand;
+    @Shadow
+    private LuaAnimationStateMachine<GunAnimationStateContext> animationStateMachine;
+    @Unique
+    private GunDisplay dcfixes$displayHolder;
 
     @Shadow
     protected abstract void checkAnimation(GunDisplay display);
-
-    @Shadow
-    private LuaAnimationStateMachine<GunAnimationStateContext> animationStateMachine;
-
-    @Unique
-    private GunDisplay dcfixes$displayHolder;
 
     @WrapOperation(
             method = "<init>",
@@ -92,7 +89,7 @@ abstract class GunDisplayInstanceMixin {
             at = @At("RETURN")
     )
     private LuaAnimationStateMachine<GunAnimationStateContext> createAnimationStateMachineIfNeeded(LuaAnimationStateMachine<GunAnimationStateContext> original) {
-        if(original == null && dcfixes$displayHolder != null) {
+        if (original == null && dcfixes$displayHolder != null) {
             checkAnimation(dcfixes$displayHolder);
             dcfixes$displayHolder = null;
             original = animationStateMachine;

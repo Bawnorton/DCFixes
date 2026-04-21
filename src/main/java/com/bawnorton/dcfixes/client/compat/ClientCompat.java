@@ -7,7 +7,6 @@ import com.bawnorton.dcfixes.client.compat.naturalist.NaturalistCompat;
 import com.bawnorton.dcfixes.client.compat.physics_mod.PhysicsModCompat;
 import com.bawnorton.dcfixes.client.compat.undead_revamp2.UndeadRevampCompat;
 import com.bawnorton.dcfixes.client.compat.zombie_extreme.ZombieExtremeCompat;
-import com.bawnorton.dcfixes.client.mixin.geckolib.GeoRendererMixin;
 import net.minecraftforge.fml.ModList;
 
 import java.util.Optional;
