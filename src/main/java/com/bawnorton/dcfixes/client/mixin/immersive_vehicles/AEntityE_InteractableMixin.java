@@ -1,6 +1,7 @@
 package com.bawnorton.dcfixes.client.mixin.immersive_vehicles;
 
 import com.bawnorton.dcfixes.config.DCFixesConfig;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -15,6 +16,7 @@ import minecrafttransportsimulator.mcinterface.InterfaceManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+@IfModLoaded("mts")
 @MixinEnvironment("client")
 @Mixin(value = AEntityE_Interactable.class, remap = false)
 abstract class AEntityE_InteractableMixin extends AEntityD_DefinableMixin {

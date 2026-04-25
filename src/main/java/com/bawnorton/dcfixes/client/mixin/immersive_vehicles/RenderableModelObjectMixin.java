@@ -1,6 +1,7 @@
 package com.bawnorton.dcfixes.client.mixin.immersive_vehicles;
 
 import com.bawnorton.dcfixes.client.extend.RenderableModelObjectExtender;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Cancellable;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
@@ -23,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.*;
 
+@IfModLoaded("mts")
 @MixinEnvironment("client")
 @Mixin(value = RenderableModelObject.class, remap = false)
 abstract class RenderableModelObjectMixin implements RenderableModelObjectExtender {

@@ -3,7 +3,8 @@ package com.bawnorton.dcfixes.client.mixin.immersive_vehicles;
 import com.bawnorton.dcfixes.client.extend.AEntityD_DefinableExtender;
 import com.bawnorton.dcfixes.client.extend.RenderableModelObjectExtender;
 import com.bawnorton.dcfixes.config.DCFixesConfig;
-import com.bawnorton.dcfixes.mixin.accessor.WrapperWorldAccessor;
+import com.bawnorton.dcfixes.mixin.immersive_vehicles.accessor.WrapperWorldAccessor;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
@@ -31,6 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.*;
 
+@IfModLoaded("mts")
 @MixinEnvironment("client")
 @Mixin(value = AEntityD_Definable.class, remap = false)
 abstract class AEntityD_DefinableMixin extends AEntityC_Renderable implements AEntityD_DefinableExtender {

@@ -1,11 +1,9 @@
 package com.bawnorton.dcfixes.client.extend;
 
-import software.bernie.geckolib.cache.object.GeoBone;
-
 public interface PhysicsEntityExtender {
-    GeoBone dcfixes$getGeoBone();
+    String dcfixes$getBoneId();
 
-    void dcfixes$setGeoBone(GeoBone geoBone);
+    void dcfixes$setBoneId(String geoBone);
 
     int dcfixes$ragdollIndex();
 

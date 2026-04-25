@@ -1,5 +1,6 @@
 package com.bawnorton.dcfixes.client.mixin.immersive_vehicles;
 
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import mcinterface1201.InterfaceClient;
@@ -8,6 +9,7 @@ import minecrafttransportsimulator.systems.LanguageSystem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+@IfModLoaded("mts")
 @MixinEnvironment("client")
 @Mixin(value = InterfaceClient.class, remap = false)
 abstract class InterfaceClientMixin {

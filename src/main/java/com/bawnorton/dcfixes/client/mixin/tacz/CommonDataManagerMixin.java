@@ -2,6 +2,7 @@ package com.bawnorton.dcfixes.client.mixin.tacz;
 
 import com.bawnorton.dcfixes.client.extend.CommonDataManagerExtender;
 import com.bawnorton.dcfixes.collection.NullSkippingLambdaMap;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.google.gson.JsonElement;
 import com.tacz.guns.client.resource.pojo.display.IDisplay;
 import com.tacz.guns.resource.manager.CommonDataManager;
@@ -19,6 +20,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
+@IfModLoaded("tacz")
 @MixinEnvironment("client")
 @Mixin(value = CommonDataManager.class, remap = false)
 abstract class CommonDataManagerMixin<T> extends JsonDataManagerMixin<T> implements CommonDataManagerExtender {

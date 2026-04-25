@@ -1,6 +1,7 @@
 package com.bawnorton.dcfixes.client.mixin.immersive_vehicles;
 
 import com.bawnorton.dcfixes.client.extend.InterfaceRenderExtender;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.google.common.collect.Iterators;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
@@ -11,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Iterator;
 
+@IfModLoaded("mts")
 @MixinEnvironment("client")
 @Mixin(value = InterfaceRender.class, remap = false)
 abstract class InterfaceRenderMixin implements InterfaceRenderExtender {

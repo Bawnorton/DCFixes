@@ -1,5 +1,6 @@
 package com.bawnorton.dcfixes.mixin.zombie_extreme;
 
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import zombie_extreme.init.ZombieExtremeModEntities;
 import zombie_extreme.procedures.DividedEffectProcedure;
 
+@IfModLoaded("zombie_extreme")
 @Mixin(DividedEffectProcedure.class)
 abstract class DividedEffectProcedureMixin {
     @WrapOperation(

@@ -17,7 +17,7 @@ public final class DeceasedCraftFixes {
     private static final Compat COMPAT = new Compat();
 
     public DeceasedCraftFixes() {
-        LOGGER.debug("Fixing DeceasedCraft");
+        LOGGER.info("Fixing DeceasedCraft");
         COMPAT.getHordesCompat().ifPresent(HordesCompat::init);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> DeceasedCraftFixesClient::new);
     }

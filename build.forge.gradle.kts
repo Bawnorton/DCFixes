@@ -30,6 +30,9 @@ repositories {
     maven("https://maven.shedaniel.me/")
     maven("https://maven.terraformersmc.com/releases/")
     maven("https://maven.sinytra.org/")
+    maven("https://maven.createmod.net")
+    maven("https://maven.ithundxr.dev/mirror")
+    maven("https://maven.blamejared.com")
 
     strictMaven("https://www.cursemaven.com", "Curseforge", "curse.maven")
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
@@ -48,7 +51,11 @@ val mixinConfigs = listOf(
 
 base.archivesName = "${mod("id")}-${mod("version")}+$minecraft-$loader"
 
+evaluationDependsOn(":early-loader")
+
 dependencies {
+    runtimeOnly(project(":early-loader"))
+
     // Mixin
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3")!!)
     jarJar(implementation("io.github.llamalad7:mixinextras-forge:0.5.3")!!)
@@ -62,53 +69,63 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
 
     // Compats / Fixes
-    modImplementation("curse.maven:global-gamerules-227657:7172469")
+    modImplementation("com.simibubi.create:create-$minecraft:${deps("create")}:slim") { isTransitive = false }
+    modImplementation("net.createmod.ponder:Ponder-Forge-$minecraft:${deps("ponder")}")
+    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-$minecraft:${deps("flywheel")}")
+    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-$minecraft:${deps("flywheel")}")
+    modImplementation("com.tterrag.registrate:Registrate:${deps("registrate")}")
+    modImplementation("mezz.jei:jei-$minecraft-forge:${deps("jei")}")
+
+    modCompileOnly("curse.maven:lets-do-bakery-886559:5567132")
+
+    modCompileOnly("curse.maven:global-gamerules-227657:7172469")
 
     modCompileOnly("curse.maven:engineered-schematics-1207780:7666550")
 
-    modImplementation("curse.maven:customnpcs-unofficial-1052708:7694841")
-    modCompileOnly("curse.maven:sound-physics-remastered-535489:6352920")
+    modCompileOnly("curse.maven:customnpcs-unofficial-1052708:7694841")
+    modCompileOnly("curse.maven:cnpc-gecko-addon-970162:7701498")
 
     modCompileOnly("curse.maven:immersive-engineering-231951:6206989")
 
-    modImplementation("curse.maven:timeless-and-classic-zero-1028108:7401617-sources-7401617")
+    modCompileOnly("curse.maven:timeless-and-classic-zero-1028108:7401617-sources-7401617")
     compileOnly("org.luaj:luaj-jse:3.0.1")
-    modImplementation("curse.maven:tacz-lesraisins-tactical-equipements-1273094:6751092")
+    modCompileOnly("curse.maven:tacz-lesraisins-tactical-equipements-1273094:6751092")
 
-    modImplementation("curse.maven:extreme-reactors-250277:7344727")
-    modRuntimeOnly("curse.maven:zerocore-247921:7344725")
+    modCompileOnly("curse.maven:extreme-reactors-250277:7344727")
+    /*modRuntimeOnly("curse.maven:zerocore-247921:7344725")*/
 
-    modCompileOnly("curse.maven:minecraft-transport-simulator-286703:7423733")
+    modImplementation("curse.maven:minecraft-transport-simulator-286703:7423733")
     modRuntimeOnly("curse.maven:spark-361579:4738952")
 
     modCompileOnly("curse.maven:the-hordes-485779:6718502")
     modCompileOnly("curse.maven:atlas-lib-463826:5254550")
 
-    modImplementation("curse.maven:geckolibbetterfps-1455983:7609709")
-    modImplementation("curse.maven:flerovium-1142875:6428986")
-    modImplementation("curse.maven:embeddium-908741:5681725")
-    modImplementation("curse.maven:oculus-581495:6020952")
+    modCompileOnly("curse.maven:geckolibbetterfps-1455983:7609709")
+    modCompileOnly("curse.maven:flerovium-1142875:6428986")
+    modCompileOnly("curse.maven:embeddium-908741:5681725")
+    modCompileOnly("curse.maven:oculus-581495:6020952")
 
-    withSourcesJar(modImplementation("curse.maven:ftb-quests-forge-289412:7909594"))
-    withSourcesJar(modImplementation("curse.maven:ftb-library-forge-404465:7296748"))
-    modImplementation("curse.maven:architectury-api-419699:5137938")
-    modRuntimeOnly("curse.maven:ftb-teams-forge-404468:7499810")
+    modCompileOnly("curse.maven:ftb-quests-forge-289412:7909594")
+    modCompileOnly("curse.maven:ftb-library-forge-404465:7296748")
+    modCompileOnly("curse.maven:architectury-api-419699:5137938")
+    /*modRuntimeOnly("curse.maven:ftb-teams-forge-404468:7499810")*/
 
     // Fabric Mod Compats
     modImplementation("org.sinytra:Connector:1.0.0-beta.48+1.20.1")
-    runtimeOnly("curse.maven:moreculling-630104:7552138")
+    /*runtimeOnly("curse.maven:moreculling-630104:7552138")
     runtimeOnly("me.shedaniel.cloth:cloth-config-fabric:11.0.99") {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(group = "net.fabricmc")
-    }
+    }*/
 
     // Physics Mod + Geckolib Compats
     modImplementation("curse.maven:physics-mod-442735:7781938")
     modImplementation("software.bernie.geckolib:geckolib-forge-$minecraft:4.8.3")
     implementation("com.eliotlash.mclib:mclib:20")
-    modCompileOnly("curse.maven:theundead-479710:7446558")
-    modImplementation("curse.maven:zombie-extreme-392809:7014500")
-    modCompileOnly("curse.maven:apocalypse-now-448410:6364603")
+    modImplementation("curse.maven:theundead-479710:7446558")
+    modCompileOnly("curse.maven:zombie-extreme-392809:7014500")
+    modImplementation("curse.maven:apocalypse-now-448410:6364603")
+    modRuntimeOnly("curse.maven:curios-309927:6418456")
     modCompileOnly("curse.maven:deceased-beast-1426968:7640180")
     modCompileOnly("curse.maven:naturalist-627986:6863943")
 
@@ -264,8 +281,10 @@ tasks {
     register<Copy>("buildAndCollect") {
         group = "build"
         from(named<Jar>("reobfJar").map { it.archiveFile })
+        from(project(":early-loader").tasks.named<Jar>("jar").map { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${mod("version")}"))
         dependsOn("build")
+        dependsOn(":early-loader:jar")
     }
 
 
@@ -321,6 +340,7 @@ publishMods {
     type = STABLE
     file = tasks.named<Jar>("reobfJar").map { it.archiveFile.get() }
     additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
+    additionalFiles.from(project(":early-loader").tasks.named<org.gradle.jvm.tasks.Jar>("jar").map { it.archiveFile.get() })
 
     displayName = "${mod("name")} Forge ${mod("version")} for $minecraft"
     version = mod("version")

@@ -9,7 +9,7 @@ displayName = "${mod_name}"
 logoFile = "assets/${mod_id}/icon.png"
 description = '''${mod_description}'''
 authors = "Bawnorton"
-issueTrackerURL = "https://github.com/Bawnorton/${mod_name}/issues"
+issueTrackerURL = "https://github.com/Bawnorton/DCFixes/issues"
 
 [[dependencies.${mod_id}]]
 modId = "forge"

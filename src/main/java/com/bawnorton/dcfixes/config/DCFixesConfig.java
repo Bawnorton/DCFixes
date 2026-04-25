@@ -159,6 +159,47 @@ public class DCFixesConfig {
     )
     public boolean ragdollDebug = false;
 
+    @SerialEntry(
+            value = "render_player_shadows",
+            comment = "Override player shadow rendering in iris shaders.\nDefault: True"
+    )
+    public boolean renderPlayerShadows = true;
+
+    @SerialEntry(
+            value = "iron_ammo_box_stack_count",
+            comment = "Set the stack count of iron ammo boxes. Set to -1 to disable this change.\nDefault: -1"
+    )
+    public int ironAmmoBoxStackCount = -1;
+
+    @SerialEntry(
+            value = "gold_ammo_box_stack_count",
+            comment = "Set the stack count of gold ammo boxes. Set to -1 to disable this change.\nDefault: -1"
+    )
+    public int goldAmmoBoxStackCount = -1;
+
+    @SerialEntry(
+            value = "diamond_ammo_box_stack_count",
+            comment = "Set the stack count of diamond ammo boxes. Set to -1 to disable this change.\nDefault: -1"
+    )
+    public int diamondAmmoBoxStackCount = -1;
+
+    @SerialEntry(
+            value = "sugar_rush_movement_speed_bonus",
+            comment = "Effect applifier times this value is the movement speed bonus given by sugar rush.\nDefault: 0.05"
+    )
+    public double sugarRushMovementSpeedBonus = 0.05;
+
+    @SerialEntry(
+            value = "sugar_rush_attack_speed_bonus",
+            comment = "Effect applifier times this value is the attack speed bonus given by sugar rush.\nDefault: 0.5"
+    )
+    public double sugarRushAttackSpeedBons = 0.5;
+
+    @SerialEntry(
+            value = "sugar_rush_attack_damage_bonus",
+            comment = "Effect applifier times this value is the attack damage bonus given by sugar rush.\nDefault: 1.0"
+    )
+    public double sugarRushAttackDamageBonus = 1;
 
     public static void init() {
         if (initialized) return;

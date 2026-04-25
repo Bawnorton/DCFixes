@@ -7,15 +7,15 @@ import net.minecraftforge.fml.ModList;
 import java.util.Optional;
 
 public class Compat {
-    private final ImmersiveVehiclesCompat immersiveVehiclesCompat;
+    private ImmersiveVehiclesCompat immersiveVehiclesCompat;
     private HordesCompat hordesCompat;
 
-    public Compat() {
-        this.immersiveVehiclesCompat = new ImmersiveVehiclesCompat();
-    }
-
-    public ImmersiveVehiclesCompat getImmersiveVehiclesCompat() {
-        return immersiveVehiclesCompat;
+    public Optional<ImmersiveVehiclesCompat> getImmersiveVehiclesCompat() {
+        if (!ModList.get().isLoaded("mts")) return Optional.empty();
+        if (immersiveVehiclesCompat == null) {
+            immersiveVehiclesCompat = new ImmersiveVehiclesCompat();
+        }
+        return Optional.of(immersiveVehiclesCompat);
     }
 
     public Optional<HordesCompat> getHordesCompat() {

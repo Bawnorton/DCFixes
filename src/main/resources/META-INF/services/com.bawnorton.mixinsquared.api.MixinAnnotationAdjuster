@@ -1,1 +1,1 @@
-com.bawnorton.dcfixes.early.DCFixesAnnotationAdjuster
+com.bawnorton.dcfixes.mixin_extensions.DCFixesAnnotationAdjuster

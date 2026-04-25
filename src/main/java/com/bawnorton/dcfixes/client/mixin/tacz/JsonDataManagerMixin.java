@@ -2,6 +2,7 @@ package com.bawnorton.dcfixes.client.mixin.tacz;
 
 import com.bawnorton.dcfixes.DeceasedCraftFixes;
 import com.bawnorton.dcfixes.collection.NullSkippingLambdaMap;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+@IfModLoaded("tacz")
 @MixinEnvironment("client")
 @Mixin(value = JsonDataManager.class, remap = false)
 public abstract class JsonDataManagerMixin<T> {

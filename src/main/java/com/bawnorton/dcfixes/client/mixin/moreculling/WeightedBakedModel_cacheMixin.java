@@ -6,6 +6,7 @@ import ca.fxco.moreculling.api.quad.QuadOpacity;
 import ca.fxco.moreculling.utils.BitUtils;
 import ca.fxco.moreculling.utils.CullingUtils;
 import ca.fxco.moreculling.utils.DirectionUtils;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -20,6 +21,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.List;
 
+@IfModLoaded("moreculling")
 @MixinEnvironment("client")
 @Mixin(value = WeightedBakedModel.class, priority = 1010)
 abstract class WeightedBakedModel_cacheMixin implements BakedOpacity {

@@ -1,6 +1,7 @@
 package com.bawnorton.dcfixes.mixin.ftbquests;
 
 import com.bawnorton.dcfixes.extend.QuestExtender;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
@@ -16,8 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-
-@Debug(export = true)
+@IfModLoaded("ftbquests")
 @Mixin(value = Quest.class, remap = false)
 abstract class QuestMixin implements QuestExtender {
     @Unique

@@ -1,6 +1,7 @@
 {
   "required": true,
   "package": "com.bawnorton.dcfixes.client.mixin",
+  "plugin": "com.bawnorton.dcfixes.mixin_extensions.DCFixesMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "dcfixes.refmap.json",
   "minVersion": "0.8",

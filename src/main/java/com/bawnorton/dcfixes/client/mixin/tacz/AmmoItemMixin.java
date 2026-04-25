@@ -1,7 +1,8 @@
 package com.bawnorton.dcfixes.client.mixin.tacz;
 
 import com.bawnorton.dcfixes.client.extend.CommonDataManagerExtender;
-import com.bawnorton.dcfixes.client.mixin.accessor.CommonAssetsManagerAccessor;
+import com.bawnorton.dcfixes.client.mixin.tacz.accessor.CommonAssetsManagerAccessor;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.tacz.guns.item.AmmoItem;
 import com.tacz.guns.resource.CommonAssetsManager;
 import com.tacz.guns.resource.ICommonResourceProvider;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@IfModLoaded("tacz")
 @MixinEnvironment("client")
 @Mixin(value = AmmoItem.class, remap = false)
 abstract class AmmoItemMixin {

@@ -4,24 +4,46 @@
 
   "config.dcfixes.title": "DeceasedCraft Fixes Config",
 
-  "config.dcfixes.category.general": "General",
-  "config.dcfixes.category.general.tooltip": "General settings for DeceasedCraft Fixes",
+  "config.dcfixes.category.gameplay": "Gameplay",
+  "config.dcfixes.category.gameplay.tooltip": "Gameplay settings for DeceasedCraft Fixes",
+  "config.dcfixes.category.gameplay.group.hordes": "Hordes",
+  "config.dcfixes.category.gameplay.group.hordes.description": "Settings related to the Hordes mod.",
+  "config.dcfixes.category.gameplay.group.tacz": "TACZ",
+  "config.dcfixes.category.gameplay.group.tacz.description": "Settings related to the TACZ mod.",
+  "config.dcfixes.category.gameplay.group.extreme_reactors": "Extreme Reactors",
+  "config.dcfixes.category.gameplay.group.extreme_reactors.description": "Gameplay-affecting settings for Extreme Reactors turbines.",
+  "config.dcfixes.category.gameplay.group.bakery": "[Let's Do] Bakery",
+  "config.dcfixes.category.gameplay.group.bakery.description": "Settings related to the [Let's Do] Bakery mod.",
 
-  "config.dcfixes.category.general.group.hordes": "Hordes",
-  "config.dcfixes.category.general.group.hordes.description": "Settings related to the hordes mod.",
+  "config.dcfixes.category.rendering": "Rendering",
+  "config.dcfixes.category.rendering.tooltip": "Rendering settings for DeceasedCraft Fixes",
+  "config.dcfixes.category.rendering.group.iv": "Immersive Vehicles Rendering",
+  "config.dcfixes.category.rendering.group.iv.description": "Settings related to rendering of Immersive Vehicles.",
+  "config.dcfixes.category.rendering.group.shaders": "Shaders",
+  "config.dcfixes.category.rendering.group.shaders.description": "Settings related to shader compatibility.",
+
+  "config.dcfixes.category.performance": "Performance",
+  "config.dcfixes.category.performance.tooltip": "Performance settings for DeceasedCraft Fixes",
+  "config.dcfixes.category.performance.group.iv": "Immersive Vehicles Ticking",
+  "config.dcfixes.category.performance.group.iv.description": "Settings related to ticking behavior of Immersive Vehicles.",
+
+  "config.dcfixes.category.debug": "Debug",
+  "config.dcfixes.category.debug.tooltip": "Debug settings for DeceasedCraft Fixes",
+  "config.dcfixes.category.debug.group.ragdoll": "Ragdoll",
+  "config.dcfixes.category.debug.group.ragdoll.description": "Settings related to ragdoll debugging.",
+
   "config.dcfixes.option.horde_waves_loaded_distance_buffer": "Horde Waves Loaded Distance Buffer",
   "config.dcfixes.option.horde_waves_loaded_distance_buffer.description": "Determines how far, in blocks, from the furthest loaded block to the player should the horde waves spawn.\nDefault: 32",
-
-  "config.dcfixes.category.general.group.debug": "Debug",
-  "config.dcfixes.category.general.group.debug.description": "Settings related to debugging DeceasedCraft.",
+  "config.dcfixes.option.render_player_shadows": "Render Player Shadows",
+  "config.dcfixes.option.render_player_shadows.description": "Whether to render shadows for player entities when using shaders.\nDefault: True",
+  "config.dcfixes.option.iron_ammo_box_stack_count": "Iron Ammo Box Stack Count",
+  "config.dcfixes.option.iron_ammo_box_stack_count.description": "Set the stack count of iron ammo boxes. Set to -1 to disable this change.\nDefault: -1",
+  "config.dcfixes.option.gold_ammo_box_stack_count": "Gold Ammo Box Stack Count",
+  "config.dcfixes.option.gold_ammo_box_stack_count.description": "Set the stack count of gold ammo boxes. Set to -1 to disable this change.\nDefault: -1",
+  "config.dcfixes.option.diamond_ammo_box_stack_count": "Diamond Ammo Box Stack Count",
+  "config.dcfixes.option.diamond_ammo_box_stack_count.description": "Set the stack count of diamond ammo boxes. Set to -1 to disable this change.\nDefault: -1",
   "config.dcfixes.option.ragdoll_debug": "Ragdoll Debug",
   "config.dcfixes.option.ragdoll_debug.description": "Enable ragdoll part debug rendering and logging.\nDefault: False",
-
-  "config.dcfixes.category.iv": "Immersive Vehicles",
-  "config.dcfixes.category.iv.tooltip": "Settings for Immersive Vehicles (Formerly MTS)",
-
-  "config.dcfixes.category.iv.group.rendering": "Rendering",
-  "config.dcfixes.category.iv.group.rendering.description": "Settings related to rendering of Immersive Vehicles.",
   "config.dcfixes.option.frustum_cull_expansion": "Frustum Culling Expansion",
   "config.dcfixes.option.frustum_cull_expansion.description": "How much to expand the frustum culling box for IV entities\nDefault: 2.0",
   "config.dcfixes.option.dormant_dynamic_batch_distance": "Dormant Dynamic Batch Distance",
@@ -32,19 +54,10 @@
   "config.dcfixes.option.instrument_render_distance.description": "The distance at which IV instruments are rendered. The distance is calculated from the camera to the IV entity.\nDefault: 16.0",
   "config.dcfixes.option.text_render_distance": "Text Render Distance",
   "config.dcfixes.option.text_render_distance.description": "The distance at which IV text (e.g. number plates) is rendered. The distance is calculated from the camera to the IV entity.\nDefault: 32.0",
-
-  "config.dcfixes.category.iv.group.ticking": "Ticking",
-  "config.dcfixes.category.iv.group.ticking.description": "Settings related to ticking behavior of Immersive Vehicles.",
   "config.dcfixes.option.dormant_ticking_distance": "Dormant Ticking Distance",
   "config.dcfixes.option.dormant_ticking_distance.description": "The distance at which motionless IV entities should be within relative to the nearest player to tick.\nDefault: 16.0",
   "config.dcfixes.option.aircraft_always_tick": "Aircraft Always Tick",
   "config.dcfixes.option.aircraft_always_tick.description": "Whether aircraft IV entities should always tick regardless of distance to a player.\nNote: Aircraft will still not tick outside simulated distance if 'tick_outside_simulated_distance' is false.\nDefault: True",
-
-  "config.dcfixes.category.extreme_reactors": "Extreme Reactors",
-  "config.dcfixes.category.extreme_reactors.tooltip": "Settings for Extreme Reactors",
-
-  "config.dcfixes.category.extreme_reactors.group.turbine": "Turbine",
-  "config.dcfixes.category.extreme_reactors.group.turbine.description": "Settings related to Extreme Reactors turbines.",
   "config.dcfixes.option.part_energy_capacity": "Reinforced Part Energy Capacity",
   "config.dcfixes.option.part_energy_capacity.description": "Default: 20000",
   "config.dcfixes.option.reinforced_energy_generation_efficiency": "Reinforced Energy Generation Efficiency",
@@ -72,5 +85,8 @@
   "config.dcfixes.option.reinforced_part_fluid_capacity": "Reinforced Part Fluid Capacity",
   "config.dcfixes.option.reinforced_part_fluid_capacity.description": "Default: 500",
   "config.dcfixes.option.reinforced_max_fluid_capacity": "Reinforced Max Fluid Capacity",
-  "config.dcfixes.option.reinforced_max_fluid_capacity.description": "Default: 300000"
+  "config.dcfixes.option.reinforced_max_fluid_capacity.description": "Default: 300000",
+  "config.dcfixes.option.sugar_rush_movement_speed_bonus": "Effect applifier times this value is the movement speed bonus given by sugar rush.\nDefault: 0.05",
+  "config.dcfixes.option.sugar_rush_attack_speed_bonus": "Effect amplifier times this value is the attack speed bonus given by sugar rush.\nDefault: 0.5",
+  "config.dcfixes.option.sugar_rush_attack_damage_bonus": "Effect amplifier times this value is the attack damage bonus given by sugar rush.\nDefault: 1"
 }

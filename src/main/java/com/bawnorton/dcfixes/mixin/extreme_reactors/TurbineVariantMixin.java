@@ -1,11 +1,13 @@
 package com.bawnorton.dcfixes.mixin.extreme_reactors;
 
 import com.bawnorton.dcfixes.config.DCFixesConfig;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import it.zerono.mods.extremereactors.gamecontent.multiblock.turbine.variant.TurbineVariant;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
+@IfModLoaded("bigreactors")
 @Mixin(TurbineVariant.class)
 abstract class TurbineVariantMixin {
     @ModifyArg(

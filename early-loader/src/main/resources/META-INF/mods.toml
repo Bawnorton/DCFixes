@@ -1,0 +1,12 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+
+[[mods]]
+modId = "dcfixes-early-loader"
+version = "1.0.0"
+displayName = "DeceasdCraftFixes Early Loader"
+logoFile = "assets/dcfixes-early-loader/icon.png"
+description = '''Replaces the early loading screen of Forge for DeceasedCraft'''
+authors = "Bawnorton"
+issueTrackerURL = "https://github.com/Bawnorton/DCFixes/issues"

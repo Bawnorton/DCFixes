@@ -1,6 +1,7 @@
 package com.bawnorton.dcfixes.client.mixin.physics_mod;
 
 import com.bawnorton.dcfixes.client.extend.PhysicsEntityExtender;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
@@ -23,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@IfModLoaded({"physicsmod", "geckolib"})
 @MixinEnvironment("client")
 @Mixin(MainRenderer.class)
 abstract class MainRendererMixin {

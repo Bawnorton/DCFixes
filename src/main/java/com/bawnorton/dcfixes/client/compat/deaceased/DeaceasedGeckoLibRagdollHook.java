@@ -1,6 +1,6 @@
 package com.bawnorton.dcfixes.client.compat.deaceased;
 
-import com.bawnorton.dcfixes.client.compat.physics_mod.GeckoLibRagdollHook;
+import com.bawnorton.dcfixes.client.compat.physics_mod.DCFixesRagdollHook;
 import com.bawnorton.dcfixes.client.compat.physics_mod.RagdollAssembler;
 import net.diebuddies.physics.PhysicsEntity;
 import net.diebuddies.physics.ragdoll.Ragdoll;
@@ -9,7 +9,7 @@ import net.mcreator.deaceased.entity.*;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class DeaceasedGeckoLibRagdollHook extends GeckoLibRagdollHook {
+public class DeaceasedGeckoLibRagdollHook extends DCFixesRagdollHook {
     public DeaceasedGeckoLibRagdollHook() {
         register(BuggerEntity.class, (ragdoll, entity) -> new RagdollAssembler(ragdoll)
                 .merge("bone")

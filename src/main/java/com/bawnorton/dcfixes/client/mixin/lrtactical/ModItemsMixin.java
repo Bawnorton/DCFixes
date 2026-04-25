@@ -1,7 +1,8 @@
 package com.bawnorton.dcfixes.client.mixin.lrtactical;
 
 import com.bawnorton.dcfixes.client.extend.CommonDataManagerExtender;
-import com.bawnorton.dcfixes.client.mixin.accessor.lrtactical.CommonAssetsManagerAccessor;
+import com.bawnorton.dcfixes.client.mixin.lrtactical.accessor.CommonAssetsManagerAccessor;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import me.xjqsh.lrtactical.init.ModItems;
 import me.xjqsh.lrtactical.resource.CommonAssetsManager;
@@ -12,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@IfModLoaded("lrtactical")
 @MixinEnvironment("client")
 @Mixin(value = ModItems.class, remap = false)
 abstract class ModItemsMixin {

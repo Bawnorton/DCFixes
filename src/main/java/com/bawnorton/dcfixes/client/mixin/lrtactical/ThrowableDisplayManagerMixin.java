@@ -1,6 +1,7 @@
 package com.bawnorton.dcfixes.client.mixin.lrtactical;
 
 import com.bawnorton.dcfixes.client.mixin.tacz.JsonDataManagerMixin;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import me.xjqsh.lrtactical.client.resource.display.ThrowableDisplayInstance;
 import me.xjqsh.lrtactical.client.resource.manager.ThrowableDisplayManager;
@@ -9,6 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import java.io.Reader;
 
+@IfModLoaded("lrtactical")
 @MixinEnvironment("client")
 @Mixin(ThrowableDisplayManager.class)
 abstract class ThrowableDisplayManagerMixin extends JsonDataManagerMixin<ThrowableDisplayInstance> {

@@ -3,10 +3,11 @@ package com.bawnorton.dcfixes.client.compat.physics_mod;
 import com.bawnorton.dcfixes.client.DeceasedCraftFixesClient;
 import com.bawnorton.dcfixes.client.compat.ClientCompat;
 import com.bawnorton.dcfixes.client.compat.apocalypsenow.ModelReplacingHumanoidRenderer;
-import com.bawnorton.dcfixes.client.compat.deaceased.DeaceasedCompat;
-import com.bawnorton.dcfixes.client.compat.naturalist.NaturalistCompat;
-import com.bawnorton.dcfixes.client.compat.undead_revamp2.UndeadRevampCompat;
-import com.bawnorton.dcfixes.client.compat.zombie_extreme.ZombieExtremeCompat;
+import com.bawnorton.dcfixes.client.compat.cnpc.CustomNpcRagdollHook;
+import com.bawnorton.dcfixes.client.compat.deaceased.DeaceasedGeckoLibRagdollHook;
+import com.bawnorton.dcfixes.client.compat.naturalist.NaturalistRagdollHook;
+import com.bawnorton.dcfixes.client.compat.undead_revamp2.UndeadRevampRagdollHook;
+import com.bawnorton.dcfixes.client.compat.zombie_extreme.ZombieExtremeRagdollHook;
 import com.bawnorton.dcfixes.client.extend.HumanoidModelExtender;
 import com.bawnorton.dcfixes.client.extend.ModelPartExtender;
 import com.bawnorton.dcfixes.client.extend.PhysicsEntityExtender;
@@ -18,6 +19,8 @@ import net.diebuddies.physics.Mesh;
 import net.diebuddies.physics.PhysicsEntity;
 import net.diebuddies.physics.PhysicsMod;
 import net.diebuddies.physics.StarterClient;
+import net.diebuddies.physics.ragdoll.RagdollHook;
+import net.diebuddies.physics.ragdoll.RagdollMapper;
 import net.diebuddies.physics.settings.mobs.MobPhysicsType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -41,14 +44,48 @@ import java.lang.Math;
 import java.util.List;
 
 public class PhysicsModCompat {
-    public static final ThreadLocal<GeoBone> CURRENT_BONE_CAPTURE = new ThreadLocal<>();
+    private final ThreadLocal<GeoBone> GEO_BONE_CAPTURE = new ThreadLocal<>();
+    private final ThreadLocal<String> CURRENT_BONE_ID = new ThreadLocal<>();
 
     public void registerRagdollHooks() {
         ClientCompat compat = DeceasedCraftFixesClient.getCompat();
-        compat.getUndeadRevampCompat().ifPresent(UndeadRevampCompat::registerRagdolls);
-        compat.getZombieExtremeCompat().ifPresent(ZombieExtremeCompat::registerRagdolls);
-        compat.getNaturalistCompat().ifPresent(NaturalistCompat::registerRagdolls);
-        compat.getDeaceasedCompat().ifPresent(DeaceasedCompat::registerRagdolls);
+        compat.getUndeadRevampCompat().ifPresent(ignored -> addRagdollHook(new UndeadRevampRagdollHook()));
+        compat.getZombieExtremeCompat().ifPresent(ignored -> addRagdollHook(new ZombieExtremeRagdollHook()));
+        compat.getNaturalistCompat().ifPresent(ignored -> addRagdollHook(new NaturalistRagdollHook()));
+        compat.getDeaceasedCompat().ifPresent(ignored -> addRagdollHook(new DeaceasedGeckoLibRagdollHook()));
+        compat.getCustomNpcCompat().ifPresent(ignored -> addRagdollHook(new CustomNpcRagdollHook()));
+    }
+
+    public void addRagdollHook(RagdollHook ragdollHook) {
+        RagdollMapper.addHook(ragdollHook);
+    }
+
+    public boolean isBlockifyingEntity() {
+        return PhysicsMod.getCurrentInstance() != null && PhysicsMod.getCurrentInstance().blockify;
+    }
+
+    public void setCurrentBoneId(String boneId) {
+        CURRENT_BONE_ID.set(boneId);
+    }
+
+    public String getCurrentBoneId() {
+        return CURRENT_BONE_ID.get();
+    }
+
+    public void removeCurrentBoneId() {
+        CURRENT_BONE_ID.remove();
+    }
+
+    public void setGeoBoneCapture(GeoBone geoBone) {
+        GEO_BONE_CAPTURE.set(geoBone);
+    }
+
+    public GeoBone getGeoBoneCapture() {
+        return GEO_BONE_CAPTURE.get();
+    }
+
+    public void removeGeoBoneCapture() {
+        GEO_BONE_CAPTURE.remove();
     }
 
     @SuppressWarnings("unchecked")
@@ -75,7 +112,7 @@ public class PhysicsModCompat {
         original.call(instance, entity, entityYaw, partialTick, poseStack, buffer, packedLight);
     }
 
-    public void createParticlesFromCuboids(PoseStack local, GeoBone owningBone, GeoCube cube, Entity entity, RenderLayer<?, ?> feature, float red, float green, float blue) {
+    public void createParticlesFromCuboids(PoseStack local, GeoCube cube, Entity entity, RenderLayer<?, ?> feature, float red, float green, float blue) {
         Matrix4f localM = local.last().pose();
         Matrix3f localNM = local.last().normal();
 
@@ -142,7 +179,7 @@ public class PhysicsModCompat {
 
         for (Mesh mesh : meshes) {
             PhysicsEntity particle = new PhysicsEntity(PhysicsEntity.Type.MOB, entity.getType());
-            ((PhysicsEntityExtender) particle).dcfixes$setGeoBone(owningBone);
+            ((PhysicsEntityExtender) particle).dcfixes$setBoneId(getCurrentBoneId());
             particle.feature = feature;
             particle.noVolume = noVolume;
             particle.models.get(0).textureID = textureID;
@@ -225,6 +262,7 @@ public class PhysicsModCompat {
 
             clone.offset = offset;
 
+            GeoBone owningBone = getGeoBoneCapture();
             Vector4f bonePivotWorld = new Vector4f(
                     owningBone.getPivotX() * scale,
                     owningBone.getPivotY() * scale,
@@ -240,238 +278,4 @@ public class PhysicsModCompat {
             mod.blockifiedEntity.add(particle);
         }
     }
-
-    /*public void createParticlesFromEmfCuboids(
-            PoseStack.Pose stack,
-            PoseStack local,
-            List<ModelPart.Cube> cuboids,
-            ModelPart modelPart,
-            Entity entity,
-            RenderLayer feature,
-            float red,
-            float green,
-            float blue
-    ) {
-        Matrix4f m = stack.pose();
-        Matrix4f localM = local.last().pose();
-        Matrix3f localNM = local.last().normal();
-        Matrix4d transformation = new Matrix4d();
-        Matrix4d transformationLocal = new Matrix4d();
-        transformation.set(m);
-        transformationLocal.set(localM);
-        transformation.mul(transformationLocal.invert(new Matrix4d()));
-        PhysicsMod mod = PhysicsMod.getInstance(entity.getCommandSenderWorld());
-        int textureID = TextureHelper.getLoadedTextures();
-        float partialTicks = Minecraft.getInstance().getFrameTime();
-        double px = Mth.lerp(partialTicks, entity.xo, entity.getX());
-        double py = Mth.lerp(partialTicks, entity.yo, entity.getY());
-        double pz = Mth.lerp(partialTicks, entity.zo, entity.getZ());
-        transformation.setTranslation(px + transformation.m30(), py + transformation.m31(), pz + transformation.m32());
-        Vector4f[] minMax = new Vector4f[6];
-        Vector3f tmpNormal = new Vector3f();
-        Vector4f tmpPos = new Vector4f();
-
-        for (int i = 0; i < minMax.length; i++) {
-            minMax[i] = new Vector4f();
-        }
-
-        MobPhysicsType type = ConfigMobs.getMobSetting(entity).getType();
-        Iterator var28 = cuboids.iterator();
-
-        while (true) {
-            ModelPart.Cube box;
-            float minX;
-            float minY;
-            float minZ;
-            float maxX;
-            float maxY;
-            float maxZ;
-            boolean mirrorX;
-            boolean mirrorY;
-            boolean mirrorZ;
-            int[] remap;
-            float volume;
-            boolean isBlocky;
-            boolean noVolume;
-            while (true) {
-                if (!var28.hasNext()) {
-                    return;
-                }
-
-                box = (ModelPart.Cube)var28.next();
-                if (box.polygons.length >= 6) {
-                    minX = box.polygons[0].vertices[2].pos.x();
-                    minY = box.polygons[0].vertices[2].pos.y();
-                    minZ = box.polygons[0].vertices[2].pos.z();
-                    maxX = box.polygons[1].vertices[3].pos.x();
-                    maxY = box.polygons[1].vertices[3].pos.y();
-                    maxZ = box.polygons[1].vertices[3].pos.z();
-                    mirrorX = false;
-                    mirrorY = false;
-                    mirrorZ = false;
-                    if (minX > maxX) {
-                        mirrorX = true;
-                    }
-
-                    if (minY > maxY) {
-                        mirrorY = true;
-                    }
-
-                    if (minZ > maxZ) {
-                        mirrorZ = true;
-                    }
-
-                    remap = new int[]{5, 4, 3, 2, 1, 0};
-                    if (mirrorX) {
-                        remap[0] = 3;
-                        remap[2] = 5;
-                    }
-
-                    volume = Math.abs(maxX - minX) / 16.0F * (Math.abs(maxY - minY) / 16.0F) * (Math.abs(maxZ - minZ) / 16.0F);
-                    isBlocky = type == MobPhysicsType.BLOCKY
-                            || type == MobPhysicsType.RAGDOLL
-                            || type == MobPhysicsType.RAGDOLL_BREAK
-                            || type == MobPhysicsType.RAGDOLL_BREAK_BLOOD;
-                    noVolume = false;
-                    if (!(volume <= 1.0E-4)) {
-                        break;
-                    }
-
-                    if (isBlocky) {
-                        noVolume = true;
-                        break;
-                    }
-                }
-            }
-
-            List<Mesh> meshes = PhysicsMod.brokenBlocksLittle.get((int)(net.diebuddies.math.Math.random() * PhysicsMod.brokenBlocksLittle.size()));
-            if (volume <= 0.04 || isBlocky) {
-                meshes = PhysicsMod.brokenBlock;
-            }
-
-            for (int i = 0; i < box.polygons.length; i++) {
-                float minU = 1.0F;
-                float maxU = 0.0F;
-                float minV = 1.0F;
-                float maxV = 0.0F;
-                ModelPart.Vertex[] vertices = box.polygons[i].vertices;
-                if (DeceasedCraftFixesClient.getCompat().getEmfCompat().isEMFModel()) {
-                    minU = vertices[1].u;
-                    maxU = vertices[3].u;
-                    minV = vertices[1].v;
-                    maxV = vertices[3].v;
-                    minMax[i].set(minU, maxU, minV, maxV);
-                } else {
-                    for (ModelPart.Vertex vertex : vertices) {
-                        if (vertex.u < minU) {
-                            minU = vertex.u;
-                        }
-
-                        if (vertex.v < minV) {
-                            minV = vertex.v;
-                        }
-
-                        if (vertex.u > maxU) {
-                            maxU = vertex.u;
-                        }
-
-                        if (vertex.v > maxV) {
-                            maxV = vertex.v;
-                        }
-                    }
-
-                    minMax[i].set(minU, maxU, minV, maxV);
-                }
-            }
-
-            PhysicsEntity parent = null;
-
-            for (Mesh mesh : meshes) {
-                PhysicsEntity particle = new PhysicsEntity(PhysicsEntity.Type.MOB, entity.getType());
-                particle.feature = feature;
-                particle.noVolume = noVolume;
-                particle.models.get(0).textureID = textureID;
-                Mesh clone = new Mesh();
-                particle.models.get(0).mesh = clone;
-                particle.getTransformation().set(transformation);
-                particle.getOldTransformation().set(particle.getTransformation());
-                int count = 0;
-                Vector3f offset = new Vector3f();
-
-                for (int ix = 0; ix < mesh.indices.size(); ix++) {
-                    int index = mesh.indices.getInt(ix);
-                    byte sideIndex = mesh.sides.getByte(index);
-                    Vector3f position = mesh.positions.get(index);
-                    Vector2f uv = mesh.uvs.get(index);
-                    Vector3f normal = mesh.normals.get(index);
-                    float r = red;
-                    float g = green;
-                    float b = blue;
-                    if (sideIndex == -1) {
-                        if (type == MobPhysicsType.FRACTURED_BLOOD) {
-                            r = 0.6F;
-                            g = 0.0F;
-                            b = 0.0F;
-                        }
-
-                        sideIndex = 0;
-                    }
-
-                    tmpNormal.set(mirrorX ? -normal.x : normal.x, mirrorY ? -normal.y : normal.y, mirrorZ ? -normal.z : normal.z);
-                    localNM.transform(tmpNormal);
-                    Vector4f minMaxUVs = minMax[remap[sideIndex]];
-                    tmpPos.set(
-                            (float)net.diebuddies.math.Math.remap(position.x + mesh.offset.x, -0.5, 0.5, minX, maxX) / 16.0F,
-                            (float)net.diebuddies.math.Math.remap(position.y + mesh.offset.y, -0.5, 0.5, minY, maxY) / 16.0F,
-                            (float)net.diebuddies.math.Math.remap(position.z + mesh.offset.z, -0.5, 0.5, minZ, maxZ) / 16.0F,
-                            1.0F
-                    );
-                    localM.transform(tmpPos);
-                    clone.indices.add(count);
-                    offset.add(tmpPos.x(), tmpPos.y(), tmpPos.z());
-                    count++;
-                    Vector3f posR = new Vector3f(tmpPos.x(), tmpPos.y(), tmpPos.z());
-                    clone.positions.add(posR);
-                    float fromX = 1.0F;
-                    float toX = 0.0F;
-                    float fromY = 0.0F;
-                    float toY = 1.0F;
-
-                    clone.uvs
-                            .add(
-                                    new Vector2f(
-                                            net.diebuddies.math.Math.remap(uv.x, fromX, toX, minMaxUVs.x, minMaxUVs.y),
-                                            net.diebuddies.math.Math.remap(uv.y, fromY, toY, minMaxUVs.z, minMaxUVs.w)
-                                    )
-                            );
-                    clone.normals.add(new Vector3f(tmpNormal.x(), tmpNormal.y(), tmpNormal.z()));
-                    clone.addColor(r, g, b);
-                }
-
-                if (StarterClient.iris || StarterClient.optifabric) {
-                    clone.calculatePBRData(false);
-                }
-
-                offset.div(clone.positions.size());
-
-                for (Vector3f positionx : clone.positions) {
-                    positionx.sub(offset);
-                }
-
-                clone.offset = offset;
-                Vector3d ps = transformationLocal.getTranslation(new Vector3d());
-                particle.pivot.set(ps);
-
-                particle.setRotation(new Quaternionf(modelPart.xRot, modelPart.yRot, modelPart.zRot, 1f));
-                particle.setOldRotation(new Quaternionf(modelPart.xRot, modelPart.yRot, modelPart.zRot, 1f));
-
-                if (parent == null) {
-                    parent = particle;
-                    mod.blockifiedEntity.add(particle);
-                } else {
-                    parent.children.add(particle);
-                }
-            }
-        }
-    }*/
 }

@@ -3,6 +3,7 @@ package com.bawnorton.dcfixes.client.mixin.lrtactical;
 import com.bawnorton.dcfixes.client.extend.CommonDataManagerExtender;
 import com.bawnorton.dcfixes.client.mixin.tacz.JsonDataManagerMixin;
 import com.bawnorton.dcfixes.collection.NullSkippingLambdaMap;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -22,6 +23,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
+@IfModLoaded("lrtactical")
 @MixinEnvironment("client")
 @Mixin(value = ThrowableIndexManager.class, remap = false)
 abstract class ThrowableIndexManagerMixin extends JsonDataManagerMixin<ThrowableIndex<?, ?>> implements CommonDataManagerExtender {

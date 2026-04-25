@@ -5,9 +5,11 @@ import minecrafttransportsimulator.baseclasses.Point3D;
 import minecrafttransportsimulator.entities.components.AEntityF_Multipart;
 import minecrafttransportsimulator.jsondefs.JSONVehicle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 import java.util.function.Predicate;
 
@@ -36,7 +38,15 @@ public class IVVehicle {
     }
 
     public boolean shouldTickServer(Point3D pos, ServerLevel level, long currentTick) {
-        return shouldTick(pos, level, currentTick, level::isPositionEntityTicking);
+        return shouldTick(pos, level, currentTick, blockPos -> {
+            LevelChunk chunk = level.getChunkSource().getChunkNow(
+                    SectionPos.blockToSectionCoord(blockPos.getX()),
+                    SectionPos.blockToSectionCoord(blockPos.getZ())
+            );
+            if (chunk == null) return false;
+
+            return level.isPositionEntityTicking(blockPos);
+        });
     }
 
     public boolean shouldTickClient(Point3D pos, Level level, long currentTick) {

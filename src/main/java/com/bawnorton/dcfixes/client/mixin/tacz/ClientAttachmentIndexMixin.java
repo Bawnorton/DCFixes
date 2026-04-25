@@ -1,7 +1,8 @@
 package com.bawnorton.dcfixes.client.mixin.tacz;
 
 import com.bawnorton.dcfixes.client.extend.ClientAttachmentIndexExtender;
-import com.bawnorton.dcfixes.client.mixin.accessor.ClientAttachmentIndexAccessor;
+import com.bawnorton.dcfixes.client.mixin.tacz.accessor.ClientAttachmentIndexAccessor;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
+@IfModLoaded("tacz")
 @MixinEnvironment("client")
 @Mixin(value = ClientAttachmentIndex.class, remap = false)
 abstract class ClientAttachmentIndexMixin implements ClientAttachmentIndexExtender {

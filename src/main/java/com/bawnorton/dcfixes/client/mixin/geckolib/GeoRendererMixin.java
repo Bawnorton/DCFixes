@@ -2,6 +2,7 @@ package com.bawnorton.dcfixes.client.mixin.geckolib;
 
 import com.bawnorton.dcfixes.client.DeceasedCraftFixesClient;
 import com.bawnorton.dcfixes.client.compat.physics_mod.PhysicsModCompat;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
@@ -22,6 +23,7 @@ import software.bernie.geckolib.cache.object.GeoQuad;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.renderer.GeoRenderer;
 
+@IfModLoaded({"geckolib", "physicsmod"})
 @MixinEnvironment("client")
 @Mixin(value = GeoRenderer.class, priority = 1500, remap = false)
 public interface GeoRendererMixin {
@@ -34,7 +36,10 @@ public interface GeoRendererMixin {
             argsOnly = true
     )
     private <E extends GeoAnimatable, R extends GeoRenderer<E>> RenderType replaceRenderType(RenderType renderType, @Local(argsOnly = true) E animatable) {
-        return DeceasedCraftFixesClient.getCompat().getGeckoLibCompat().replaceRenderType(animatable, (R) this, renderType);
+        return DeceasedCraftFixesClient.getCompat()
+                .getGeckoLibCompat()
+                .orElseThrow()
+                .replaceRenderType(animatable, (R) this, renderType);
     }
 
     @WrapMethod(
@@ -42,9 +47,14 @@ public interface GeoRendererMixin {
     )
     default void attachBone(PoseStack poseStack, GeoBone bone, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha, Operation<Void> original) {
         if (!bone.isHidden()) {
-            PhysicsModCompat.CURRENT_BONE_CAPTURE.set(bone);
+            PhysicsModCompat compat = DeceasedCraftFixesClient.getCompat()
+                    .getPhysicsModCompat()
+                    .orElseThrow();
+            compat.setGeoBoneCapture(bone);
+            compat.setCurrentBoneId(bone.getName());
             original.call(poseStack, bone, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-            PhysicsModCompat.CURRENT_BONE_CAPTURE.remove();
+            compat.removeGeoBoneCapture();
+            compat.removeCurrentBoneId();
         }
     }
 
@@ -57,10 +67,12 @@ public interface GeoRendererMixin {
     )
     private GeoQuad[] createPhysicsModParticles(GeoCube instance, Operation<GeoQuad[]> original, PoseStack poseStack, GeoCube cube, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         GeoQuad[] quads = original.call(instance);
-        if (PhysicsMod.getCurrentInstance() != null && PhysicsMod.getCurrentInstance().blockify) {
-            DeceasedCraftFixesClient.getCompat().getPhysicsModCompat().createParticlesFromCuboids(
+        PhysicsModCompat compat = DeceasedCraftFixesClient.getCompat()
+                .getPhysicsModCompat()
+                .orElseThrow();
+        if (compat.isBlockifyingEntity()) {
+            compat.createParticlesFromCuboids(
                     poseStack,
-                    PhysicsModCompat.CURRENT_BONE_CAPTURE.get(),
                     cube,
                     PhysicsMod.getCurrentInstance().cubifyEntity,
                     PhysicsMod.getCurrentInstance().blockifyFeature,

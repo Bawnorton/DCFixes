@@ -1,6 +1,6 @@
 package com.bawnorton.dcfixes.client.compat.apocalypsenow;
 
-import com.bawnorton.dcfixes.client.mixin.accessor.EntityRendererAccessor;
+import com.bawnorton.dcfixes.client.mixin.physics_mod.accessor.EntityRendererAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;

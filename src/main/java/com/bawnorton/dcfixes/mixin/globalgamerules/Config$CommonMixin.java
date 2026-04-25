@@ -1,6 +1,7 @@
 package com.bawnorton.dcfixes.mixin.globalgamerules;
 
-import com.bawnorton.dcfixes.mixin.accessor.GameRulesAcessor;
+import com.bawnorton.dcfixes.mixin.globalgamerules.accessor.GameRulesAcessor;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.google.common.collect.ImmutableMap;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -11,6 +12,7 @@ import se.gory_moon.globalgamerules.Config;
 
 import java.util.Map;
 
+@IfModLoaded("globalgamerules")
 @Mixin(Config.Common.class)
 abstract class Config$CommonMixin {
     @WrapOperation(

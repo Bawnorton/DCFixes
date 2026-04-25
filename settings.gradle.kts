@@ -61,3 +61,6 @@ gradle.beforeProject {
 }
 
 rootProject.name = "DeceasedCraftFixes"
+
+include(":early-loader")
+project(":early-loader").projectDir = file("early-loader")

@@ -1,6 +1,7 @@
 package com.bawnorton.dcfixes.client.mixin.tacz;
 
 import com.bawnorton.dcfixes.collection.StandardLambdaMap;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.tacz.guns.GunMod;
 import com.tacz.guns.api.client.animation.gltf.AnimationStructure;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+@IfModLoaded("tacz")
 @MixinEnvironment("client")
 @Mixin(value = GltfManager.class, remap = false)
 abstract class GltfManagerMixin {

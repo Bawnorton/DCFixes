@@ -3,6 +3,7 @@ package com.bawnorton.dcfixes.client.mixin.tacz;
 import com.bawnorton.dcfixes.DeceasedCraftFixes;
 import com.bawnorton.dcfixes.client.extend.ClientGunIndexExtender;
 import com.bawnorton.dcfixes.collection.StandardLambdaMap;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.client.resource.ClientAssetsManager;
 import com.tacz.guns.client.resource.ClientIndexManager;
@@ -33,6 +34,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Map;
 
 @SuppressWarnings("DataFlowIssue")
+@IfModLoaded("tacz")
 @MixinEnvironment("client")
 @Mixin(value = ClientIndexManager.class, remap = false)
 abstract class ClientIndexManagerMixin {

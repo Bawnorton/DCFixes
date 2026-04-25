@@ -1,5 +1,6 @@
 package com.bawnorton.dcfixes.client.compat;
 
+import com.bawnorton.dcfixes.client.compat.cnpc.CustomNpcCompat;
 import com.bawnorton.dcfixes.client.compat.deaceased.DeaceasedCompat;
 import com.bawnorton.dcfixes.client.compat.emf.EMFCompat;
 import com.bawnorton.dcfixes.client.compat.geckolib.GeckoLibCompat;
@@ -12,30 +13,37 @@ import net.minecraftforge.fml.ModList;
 import java.util.Optional;
 
 public class ClientCompat {
-    private final PhysicsModCompat physicsModCompat;
-    private final EMFCompat emfCompat;
-    private final GeckoLibCompat geckoLibCompat;
+    private PhysicsModCompat physicsModCompat;
+    private EMFCompat emfCompat;
+    private GeckoLibCompat geckoLibCompat;
     private UndeadRevampCompat undeadRevampCompat;
     private ZombieExtremeCompat zombieExtremeCompat;
     private NaturalistCompat naturalistCompat;
     private DeaceasedCompat deaceasedCompat;
+    private CustomNpcCompat customNpcCompat;
 
-    public ClientCompat() {
-        physicsModCompat = new PhysicsModCompat();
-        emfCompat = new EMFCompat();
-        geckoLibCompat = new GeckoLibCompat();
+    public Optional<PhysicsModCompat> getPhysicsModCompat() {
+        if (!ModList.get().isLoaded("physicsmod")) return Optional.empty();
+        if (physicsModCompat == null) {
+            physicsModCompat = new PhysicsModCompat();
+        }
+        return Optional.of(physicsModCompat);
     }
 
-    public PhysicsModCompat getPhysicsModCompat() {
-        return physicsModCompat;
+    public Optional<EMFCompat> getEmfCompat() {
+        if (!ModList.get().isLoaded("entity_model_features")) return Optional.empty();
+        if (emfCompat == null) {
+            emfCompat = new EMFCompat();
+        }
+        return Optional.of(emfCompat);
     }
 
-    public EMFCompat getEmfCompat() {
-        return emfCompat;
-    }
-
-    public GeckoLibCompat getGeckoLibCompat() {
-        return geckoLibCompat;
+    public Optional<GeckoLibCompat> getGeckoLibCompat() {
+        if (!ModList.get().isLoaded("geckolib")) return Optional.empty();
+        if (geckoLibCompat == null) {
+            geckoLibCompat = new GeckoLibCompat();
+        }
+        return Optional.of(geckoLibCompat);
     }
 
     public Optional<UndeadRevampCompat> getUndeadRevampCompat() {
@@ -68,5 +76,13 @@ public class ClientCompat {
             deaceasedCompat = new DeaceasedCompat();
         }
         return Optional.of(deaceasedCompat);
+    }
+
+    public Optional<CustomNpcCompat> getCustomNpcCompat() {
+        if (!ModList.get().isLoaded("customnpcs")) return Optional.empty();
+        if (customNpcCompat == null) {
+            customNpcCompat = new CustomNpcCompat();
+        }
+        return Optional.of(customNpcCompat);
     }
 }

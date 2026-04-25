@@ -1,7 +1,8 @@
 package com.bawnorton.dcfixes.mixin.immersive_vehicles;
 
 import com.bawnorton.dcfixes.client.extend.EntityExtender;
-import com.bawnorton.dcfixes.mixin.accessor.WrapperEntityAccessor;
+import com.bawnorton.dcfixes.mixin.immersive_vehicles.accessor.WrapperEntityAccessor;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import mcinterface1201.WrapperEntity;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 
+@IfModLoaded("mts")
 @Mixin(value = WrapperEntity.class, remap = false)
 abstract class WrapperEntityMixin {
     @WrapMethod(

@@ -1,6 +1,7 @@
 package com.bawnorton.dcfixes.client.mixin.tacz;
 
 import com.bawnorton.dcfixes.client.extend.ClientGunIndexExtender;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
+@IfModLoaded("tacz")
 @MixinEnvironment("client")
 @Mixin(value = ClientGunIndex.class, remap = false)
 abstract class ClientGunIndexMixin implements ClientGunIndexExtender {

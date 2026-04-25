@@ -1,29 +1,30 @@
 package com.bawnorton.dcfixes.client.mixin.physics_mod;
 
 import com.bawnorton.dcfixes.client.extend.PhysicsEntityExtender;
+import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.diebuddies.physics.PhysicsEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import software.bernie.geckolib.cache.object.GeoBone;
 
+@IfModLoaded({"physicsmod", "geckolib"})
 @MixinEnvironment("client")
 @Mixin(PhysicsEntity.class)
 abstract class PhysicsEntityMixin implements PhysicsEntityExtender {
     @Unique
-    private GeoBone dcfixes$geoBone;
+    private String dcfixes$boneId;
 
     @Unique
     private int dcfixes$ragdollIndex = -1;
 
     @Override
-    public GeoBone dcfixes$getGeoBone() {
-        return dcfixes$geoBone;
+    public String dcfixes$getBoneId() {
+        return dcfixes$boneId;
     }
 
     @Override
-    public void dcfixes$setGeoBone(GeoBone geoBone) {
-        this.dcfixes$geoBone = geoBone;
+    public void dcfixes$setBoneId(String boneId) {
+        this.dcfixes$boneId = boneId;
     }
 
     @Override

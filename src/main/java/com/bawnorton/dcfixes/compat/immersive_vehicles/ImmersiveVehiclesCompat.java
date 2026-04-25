@@ -1,6 +1,6 @@
 package com.bawnorton.dcfixes.compat.immersive_vehicles;
 
-import com.bawnorton.dcfixes.mixin.accessor.WrapperWorldAccessor;
+import com.bawnorton.dcfixes.mixin.immersive_vehicles.accessor.WrapperWorldAccessor;
 import minecrafttransportsimulator.baseclasses.Point3D;
 import minecrafttransportsimulator.entities.components.AEntityA_Base;
 import minecrafttransportsimulator.entities.components.AEntityF_Multipart;

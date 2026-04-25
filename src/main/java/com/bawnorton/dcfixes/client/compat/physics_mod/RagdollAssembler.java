@@ -5,7 +5,6 @@ import com.bawnorton.dcfixes.client.extend.PhysicsEntityExtender;
 import com.bawnorton.dcfixes.config.DCFixesConfig;
 import net.diebuddies.physics.PhysicsEntity;
 import net.diebuddies.physics.ragdoll.Ragdoll;
-import software.bernie.geckolib.cache.object.GeoBone;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,9 +23,9 @@ public class RagdollAssembler {
 
         for (int i = 0; i < ragdoll.bodies.size(); i++) {
             PhysicsEntityExtender extender = (PhysicsEntityExtender) ragdoll.bodies.get(i);
-            GeoBone bone = extender.dcfixes$getGeoBone();
-            if (bone != null) {
-                boneIndices.computeIfAbsent(bone.getName(), k -> new ArrayList<>()).add(i);
+            String boneId = extender.dcfixes$getBoneId();
+            if (boneId != null) {
+                boneIndices.computeIfAbsent(boneId, k -> new ArrayList<>()).add(i);
             }
         }
 
@@ -79,8 +78,60 @@ public class RagdollAssembler {
         return this;
     }
 
+    public RagdollAssembler connect(int targetIdx, String sourceName, Type type) {
+        queue.add(() -> {
+            List<Integer> sources = boneIndices.get(sourceName);
+            if (sources == null || sources.isEmpty()) {
+                if (DCFixesConfig.get().ragdollDebug) {
+                    DeceasedCraftFixes.LOGGER.warn("Ragdoll Connect Warning: Source part '{}' has {} bodies. Connection skipped.", sourceName, sources == null ? "n/a" : sources.size());
+                }
+                return;
+            }
+
+            validateAndConnect(sources.get(0), targetIdx, type.isFixed, type.isVisual);
+        });
+        return this;
+    }
+
+    public RagdollAssembler connect(String targetName, int sourceIdx, Type type) {
+        queue.add(() -> {
+            List<Integer> targets = boneIndices.get(targetName);
+            if (targets == null || targets.isEmpty()) {
+                if (DCFixesConfig.get().ragdollDebug) {
+                    DeceasedCraftFixes.LOGGER.warn("Ragdoll Connect Warning: Target part '{}' has {} bodies. Connection skipped.", targetName, targets == null ? "n/a" : targets.size());
+                }
+                return;
+            }
+
+            validateAndConnect(sourceIdx, targets.get(0), type.isFixed, type.isVisual);
+        });
+        return this;
+    }
+
     public RagdollAssembler connect(int targetIdx, int sourceIdx, Type type) {
         queue.add(() -> validateAndConnect(sourceIdx, targetIdx, type.isFixed, type.isVisual));
+        return this;
+    }
+
+    public RagdollAssembler mergeOn(int targetIdx, String partName, Type type) {
+        queue.add(() -> {
+            List<Integer> sources = boneIndices.get(partName);
+            if (sources == null || sources.isEmpty()) {
+                if (DCFixesConfig.get().ragdollDebug) {
+                    DeceasedCraftFixes.LOGGER.warn("Ragdoll MergeOn Warning: Part '{}' has {} bodies. Merge skipped.", partName, sources == null ? "n/a" : sources.size());
+                }
+                return;
+            }
+            if(DCFixesConfig.get().ragdollDebug && !sources.contains(targetIdx)) {
+                DeceasedCraftFixes.LOGGER.warn("Ragdoll MergeOn Warning: Target index {} is not part of '{}'. Merge may produce unexpected results.", targetIdx, partName);
+            }
+
+            for (Integer sourceIdx : sources) {
+                if(sourceIdx == targetIdx) continue;
+
+                validateAndConnect(sourceIdx, targetIdx, type.isFixed, type.isVisual);
+            }
+        });
         return this;
     }
 
