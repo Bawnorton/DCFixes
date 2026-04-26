@@ -3,10 +3,9 @@ loaderVersion = "[47,)"
 license = "MIT"
 
 [[mods]]
-modId = "dcfixes-early-loader"
+modId = "super-early"
 version = "1.0.0"
-displayName = "DeceasdCraftFixes Early Loader"
-logoFile = "assets/dcfixes-early-loader/icon.png"
-description = '''Replaces the early loading screen of Forge for DeceasedCraft'''
+displayName = "Super Early"
+logoFile = "../assets/super-early/icon.png"
+description = '''Replaces the early loading screen of Forge'''
 authors = "Bawnorton"
-issueTrackerURL = "https://github.com/Bawnorton/DCFixes/issues"

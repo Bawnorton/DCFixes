@@ -1,6 +1,6 @@
-package com.bawnorton.dcfixes.super_early.extensions;
+package com.bawnorton.super_early.extensions;
 
-import com.bawnorton.dcfixes.super_early.reflection.FieldReference;
+import com.bawnorton.super_early.reflection.FieldReference;
 import net.minecraftforge.fml.loading.ImmediateWindowHandler;
 import net.minecraftforge.fml.loading.ImmediateWindowProvider;
 

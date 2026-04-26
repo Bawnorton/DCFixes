@@ -1,4 +1,4 @@
-package com.bawnorton.dcfixes.super_early.extensions;
+package com.bawnorton.super_early.extensions;
 
 import net.minecraftforge.fml.earlydisplay.RenderElement;
 

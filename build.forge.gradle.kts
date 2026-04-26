@@ -54,7 +54,7 @@ base.archivesName = "${mod("id")}-${mod("version")}+$minecraft-$loader"
 evaluationDependsOn(":early-loader")
 
 dependencies {
-    runtimeOnly(project(":early-loader"))
+    project(":early-loader")
 
     // Mixin
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3")!!)
@@ -69,6 +69,8 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
 
     // Compats / Fixes
+    withSourcesJar(modImplementation("curse.maven:corpse-316582:7018272"))
+
     modImplementation("com.simibubi.create:create-$minecraft:${deps("create")}:slim") { isTransitive = false }
     modImplementation("net.createmod.ponder:Ponder-Forge-$minecraft:${deps("ponder")}")
     modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-$minecraft:${deps("flywheel")}")
@@ -82,7 +84,7 @@ dependencies {
 
     modCompileOnly("curse.maven:engineered-schematics-1207780:7666550")
 
-    modCompileOnly("curse.maven:customnpcs-unofficial-1052708:7694841")
+    modImplementation("curse.maven:customnpcs-unofficial-1052708:7694841")
     modCompileOnly("curse.maven:cnpc-gecko-addon-970162:7701498")
 
     modCompileOnly("curse.maven:immersive-engineering-231951:6206989")
@@ -97,8 +99,8 @@ dependencies {
     modImplementation("curse.maven:minecraft-transport-simulator-286703:7423733")
     modRuntimeOnly("curse.maven:spark-361579:4738952")
 
-    modCompileOnly("curse.maven:the-hordes-485779:6718502")
-    modCompileOnly("curse.maven:atlas-lib-463826:5254550")
+    withSourcesJar(modImplementation("curse.maven:the-hordes-485779:6718502"))
+    modRuntimeOnly("curse.maven:atlas-lib-463826:5254550")
 
     modCompileOnly("curse.maven:geckolibbetterfps-1455983:7609709")
     modCompileOnly("curse.maven:flerovium-1142875:6428986")
@@ -122,10 +124,10 @@ dependencies {
     modImplementation("curse.maven:physics-mod-442735:7781938")
     modImplementation("software.bernie.geckolib:geckolib-forge-$minecraft:4.8.3")
     implementation("com.eliotlash.mclib:mclib:20")
-    modImplementation("curse.maven:theundead-479710:7446558")
+    modCompileOnly("curse.maven:theundead-479710:7446558")
     modCompileOnly("curse.maven:zombie-extreme-392809:7014500")
-    modImplementation("curse.maven:apocalypse-now-448410:6364603")
-    modRuntimeOnly("curse.maven:curios-309927:6418456")
+    modCompileOnly("curse.maven:apocalypse-now-448410:6364603")
+//    modRuntimeOnly("curse.maven:curios-309927:6418456")
     modCompileOnly("curse.maven:deceased-beast-1426968:7640180")
     modCompileOnly("curse.maven:naturalist-627986:6863943")
 

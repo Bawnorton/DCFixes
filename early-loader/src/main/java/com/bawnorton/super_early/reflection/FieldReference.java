@@ -1,4 +1,4 @@
-package com.bawnorton.dcfixes.super_early.reflection;
+package com.bawnorton.super_early.reflection;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;

@@ -18,13 +18,12 @@ val versionProperties = Properties().apply {
 val forgeVersion = versionProperties.getProperty("deps.forge")
     ?: error("Missing deps.forge in versions/$activeStonecutterVersion/gradle.properties")
 
-val modId = rootProject.findProperty("mod.id") as String
 val modVersion = rootProject.findProperty("mod.version") as String
 val modGroup = rootProject.findProperty("mod.group") as String
 
-group = "$modGroup.$modId"
-version = modVersion
-base.archivesName = "$modId-early-loader"
+group = "$modGroup.super-early"
+version = "1.0.0"
+base.archivesName = "super-early"
 
 repositories {
     mavenCentral()
@@ -49,7 +48,7 @@ java {
 tasks.named<Jar>("jar") {
     manifest {
         attributes(
-            "Implementation-Title" to "$modId early-loader",
+            "Implementation-Title" to "super-early",
             "Implementation-Version" to modVersion
         )
     }

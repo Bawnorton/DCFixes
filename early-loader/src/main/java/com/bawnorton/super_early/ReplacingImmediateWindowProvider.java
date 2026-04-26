@@ -1,6 +1,6 @@
-package com.bawnorton.dcfixes.super_early;
+package com.bawnorton.super_early;
 
-import com.bawnorton.dcfixes.super_early.extensions.*;
+import com.bawnorton.super_early.extensions.*;
 import net.minecraftforge.fml.earlydisplay.*;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.ImmediateWindowProvider;
@@ -15,10 +15,10 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("resource")
-public class DCFixesImmediateWindowProvider extends DisplayWindow implements ImmediateWindowProvider {
+public class ReplacingImmediateWindowProvider extends DisplayWindow implements ImmediateWindowProvider {
     private DisplayWindowExtension extension;
 
-    public DCFixesImmediateWindowProvider() {
+    public ReplacingImmediateWindowProvider() {
         DisplayWindowExtension.tryAs(this, extension -> this.extension = extension);
     }
 
@@ -128,12 +128,12 @@ public class DCFixesImmediateWindowProvider extends DisplayWindow implements Imm
 
     @Override
     public Runnable initialize(String[] arguments) {
-        throw new UnsupportedOperationException("Initialize should not be called on DCFixesImmediateWindowProvider");
+        throw new UnsupportedOperationException("Initialize should not be called on ReplacingImmediateWindowProvider");
     }
 
     @Override
     public Runnable start(@Nullable String mcVersion, String forgeVersion) {
-        throw new UnsupportedOperationException("Start should not be called on DCFixesImmediateWindowProvider");
+        throw new UnsupportedOperationException("Start should not be called on ReplacingImmediateWindowProvider");
     }
 
     @Override

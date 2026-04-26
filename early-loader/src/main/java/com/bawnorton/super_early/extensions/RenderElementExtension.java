@@ -1,7 +1,7 @@
-package com.bawnorton.dcfixes.super_early.extensions;
+package com.bawnorton.super_early.extensions;
 
-import com.bawnorton.dcfixes.super_early.reflection.FieldReference;
-import com.bawnorton.dcfixes.super_early.reflection.MethodReference;
+import com.bawnorton.super_early.reflection.FieldReference;
+import com.bawnorton.super_early.reflection.MethodReference;
 import net.minecraftforge.fml.earlydisplay.ElementShader;
 import net.minecraftforge.fml.earlydisplay.RenderElement;
 import net.minecraftforge.fml.earlydisplay.SimpleBufferBuilder;

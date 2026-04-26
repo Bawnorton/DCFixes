@@ -1,7 +1,7 @@
-package com.bawnorton.dcfixes.super_early;
+package com.bawnorton.super_early;
 
-import com.bawnorton.dcfixes.super_early.extensions.DisplayWindowExtension;
-import com.bawnorton.dcfixes.super_early.extensions.ImmediateWindowHandlerExtension;
+import com.bawnorton.super_early.extensions.DisplayWindowExtension;
+import com.bawnorton.super_early.extensions.ImmediateWindowHandlerExtension;
 import cpw.mods.modlauncher.api.*;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.ImmediateWindowProvider;
@@ -18,7 +18,7 @@ public class WindowReplacingTransformationService implements ITransformationServ
     private final Logger LOGGER = LoggerFactory.getLogger(WindowReplacingTransformationService.class);
 
     public WindowReplacingTransformationService() {
-        DCFixesImmediateWindowProvider newProvider = new DCFixesImmediateWindowProvider();
+        ReplacingImmediateWindowProvider newProvider = new ReplacingImmediateWindowProvider();
         ImmediateWindowProvider currentProvider = ImmediateWindowHandlerExtension.getProvider();
         DisplayWindowExtension.tryAs(currentProvider, displayWindowExtension -> {
             ScheduledFuture<?> initializationFuture = displayWindowExtension.getInitializationFuture();
