@@ -1,17 +1,18 @@
 package com.bawnorton.dcfixes.mixin.corpse;
 
-import com.bawnorton.dcfixes.mixin.corpse.accessor.DeathAccessor;
+import com.bawnorton.dcfixes.extend.DeathExtension;
+import com.bawnorton.dcfixes.extend.PlayerZombieExtender;
 import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import de.maxhenkel.corpse.corelib.death.Death;
 import de.maxhenkel.corpse.corelib.death.DeathEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.smileycorp.hordes.common.entities.PlayerZombie;
@@ -51,19 +52,8 @@ abstract class DeathEventsMixin {
             method = "playerDeath(Lnet/minecraftforge/event/entity/living/LivingDropsEvent;)V",
             at = @At("MIXINEXTRAS:EXPRESSION")
     )
-    private LivingEntity attachDrops(LivingEntity original, @Local(name = "entity") Entity entity, @Local(name = "event") LivingDropsEvent event) {
-        if(entity instanceof ServerPlayer serverPlayer && original instanceof PlayerZombie<?> playerZombie) {
-            Level level = serverPlayer.level();
-            event.getDrops().addAll(playerZombie.getInventory()
-                    .stream()
-                    .map(stack -> new ItemEntity(
-                            level,
-                            original.getX(),
-                            original.getY(),
-                            original.getZ(),
-                            stack
-                    ))
-                    .toList());
+    private LivingEntity replaceWithPlayer(LivingEntity original, @Local(name = "entity") Entity entity) {
+        if(entity instanceof ServerPlayer serverPlayer) {
             return serverPlayer;
         }
         return original;
@@ -76,13 +66,18 @@ abstract class DeathEventsMixin {
                     target = "Lnet/minecraftforge/event/entity/living/LivingDropsEvent;getDrops()Ljava/util/Collection;"
             )
     )
-    private void moveDeathLocation(LivingDropsEvent event, CallbackInfo ci, @Local(name = "death") Death death) {
+    private void modifyDeath(LivingDropsEvent event, CallbackInfo ci, @Local(name = "death") LocalRef<Death> deathRef) {
         LivingEntity entity = event.getEntity();
-        if(entity instanceof PlayerZombie<?>) {
-            DeathAccessor accessor = (DeathAccessor) death;
-            accessor.dcfixes$posX(entity.getX());
-            accessor.dcfixes$posY(entity.getY());
-            accessor.dcfixes$posZ(entity.getZ());
+        if(entity instanceof PlayerZombieExtender playerZombie) {
+            Death death = playerZombie.dcfixes$getDeath();
+            DeathExtension.tryAs(death, extension -> {
+                extension.setPosX(entity.getX());
+                extension.setPosY(entity.getY());
+                extension.setPosZ(entity.getZ());
+            });
+            deathRef.set(death);
+            DeathExtension.setTransferCapture(true);
+            event.getDrops().clear();
         }
     }
 }

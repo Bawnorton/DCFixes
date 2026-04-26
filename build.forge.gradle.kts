@@ -127,7 +127,7 @@ dependencies {
     modCompileOnly("curse.maven:theundead-479710:7446558")
     modCompileOnly("curse.maven:zombie-extreme-392809:7014500")
     modCompileOnly("curse.maven:apocalypse-now-448410:6364603")
-//    modRuntimeOnly("curse.maven:curios-309927:6418456")
+    modCompileOnly("curse.maven:curios-309927:6418456")
     modCompileOnly("curse.maven:deceased-beast-1426968:7640180")
     modCompileOnly("curse.maven:naturalist-627986:6863943")
 
