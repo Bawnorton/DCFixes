@@ -1,4 +1,4 @@
-package com.bawnorton.dcfixes.client.mixin;
+package com.bawnorton.dcfixes.client.mixin.minecraft;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

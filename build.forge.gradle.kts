@@ -54,8 +54,6 @@ base.archivesName = "${mod("id")}-${mod("version")}+$minecraft-$loader"
 evaluationDependsOn(":early-loader")
 
 dependencies {
-    project(":early-loader")
-
     // Mixin
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3")!!)
     jarJar(implementation("io.github.llamalad7:mixinextras-forge:0.5.3")!!)
@@ -69,7 +67,9 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
 
     // Compats / Fixes
-    withSourcesJar(modImplementation("curse.maven:corpse-316582:7018272"))
+    withSourcesJar(modImplementation("curse.maven:legendary-survival-overhaul-840254:7603852"))
+
+    modCompileOnly("curse.maven:corpse-316582:7018272")
 
     modImplementation("com.simibubi.create:create-$minecraft:${deps("create")}:slim") { isTransitive = false }
     modImplementation("net.createmod.ponder:Ponder-Forge-$minecraft:${deps("ponder")}")
@@ -99,8 +99,8 @@ dependencies {
     modImplementation("curse.maven:minecraft-transport-simulator-286703:7423733")
     modRuntimeOnly("curse.maven:spark-361579:4738952")
 
-    withSourcesJar(modImplementation("curse.maven:the-hordes-485779:6718502"))
-    modRuntimeOnly("curse.maven:atlas-lib-463826:5254550")
+    modCompileOnly("curse.maven:the-hordes-485779:6718502")
+    /*modRuntimeOnly("curse.maven:atlas-lib-463826:5254550")*/
 
     modCompileOnly("curse.maven:geckolibbetterfps-1455983:7609709")
     modCompileOnly("curse.maven:flerovium-1142875:6428986")
@@ -114,6 +114,7 @@ dependencies {
 
     // Fabric Mod Compats
     modImplementation("org.sinytra:Connector:1.0.0-beta.48+1.20.1")
+    runtimeOnly("curse.maven:c2me-533097:6181291")
     /*runtimeOnly("curse.maven:moreculling-630104:7552138")
     runtimeOnly("me.shedaniel.cloth:cloth-config-fabric:11.0.99") {
         exclude(group = "net.fabricmc.fabric-api")
@@ -126,8 +127,8 @@ dependencies {
     implementation("com.eliotlash.mclib:mclib:20")
     modCompileOnly("curse.maven:theundead-479710:7446558")
     modCompileOnly("curse.maven:zombie-extreme-392809:7014500")
-    modCompileOnly("curse.maven:apocalypse-now-448410:6364603")
-    modCompileOnly("curse.maven:curios-309927:6418456")
+    modImplementation("curse.maven:apocalypse-now-448410:6364603")
+    modImplementation("curse.maven:curios-309927:6418456")
     modCompileOnly("curse.maven:deceased-beast-1426968:7640180")
     modCompileOnly("curse.maven:naturalist-627986:6863943")
 
@@ -146,11 +147,21 @@ registerIntermediaryToMojmapCompileBridges(
         IntermediaryJarBridgeSpec(
             key = "moreCulling",
             moduleNotation = "curse.maven:moreculling-630104:7552138",
-            remappedJarBasename = "moreculling-7552138"
-        ) {
-            exclude(group = "net.fabricmc")
-            exclude(group = "maven.modrinth")
-        }
+            remappedJarBasename = "moreculling-7552138",
+            configureDependency = {
+                exclude(group = "net.fabricmc")
+                exclude(group = "maven.modrinth")
+            }
+        ),
+        IntermediaryJarBridgeSpec(
+            key = "c2me",
+            moduleNotation = "curse.maven:c2me-533097:6181291",
+            remappedJarBasename = "c2me-6181291",
+            remapEmbeddedJars = true,
+            embeddedJarFilter = { entryName ->
+                entryName.startsWith("META-INF/jars/c2me") && entryName.endsWith(".jar")
+            }
+        )
     ),
     minecraftVersion = minecraft
 )

@@ -57,7 +57,7 @@ private fun Project.registerTransformedSourcesTask(state: TransformedSourcesStat
     add(vineflowerTool.name, "org.vineflower:vineflower:1.11.2")
   }
 
-  val generateTask = tasks.register("generateTransformedDependencySources") {
+  tasks.register("generateTransformedDependencySources") {
     group = "build setup"
     description = "Generates -sources.jar files next to Gradle transformed dependency jars"
 
@@ -101,14 +101,6 @@ private fun Project.registerTransformedSourcesTask(state: TransformedSourcesStat
         }
       }
     }
-  }
-
-  tasks.withType(JavaCompile::class.java).configureEach {
-    dependsOn(generateTask)
-  }
-
-  tasks.matching { it.name.startsWith("compile") && it.name.endsWith("Kotlin") }.configureEach {
-    dependsOn(generateTask)
   }
 }
 
