@@ -22,7 +22,6 @@ public final class DCFixesAnnotationAdjuster implements MixinAnnotationAdjuster 
         return switch (mixinClassName) {
             case "ca.fxco.moreculling.mixin.renderers.ItemRenderer_faceCullingMixin" -> adjustItemRenderer_faceCullingMixin(mixinClassName, annotationNode, handlerNode);
             case "ca.fxco.moreculling.mixin.models.cullshape.JsonUnbakedModel_cullShapeMixin" -> adjustJsonUnbakedModel_cullShapeMixin(annotationNode);
-            case "link.e4mc.mixin.ServerLoginPacketListenerImplMixin" -> adjustServerLoginPacketListenerImplMixin(mixinClassName, annotationNode, handlerNode);
             default -> annotationNode;
         };
     }
@@ -144,93 +143,6 @@ public final class DCFixesAnnotationAdjuster implements MixinAnnotationAdjuster 
                 addNewHandler(mixinClassName, handlerNode);
 
                 return mevNode;
-            }
-        }
-        return annotationNode;
-    }
-
-    private AdjustableAnnotationNode adjustServerLoginPacketListenerImplMixin(String mixinClassName, AdjustableAnnotationNode annotationNode, MethodNode handlerNode) {
-        if (annotationNode.is(Redirect.class)) {
-            AdjustableRedirectNode redirectNode = annotationNode.as(AdjustableRedirectNode.class);
-            String target = redirectNode.getAt().getTarget();
-            if(target.equals("Lnet/minecraft/util/Crypt;m_13583_(ILjava/security/Key;)Ljavax/crypto/Cipher;")
-                    || target.equals("Lnet/minecraft/util/Crypt;getCipher(ILjava/security/Key;)Ljavax/crypto/Cipher;")) {
-
-                AdjustableWrapOperationNode wrapOpNode = AdjustableWrapOperationNode.defaultNode(redirectNode.getMethod())
-                        .withAt(at -> {
-                            at.add(redirectNode.getAt());
-                            return at;
-                        });
-
-                Type cipherType = Type.getType("Ljavax/crypto/Cipher;");
-                Type intType = Type.INT_TYPE;
-                Type keyType = Type.getType("Ljava/security/Key;");
-                Type operationType = Type.getType("Lcom/llamalad7/mixinextras/injector/wrapoperation/Operation;");
-                handlerNode.desc = Type.getMethodDescriptor(cipherType, intType, keyType, operationType);
-
-                handlerNode.parameters = new ArrayList<>();
-                handlerNode.parameters.add(new ParameterNode("i", 0));
-                handlerNode.parameters.add(new ParameterNode("key", 0));
-                handlerNode.parameters.add(new ParameterNode("original", 0));
-
-                int iIndex = 1;
-                int keyIndex = 2;
-                int originalIndex = 3;
-
-                InsnList instructions = new InsnList();
-                LabelNode startLabel = new LabelNode();
-                LabelNode callOriginalLabel = new LabelNode();
-                LabelNode endLabel = new LabelNode();
-
-                instructions.add(startLabel);
-                instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
-                instructions.add(new FieldInsnNode(Opcodes.GETFIELD, "link/e4mc/mixin/ServerLoginPacketListenerImplMixin", "connection", "Lnet/minecraft/network/Connection;"));
-                instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "net/minecraft/network/Connection", "getRemoteAddress", "()Ljava/net/SocketAddress;", false));
-                instructions.add(new TypeInsnNode(Opcodes.INSTANCEOF, "link/e4mc/dialtone/DialtoneAddress"));
-                instructions.add(new JumpInsnNode(Opcodes.IFEQ, callOriginalLabel));
-
-                instructions.add(new InsnNode(Opcodes.ACONST_NULL));
-                instructions.add(new InsnNode(Opcodes.ARETURN));
-
-                instructions.add(callOriginalLabel);
-                instructions.add(new VarInsnNode(Opcodes.ALOAD, originalIndex));
-
-                instructions.add(new InsnNode(Opcodes.ICONST_2));
-                instructions.add(new TypeInsnNode(Opcodes.ANEWARRAY, "java/lang/Object"));
-
-                instructions.add(new InsnNode(Opcodes.DUP));
-                instructions.add(new InsnNode(Opcodes.ICONST_0));
-                instructions.add(new VarInsnNode(Opcodes.ILOAD, iIndex));
-                instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false));
-                instructions.add(new InsnNode(Opcodes.AASTORE));
-
-                instructions.add(new InsnNode(Opcodes.DUP));
-                instructions.add(new InsnNode(Opcodes.ICONST_1));
-                instructions.add(new VarInsnNode(Opcodes.ALOAD, keyIndex));
-                instructions.add(new InsnNode(Opcodes.AASTORE));
-
-                instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, "com/llamalad7/mixinextras/injector/wrapoperation/Operation", "call", "([Ljava/lang/Object;)Ljava/lang/Object;", true));
-                instructions.add(new TypeInsnNode(Opcodes.CHECKCAST, "javax/crypto/Cipher"));
-                instructions.add(new InsnNode(Opcodes.ARETURN));
-                instructions.add(endLabel);
-
-                handlerNode.instructions = instructions;
-                handlerNode.exceptions.clear();
-
-                if (handlerNode.localVariables != null) {
-                    handlerNode.localVariables.clear();
-                } else {
-                    handlerNode.localVariables = new ArrayList<>();
-                }
-
-                handlerNode.localVariables.add(new LocalVariableNode("this", "L" + mixinClassName.replace('.', '/') + ";", null, startLabel, endLabel, 0));
-                handlerNode.localVariables.add(new LocalVariableNode("i", "I", null, startLabel, endLabel, iIndex));
-                handlerNode.localVariables.add(new LocalVariableNode("key", "Ljava/security/Key;", null, startLabel, endLabel, keyIndex));
-                handlerNode.localVariables.add(new LocalVariableNode("original", operationType.getDescriptor(), null, startLabel, endLabel, originalIndex));
-
-                addNewHandler(mixinClassName, handlerNode);
-
-                return wrapOpNode;
             }
         }
         return annotationNode;

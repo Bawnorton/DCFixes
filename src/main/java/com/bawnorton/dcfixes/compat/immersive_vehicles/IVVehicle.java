@@ -1,5 +1,6 @@
 package com.bawnorton.dcfixes.compat.immersive_vehicles;
 
+import com.bawnorton.dcfixes.DeceasedCraftFixes;
 import com.bawnorton.dcfixes.config.DCFixesConfig;
 import com.bawnorton.dcfixes.mixin.minecraft.accessor.ServerChunkCacheAccessor;
 import com.mojang.datafixers.util.Either;
@@ -81,6 +82,7 @@ public class IVVehicle {
         }
 
         Player nearestPlayer = level.getNearestPlayer(pos.x, pos.y, pos.z, DCFixesConfig.get().dormatTickingDistance, false);
-        return lastTickResult = (nearestPlayer != null);
+        lastTickResult = nearestPlayer != null;
+        return lastTickResult;
     }
 }
