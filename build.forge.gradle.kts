@@ -33,6 +33,7 @@ repositories {
     maven("https://maven.createmod.net")
     maven("https://maven.ithundxr.dev/mirror")
     maven("https://maven.blamejared.com")
+    maven("https://maven.puffish.net")
 
     strictMaven("https://www.cursemaven.com", "Curseforge", "curse.maven")
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
@@ -67,16 +68,20 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
 
     // Compats / Fixes
+    withSourcesJar(modImplementation("curse.maven:spice-of-life-carrot-edition-277616:4888575"))
+
     withSourcesJar(modImplementation("curse.maven:legendary-survival-overhaul-840254:7603852"))
+    modCompileOnly("net.puffish:attributesmod:${deps("puffish_attributes")}:forge")
+    modCompileOnly("net.puffish:skillsmod:${deps("puffish_skills")}:forge")
 
     modCompileOnly("curse.maven:corpse-316582:7018272")
 
-    modImplementation("com.simibubi.create:create-$minecraft:${deps("create")}:slim") { isTransitive = false }
-    modImplementation("net.createmod.ponder:Ponder-Forge-$minecraft:${deps("ponder")}")
+    modCompileOnly("com.simibubi.create:create-$minecraft:${deps("create")}:slim") { isTransitive = false }
+    modCompileOnly("net.createmod.ponder:Ponder-Forge-$minecraft:${deps("ponder")}")
     modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-$minecraft:${deps("flywheel")}")
-    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-$minecraft:${deps("flywheel")}")
-    modImplementation("com.tterrag.registrate:Registrate:${deps("registrate")}")
-    modImplementation("mezz.jei:jei-$minecraft-forge:${deps("jei")}")
+//    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-$minecraft:${deps("flywheel")}")
+    modCompileOnly("com.tterrag.registrate:Registrate:${deps("registrate")}")
+    modCompileOnly("mezz.jei:jei-$minecraft-forge:${deps("jei")}")
 
     modCompileOnly("curse.maven:lets-do-bakery-886559:5567132")
 
@@ -84,7 +89,7 @@ dependencies {
 
     modCompileOnly("curse.maven:engineered-schematics-1207780:7666550")
 
-    modImplementation("curse.maven:customnpcs-unofficial-1052708:7694841")
+    modCompileOnly("curse.maven:customnpcs-unofficial-1052708:7694841")
     modCompileOnly("curse.maven:cnpc-gecko-addon-970162:7701498")
 
     modCompileOnly("curse.maven:immersive-engineering-231951:6206989")
@@ -96,7 +101,7 @@ dependencies {
     modCompileOnly("curse.maven:extreme-reactors-250277:7344727")
     /*modRuntimeOnly("curse.maven:zerocore-247921:7344725")*/
 
-    modImplementation("curse.maven:minecraft-transport-simulator-286703:7423733")
+    modCompileOnly("curse.maven:minecraft-transport-simulator-286703:7423733")
     modRuntimeOnly("curse.maven:spark-361579:4738952")
 
     modCompileOnly("curse.maven:the-hordes-485779:6718502")
@@ -127,8 +132,8 @@ dependencies {
     implementation("com.eliotlash.mclib:mclib:20")
     modCompileOnly("curse.maven:theundead-479710:7446558")
     modCompileOnly("curse.maven:zombie-extreme-392809:7014500")
-    modImplementation("curse.maven:apocalypse-now-448410:6364603")
-    modImplementation("curse.maven:curios-309927:6418456")
+    modCompileOnly("curse.maven:apocalypse-now-448410:6364603")
+    modCompileOnly("curse.maven:curios-309927:6418456")
     modCompileOnly("curse.maven:deceased-beast-1426968:7640180")
     modCompileOnly("curse.maven:naturalist-627986:6863943")
 

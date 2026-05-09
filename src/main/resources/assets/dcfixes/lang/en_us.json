@@ -2,6 +2,10 @@
   "dcfixes.quest.tasks": "Tasks",
   "dcfixes.quest.rewards": "Rewards",
 
+  "tooltip.solcarrot.hearty.forgotten": "You can't remember what this tasted like. Try it again?",
+  "tooltip.solcarrot.disabled.forgotten": "You can't remember what this tasted like, but it's probably not worth eating.",
+  "tooltip.solcarrot.cheap.forgotten": "You can't remember what this tasted like, but it's probably not worth eating.",
+
   "config.dcfixes.title": "DeceasedCraft Fixes Config",
 
   "config.dcfixes.category.gameplay": "Gameplay",
@@ -14,6 +18,8 @@
   "config.dcfixes.category.gameplay.group.extreme_reactors.description": "Gameplay-affecting settings for Extreme Reactors turbines.",
   "config.dcfixes.category.gameplay.group.bakery": "[Let's Do] Bakery",
   "config.dcfixes.category.gameplay.group.bakery.description": "Settings related to the [Let's Do] Bakery mod.",
+  "config.dcfixes.category.gameplay.group.sol_carrot": "Spice of Life: Carrot Edition",
+  "config.dcfixes.category.gameplay.group.sol_carrot.description": "Settings related to the Spice of Life: Carrot Edition mod.",
 
   "config.dcfixes.category.rendering": "Rendering",
   "config.dcfixes.category.rendering.tooltip": "Rendering settings for DeceasedCraft Fixes",
@@ -86,7 +92,14 @@
   "config.dcfixes.option.reinforced_part_fluid_capacity.description": "Default: 500",
   "config.dcfixes.option.reinforced_max_fluid_capacity": "Reinforced Max Fluid Capacity",
   "config.dcfixes.option.reinforced_max_fluid_capacity.description": "Default: 300000",
-  "config.dcfixes.option.sugar_rush_movement_speed_bonus": "Effect applifier times this value is the movement speed bonus given by sugar rush.\nDefault: 0.05",
-  "config.dcfixes.option.sugar_rush_attack_speed_bonus": "Effect amplifier times this value is the attack speed bonus given by sugar rush.\nDefault: 0.5",
-  "config.dcfixes.option.sugar_rush_attack_damage_bonus": "Effect amplifier times this value is the attack damage bonus given by sugar rush.\nDefault: 1"
+  "config.dcfixes.option.sugar_rush_movement_speed_bonus": "Sugar Rush Movement Speed Bonus",
+  "config.dcfixes.option.sugar_rush_movement_speed_bonus.description": "Effect applifier times this value is the movement speed bonus given by sugar rush.\nDefault: 0.05",
+  "config.dcfixes.option.sugar_rush_attack_speed_bonus": "Sugar Rush Attack Speed Bonus",
+  "config.dcfixes.option.sugar_rush_attack_speed_bonus.description": "Effect amplifier times this value is the attack speed bonus given by sugar rush.\nDefault: 0.5",
+  "config.dcfixes.option.sugar_rush_attack_damage_bonus": "Sugar Rush Attack Damage Bonus",
+  "config.dcfixes.option.sugar_rush_attack_damage_bonus.description": "Effect amplifier times this value is the attack damage bonus given by sugar rush.\nDefault: 1",
+  "config.dcfixes.option.sol_carrot_forget_foods": "Forget Foods on Death",
+  "config.dcfixes.option.sol_carrot_forget_foods.description": "Whether to forget n of the oldest foods where n is the number of foods to reach the prior progression.\nDefault: True",
+  "config.dcfixes.option.sol_carrot_forget_foods_min_difficulty": "Minimum Difficulty to Forget Foods",
+  "config.dcfixes.option.sol_carrot_forget_foods_min_difficulty.description": "What difficulty should the world be at to apply the food forgetting on death.\n0 = Peaceful, 1 = Easy, 2 = Normal, 3 = Hard.\nDefault: 3"
 }

@@ -201,6 +201,18 @@ public class DCFixesConfig {
     )
     public double sugarRushAttackDamageBonus = 1;
 
+    @SerialEntry(
+            value = "sol_carrot_forget_foods",
+            comment = "Whether to forget n of the oldest foods where n is the number of foods to reach the prior progression.\nDefault: True"
+    )
+    public boolean solCarrotForgetFoods = true;
+
+    @SerialEntry(
+            value = "sol_carrot_min_difficulty_to_apply",
+            comment = "What difficulty should the world be at to apply the food forgetting on death.\n0 = Peaceful, 1 = Easy, 2 = Normal, 3 = Hard.\nDefault: 3"
+    )
+    public int solCarrotForgetFoodsMinDifficulty = 3;
+
     public static void init() {
         if (initialized) return;
 
