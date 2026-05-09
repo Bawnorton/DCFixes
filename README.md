@@ -16,6 +16,7 @@
 - Fixes CME from global gamerules on boot.
 - Adds the ability to rename ftbquest task/reward subtitles.
 - Syncs the player health with legendary survival overhaul's body part damage system.
+- Allows pufferfish attributes to affect LSO healing items.
 - Adds forgetting the taste of food to Spice of Life: Carrot Edition on death.
 - Various tweaks and optimisations throughout other mods to improve performance and reduce memory usage.
 - Fixes various other misc issues I forgot about.
