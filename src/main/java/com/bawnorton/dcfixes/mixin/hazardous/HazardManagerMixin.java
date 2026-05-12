@@ -14,7 +14,7 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import org.spongepowered.asm.mixin.Mixin;
 
 @IfModLoaded("hazardous")
-@Mixin(HazardManager.class)
+@Mixin(value = HazardManager.class, remap = false)
 abstract class HazardManagerMixin {
     @WrapMethod(
             method = "isChunkLoaded"
