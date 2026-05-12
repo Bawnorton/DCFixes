@@ -1,7 +1,6 @@
 package com.bawnorton.dcfixes.client.mixin.tacz;
 
 import com.bawnorton.dcfixes.DeceasedCraftFixes;
-import com.bawnorton.dcfixes.client.extend.ClientGunIndexExtender;
 import com.bawnorton.dcfixes.collection.StandardLambdaMap;
 import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.tacz.guns.api.TimelessAPI;
@@ -67,7 +66,7 @@ abstract class ClientIndexManagerMixin {
         GUN_DISPLAY = new StandardLambdaMap<>(location -> {
             GunDisplay gunDisplay = ClientAssetsManager.INSTANCE.getGunDisplay(location);
             try {
-                return GunDisplayInstance.create(gunDisplay);
+                return GunDisplayInstance.create(location, gunDisplay);
             } catch (IllegalArgumentException var2) {
                 DeceasedCraftFixes.LOGGER.warn("{} display init read fail!", location, var2);
                 return null;
@@ -76,9 +75,7 @@ abstract class ClientIndexManagerMixin {
         GUN_INDEX = new StandardLambdaMap<>(location -> {
             GunIndexPOJO pojo = TimelessAPI.getCommonGunIndex(location).map(CommonGunIndex::getPojo).orElse(null);
             try {
-                ClientGunIndex index = ClientGunIndex.getInstance(pojo);
-                ((ClientGunIndexExtender) index).dcfixes$setId(location.withSuffix("_display"));
-                return index;
+                return ClientGunIndex.getInstance(pojo);
             } catch (IllegalArgumentException var2) {
                 DeceasedCraftFixes.LOGGER.warn("{} index file read fail!", location, var2);
                 return null;

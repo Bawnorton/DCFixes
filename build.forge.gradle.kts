@@ -68,9 +68,11 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
 
     // Compats / Fixes
-    withSourcesJar(modImplementation("curse.maven:spice-of-life-carrot-edition-277616:4888575"))
+    modImplementation("curse.maven:hazardous-1513956:8055920")
 
-    withSourcesJar(modImplementation("curse.maven:legendary-survival-overhaul-840254:7603852"))
+    modCompileOnly("curse.maven:spice-of-life-carrot-edition-277616:4888575")
+
+    modCompileOnly("curse.maven:legendary-survival-overhaul-840254:7603852")
     modCompileOnly("net.puffish:attributesmod:${deps("puffish_attributes")}:forge")
     modCompileOnly("net.puffish:skillsmod:${deps("puffish_skills")}:forge")
 
@@ -94,7 +96,7 @@ dependencies {
 
     modCompileOnly("curse.maven:immersive-engineering-231951:6206989")
 
-    modCompileOnly("curse.maven:timeless-and-classic-zero-1028108:7401617-sources-7401617")
+    modCompileOnly("curse.maven:timeless-and-classic-zero-1028108:8055552-sources-8055552")
     compileOnly("org.luaj:luaj-jse:3.0.1")
     modCompileOnly("curse.maven:tacz-lesraisins-tactical-equipements-1273094:6751092")
 
