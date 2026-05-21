@@ -68,7 +68,7 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
 
     // Compats / Fixes
-    withSourcesJar(modCompileOnly("curse.maven:fungal-infection-spore-678295:8110246"))
+    modCompileOnly("curse.maven:fungal-infection-spore-678295:8110246")
 
     modCompileOnly("mezz.jei:jei-$minecraft-forge-api:15.20.0.130")
     modRuntimeOnly("mezz.jei:jei-$minecraft-forge:15.20.0.130")
@@ -150,7 +150,7 @@ dependencies {
         val versionSep = basename.lastIndexOf('-')
         val artifactId = basename.substring(0, versionSep)
         val version = basename.substring(versionSep + 1)
-        withSourcesJar(modCompileOnly("libs:$artifactId:$version"))
+        modCompileOnly("libs:$artifactId:$version")
     }
 }
 
