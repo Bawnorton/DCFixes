@@ -85,10 +85,20 @@ public class ReplacingImmediateWindowProvider extends DisplayWindow implements I
                 1200000,
                 5,
                 TextureRendererExtension.create((bb, context, size, frame) -> SimpleFontExtension.tryAs(font, fontExtension -> {
-                    var x0 = 0;
-                    var x1 = context.scaledWidth();
-                    var y0 = 0;
-                    var y1 = context.scaledHeight();
+                    var screenWidth = context.scaledWidth();
+                    var screenHeight = context.scaledHeight();
+                    int drawWidth, drawHeight;
+                    if (screenWidth * 9 > screenHeight * 16) {
+                        drawHeight = screenHeight;
+                        drawWidth = drawHeight * 16 / 9;
+                    } else {
+                        drawWidth = screenWidth;
+                        drawHeight = drawWidth * 9 / 16;
+                    }
+                    var x0 = (screenWidth - drawWidth) / 2;
+                    var x1 = x0 + drawWidth;
+                    var y0 = (screenHeight - drawHeight) / 2;
+                    var y1 = y0 + drawHeight;
                     QuadHelper.loadQuad(bb, x0, x1, y0, y1, 0f, 1f, 0, 1f, RenderElementExtension.getGlobalAlpha() << 24 | 0xFFFFFF);
                 }))
         )));

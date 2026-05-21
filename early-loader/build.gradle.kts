@@ -22,7 +22,7 @@ val modVersion = rootProject.findProperty("mod.version") as String
 val modGroup = rootProject.findProperty("mod.group") as String
 
 group = "$modGroup.super-early"
-version = "1.0.0"
+version = "1.0.1"
 base.archivesName = "super-early"
 
 repositories {

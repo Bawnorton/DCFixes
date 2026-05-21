@@ -4,6 +4,7 @@ import com.bawnorton.dcfixes.client.compat.cnpc.CustomNpcCompat;
 import com.bawnorton.dcfixes.client.compat.deaceased.DeaceasedCompat;
 import com.bawnorton.dcfixes.client.compat.emf.EMFCompat;
 import com.bawnorton.dcfixes.client.compat.geckolib.GeckoLibCompat;
+import com.bawnorton.dcfixes.client.compat.lostcities.LostCitiesClientCompat;
 import com.bawnorton.dcfixes.client.compat.naturalist.NaturalistCompat;
 import com.bawnorton.dcfixes.client.compat.physics_mod.PhysicsModCompat;
 import com.bawnorton.dcfixes.client.compat.undead_revamp2.UndeadRevampCompat;
@@ -21,6 +22,7 @@ public class ClientCompat {
     private NaturalistCompat naturalistCompat;
     private DeaceasedCompat deaceasedCompat;
     private CustomNpcCompat customNpcCompat;
+    private LostCitiesClientCompat lostCitiesClientCompat;
 
     public Optional<PhysicsModCompat> getPhysicsModCompat() {
         if (!ModList.get().isLoaded("physicsmod")) return Optional.empty();
@@ -84,5 +86,13 @@ public class ClientCompat {
             customNpcCompat = new CustomNpcCompat();
         }
         return Optional.of(customNpcCompat);
+    }
+
+    public Optional<LostCitiesClientCompat> getLostCitiesCompat() {
+        if (!ModList.get().isLoaded("lostcities")) return Optional.empty();
+        if (lostCitiesClientCompat == null) {
+            lostCitiesClientCompat = new LostCitiesClientCompat();
+        }
+        return Optional.of(lostCitiesClientCompat);
     }
 }

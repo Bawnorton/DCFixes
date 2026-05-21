@@ -68,7 +68,12 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
 
     // Compats / Fixes
-    modImplementation("curse.maven:hazardous-1513956:8055920")
+    withSourcesJar(modCompileOnly("curse.maven:fungal-infection-spore-678295:8110246"))
+
+    modCompileOnly("mezz.jei:jei-$minecraft-forge-api:15.20.0.130")
+    modRuntimeOnly("mezz.jei:jei-$minecraft-forge:15.20.0.130")
+
+    modCompileOnly("curse.maven:hazardous-1513956:8055920")
 
     modCompileOnly("curse.maven:spice-of-life-carrot-edition-277616:4888575")
 
@@ -80,7 +85,7 @@ dependencies {
 
     modCompileOnly("com.simibubi.create:create-$minecraft:${deps("create")}:slim") { isTransitive = false }
     modCompileOnly("net.createmod.ponder:Ponder-Forge-$minecraft:${deps("ponder")}")
-    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-$minecraft:${deps("flywheel")}")
+    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-$minecraft:${deps("flywheel")}")
 //    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-$minecraft:${deps("flywheel")}")
     modCompileOnly("com.tterrag.registrate:Registrate:${deps("registrate")}")
     modCompileOnly("mezz.jei:jei-$minecraft-forge:${deps("jei")}")
@@ -94,7 +99,7 @@ dependencies {
     modCompileOnly("curse.maven:customnpcs-unofficial-1052708:7694841")
     modCompileOnly("curse.maven:cnpc-gecko-addon-970162:7701498")
 
-    modCompileOnly("curse.maven:immersive-engineering-231951:6206989")
+    modImplementation("curse.maven:immersive-engineering-231951:6206989")
 
     modCompileOnly("curse.maven:timeless-and-classic-zero-1028108:8055552-sources-8055552")
     compileOnly("org.luaj:luaj-jse:3.0.1")
@@ -120,18 +125,18 @@ dependencies {
     /*modRuntimeOnly("curse.maven:ftb-teams-forge-404468:7499810")*/
 
     // Fabric Mod Compats
-    modImplementation("org.sinytra:Connector:1.0.0-beta.48+1.20.1")
-    runtimeOnly("curse.maven:c2me-533097:6181291")
-    /*runtimeOnly("curse.maven:moreculling-630104:7552138")
+    modCompileOnly("org.sinytra:Connector:1.0.0-beta.48+1.20.1")
+    /*runtimeOnly("curse.maven:c2me-533097:6181291")
+    runtimeOnly("curse.maven:moreculling-630104:7552138")
     runtimeOnly("me.shedaniel.cloth:cloth-config-fabric:11.0.99") {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(group = "net.fabricmc")
     }*/
 
     // Physics Mod + Geckolib Compats
-    modImplementation("curse.maven:physics-mod-442735:7781938")
-    modImplementation("software.bernie.geckolib:geckolib-forge-$minecraft:4.8.3")
-    implementation("com.eliotlash.mclib:mclib:20")
+    modCompileOnly("curse.maven:physics-mod-442735:7781938")
+    modCompileOnly("software.bernie.geckolib:geckolib-forge-$minecraft:4.8.3")
+    compileOnly("com.eliotlash.mclib:mclib:20")
     modCompileOnly("curse.maven:theundead-479710:7446558")
     modCompileOnly("curse.maven:zombie-extreme-392809:7014500")
     modCompileOnly("curse.maven:apocalypse-now-448410:6364603")
@@ -145,7 +150,7 @@ dependencies {
         val versionSep = basename.lastIndexOf('-')
         val artifactId = basename.substring(0, versionSep)
         val version = basename.substring(versionSep + 1)
-        modImplementation("libs:$artifactId:$version")
+        withSourcesJar(modCompileOnly("libs:$artifactId:$version"))
     }
 }
 

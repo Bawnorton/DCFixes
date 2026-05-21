@@ -107,10 +107,11 @@ public class LSOCompat {
             float effectiveDamage = rawDamage * resistanceFactor;
 
             float capacity = capability.getBodyPartMaxHealth(currentPart) - capability.getBodyPartDamage(currentPart);
-            float overflow = Math.max(0.0F, effectiveDamage - capacity);
+            float damageToApply = Math.min(effectiveDamage, capacity);
+            float overflow = effectiveDamage - damageToApply;
 
-            capability.hurt(currentPart, effectiveDamage - overflow);
-            DAMAGE_TO_APPLY.set(DAMAGE_TO_APPLY.get() + effectiveDamage - overflow);
+            capability.hurt(currentPart, damageToApply);
+            DAMAGE_TO_APPLY.set(DAMAGE_TO_APPLY.get() + damageToApply);
 
             if (!(overflow > 0 && resistanceFactor > 0)) continue;
 

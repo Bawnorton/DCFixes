@@ -33,7 +33,7 @@ abstract class CapabilityHandlerMixin {
         if (!DCFixesConfig.get().solCarrotForgetFoods) return;
 
         Player originalPlayer = event.getOriginal();
-        if (DCFixesConfig.get().solCarrotForgetFoodsMinDifficulty < originalPlayer.level().getDifficulty().getId()) return;
+        if (DCFixesConfig.get().solCarrotForgetFoodsMinDifficulty > originalPlayer.level().getDifficulty().getId()) return;
 
         originalPlayer.reviveCaps();
         if(DeceasedCraftFixes.getCompat().getLSOCompat().map(compat -> compat.willLoseHearts(originalPlayer)).orElse(false)) {

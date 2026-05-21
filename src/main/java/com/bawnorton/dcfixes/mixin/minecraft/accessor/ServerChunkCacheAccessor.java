@@ -15,7 +15,4 @@ import java.util.concurrent.CompletableFuture;
 public interface ServerChunkCacheAccessor {
     @Invoker("getChunkFutureMainThread")
     CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> dcfixes$getChunkFutureMainThread(int chunkX, int chunkZ, ChunkStatus chunkStatus, boolean load);
-
-    @Accessor("mainThread")
-    Thread dcfixes$mainThread();
 }
