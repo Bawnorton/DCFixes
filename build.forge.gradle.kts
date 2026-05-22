@@ -52,8 +52,6 @@ val mixinConfigs = listOf(
 
 base.archivesName = "${mod("id")}-${mod("version")}+$minecraft-$loader"
 
-evaluationDependsOn(":early-loader")
-
 dependencies {
     // Mixin
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3")!!)
@@ -306,10 +304,8 @@ tasks {
     register<Copy>("buildAndCollect") {
         group = "build"
         from(named<Jar>("reobfJar").map { it.archiveFile })
-        from(project(":early-loader").tasks.named<Jar>("jar").map { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${mod("version")}"))
         dependsOn("build")
-        dependsOn(":early-loader:jar")
     }
 
 
@@ -365,7 +361,6 @@ publishMods {
     type = STABLE
     file = tasks.named<Jar>("reobfJar").map { it.archiveFile.get() }
     additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
-    additionalFiles.from(project(":early-loader").tasks.named<org.gradle.jvm.tasks.Jar>("jar").map { it.archiveFile.get() })
 
     displayName = "${mod("name")} Forge ${mod("version")} for $minecraft"
     version = mod("version")
