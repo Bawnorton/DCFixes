@@ -66,6 +66,8 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
 
     // Compats / Fixes
+    modCompileOnly("curse.maven:chunky-pregenerator-forge-485681:5320028")
+
     modCompileOnly("curse.maven:fungal-infection-spore-678295:8110246")
 
     modCompileOnly("mezz.jei:jei-$minecraft-forge-api:15.20.0.130")

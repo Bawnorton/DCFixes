@@ -38,19 +38,16 @@ public class LostCitiesClientCompat {
     }
 
     public void handlePacket(ClientboundRebuildModelPacket packet) {
-        packet.positions().forEach(pos -> {
-            Minecraft mc = Minecraft.getInstance();
-            ClientLevel level = mc.level;
-            if(level == null) return;
+       ClientLevel level = Minecraft.getInstance().level;
+       if (level == null) return;
 
-            LevelChunk chunk = level.getChunkAt(pos);
-            if (chunk.isEmpty()) {
-                ChunkPos chunkPos = new ChunkPos(pos);
-                toRebuild.computeIfAbsent(chunkPos, k -> new ArrayList<>()).add(pos);
-            } else {
-                level.getBlockEntity(pos);
-            }
-        });
+       ChunkPos pos = packet.chunkPos();
+       LevelChunk chunk = level.getChunk(pos.x, pos.z);
+       if(chunk.isEmpty()) {
+           toRebuild.put(pos, packet.positions());
+       } else {
+           packet.positions().forEach(level::getBlockEntity);
+       }
     }
 
     @SubscribeEvent
@@ -72,9 +69,7 @@ public class LostCitiesClientCompat {
             List<BlockPos> positions = toRebuild.remove(chunk.getPos());
             if(positions == null) return;
 
-            for (BlockPos pos : positions) {
-                level.getBlockEntity(pos);
-            }
+            positions.forEach(level::getBlockEntity);
         }
     }
 
