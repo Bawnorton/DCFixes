@@ -1,5 +1,6 @@
 package com.bawnorton.dcfixes.mixin.refurbished_furniture;
 
+import com.bawnorton.dcfixes.extend.RefurbishedLoot;
 import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import com.mrcrayfish.furniture.refurbished.Constants;
 import com.mrcrayfish.furniture.refurbished.electricity.ElectricityTicker;
@@ -46,6 +47,10 @@ abstract class ElectricityTickerMixin {
      */
     @Overwrite
     public void addElectricityNode(IElectricityNode node) {
+        if (node.getNodeOwner() instanceof RefurbishedLoot loot) {
+            if(!loot.dcfixes$shouldTickNode()) return;
+        }
+
         if(node instanceof IModuleNode module) {
             if(this.dcfixes$modulePositions.add(node.getNodePosition())) {
                 (module.isNodePowered() ? this.dcfixes$poweredModules : this.dcfixes$unpoweredModules).add(module);
