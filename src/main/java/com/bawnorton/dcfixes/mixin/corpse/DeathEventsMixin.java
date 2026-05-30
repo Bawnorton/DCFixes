@@ -1,83 +1,24 @@
 package com.bawnorton.dcfixes.mixin.corpse;
 
-import com.bawnorton.dcfixes.extend.DeathExtension;
-import com.bawnorton.dcfixes.extend.PlayerZombieExtender;
+import com.bawnorton.dcfixes.DeceasedCraftFixes;
 import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
-import com.llamalad7.mixinextras.expression.Definition;
-import com.llamalad7.mixinextras.expression.Expression;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import de.maxhenkel.corpse.corelib.death.Death;
 import de.maxhenkel.corpse.corelib.death.DeathEvents;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.smileycorp.hordes.common.entities.PlayerZombie;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-import java.util.Optional;
-import java.util.UUID;
-
-@IfModLoaded({"corpse", "hordes"})
+@IfModLoaded("corpse")
 @Mixin(value = DeathEvents.class, remap = false)
 abstract class DeathEventsMixin {
-    @Definition(id = "getEntity", method = "Lnet/minecraftforge/event/entity/living/LivingDropsEvent;getEntity()Lnet/minecraft/world/entity/LivingEntity;")
-    @Definition(id = "entity", local = @Local(type = Entity.class, name = "entity"))
-    @Expression("entity = @(?.getEntity())")
-    @ModifyExpressionValue(
-            method = "playerDeath(Lnet/minecraftforge/event/entity/living/LivingDropsEvent;)V",
-            at = @At("MIXINEXTRAS:EXPRESSION")
-    )
-    private LivingEntity trickCorpseModToThinkZombiePlayersArePlayers(LivingEntity original, @Local(name = "event") LivingDropsEvent event) {
-        if(original instanceof PlayerZombie<?> playerZombie) {
-            Optional<UUID> playerId = playerZombie.getPlayerUUID();
-            Level level = original.level();
-            return playerId.map(level::getPlayerByUUID).orElse(null);
-        }
-        return original;
-    }
-
-
-    @Definition(id = "getEntity", method = "Lnet/minecraftforge/event/entity/living/LivingDropsEvent;getEntity()Lnet/minecraft/world/entity/LivingEntity;")
-    @Definition(id = "player", local = @Local(type = ServerPlayer.class, name = "player"))
-    @Definition(id = "ServerPlayer", type = ServerPlayer.class)
-    @Expression("player = (ServerPlayer) @(?.getEntity())")
-    @ModifyExpressionValue(
-            method = "playerDeath(Lnet/minecraftforge/event/entity/living/LivingDropsEvent;)V",
-            at = @At("MIXINEXTRAS:EXPRESSION")
-    )
-    private LivingEntity replaceWithPlayer(LivingEntity original, @Local(name = "entity") Entity entity) {
-        if(entity instanceof ServerPlayer serverPlayer) {
-            return serverPlayer;
-        }
-        return original;
-    }
-
-    @Inject(
-            method = "playerDeath(Lnet/minecraftforge/event/entity/living/LivingDropsEvent;)V",
+    @ModifyArg(
+            method = "register",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraftforge/event/entity/living/LivingDropsEvent;getDrops()Ljava/util/Collection;"
+                    target = "Lnet/minecraftforge/eventbus/api/IEventBus;register(Ljava/lang/Object;)V"
             )
     )
-    private void modifyDeath(LivingDropsEvent event, CallbackInfo ci, @Local(name = "death") LocalRef<Death> deathRef) {
-        LivingEntity entity = event.getEntity();
-        if(entity instanceof PlayerZombieExtender playerZombie) {
-            Death death = playerZombie.dcfixes$getDeath();
-            DeathExtension.tryAs(death, extension -> {
-                extension.setPosX(entity.getX());
-                extension.setPosY(entity.getY());
-                extension.setPosZ(entity.getZ());
-            });
-            deathRef.set(death);
-            DeathExtension.setTransferCapture(true);
-            event.getDrops().clear();
-        }
+    private static Object captureInstance(Object original) {
+        DeceasedCraftFixes.getCompat().getCorpseCompat().orElseThrow().setDeathEventsInstance((DeathEvents) original);
+        return original;
     }
 }

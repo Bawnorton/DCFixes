@@ -17,6 +17,7 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.PacketDistributor;
@@ -32,10 +33,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class LostCitiesCompat {
     private static final int MAX_INCOMING_PER_TICK = 16384;
+    private static final int MAX_PENDING_CHECKS_PER_TICK = 1024;
 
     private final Queue<BlockPos> incoming = new ConcurrentLinkedQueue<>();
     private final Map<Long, List<BlockPos>> pendingBuffer = new HashMap<>();
     private final Set<Long> pendingChunks = new HashSet<>();
+    private final Deque<Long> pendingCheckQueue = new ArrayDeque<>();
     private final List<BlockPos> toRebuild = new ArrayList<>();
     private Path pendingDir;
 
@@ -98,7 +101,10 @@ public class LostCitiesCompat {
                         try {
                             int cx = Integer.parseInt(parts[0]);
                             int cz = Integer.parseInt(parts[1]);
-                            pendingChunks.add(ChunkPos.asLong(cx, cz));
+                            long key = ChunkPos.asLong(cx, cz);
+                            if (pendingChunks.add(key)) {
+                                pendingCheckQueue.addLast(key);
+                            }
                         } catch (NumberFormatException ignored) {}
                     }
                 }
@@ -118,25 +124,39 @@ public class LostCitiesCompat {
         flushPendingBuffer();
 
         pendingChunks.clear();
+        pendingCheckQueue.clear();
         toRebuild.clear();
         pendingDir = null;
     }
 
+    @SubscribeEvent
+    public void onChunkLoad(ChunkEvent.Load event) {
+        if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
+        if (!serverLevel.dimension().equals(Level.OVERWORLD)) return;
+
+        ChunkPos cp = event.getChunk().getPos();
+        long key = ChunkPos.asLong(cp.x, cp.z);
+        if (pendingChunks.contains(key)) {
+            processChunkPending(serverLevel, cp, key);
+        }
+    }
+
     private void checkPendingChunks(ServerLevel level) {
-        if (pendingChunks.isEmpty()) return;
+        if (pendingCheckQueue.isEmpty()) return;
 
         ServerChunkCache chunkSource = level.getChunkSource();
-        List<Long> ready = null;
-        for (long key : pendingChunks) {
+        int checks = Math.min(MAX_PENDING_CHECKS_PER_TICK, pendingCheckQueue.size());
+        for (int i = 0; i < checks; i++) {
+            Long key = pendingCheckQueue.pollFirst();
+            if (key == null) break;
+            if (!pendingChunks.contains(key)) {
+                continue;
+            }
             ChunkPos cp = new ChunkPos(key);
             if (chunkSource.hasChunk(cp.x, cp.z)) {
-                if (ready == null) ready = new ArrayList<>();
-                ready.add(key);
-            }
-        }
-        if (ready != null) {
-            for (long key : ready) {
-                processChunkPending(level, new ChunkPos(key), key);
+                processChunkPending(level, cp, key);
+            } else {
+                pendingCheckQueue.addLast(key);
             }
         }
     }
@@ -149,7 +169,9 @@ public class LostCitiesCompat {
         } else {
             long key = ChunkPos.asLong(cx, cz);
             pendingBuffer.computeIfAbsent(key, k -> new ArrayList<>()).add(pos);
-            pendingChunks.add(key);
+            if (pendingChunks.add(key)) {
+                pendingCheckQueue.addLast(key);
+            }
         }
     }
 
@@ -158,7 +180,9 @@ public class LostCitiesCompat {
 
         List<BlockPos> buffered = pendingBuffer.remove(key);
         if (buffered != null) {
-            for (BlockPos pos : buffered) processPosition(level, pos);
+            for (BlockPos pos : buffered) {
+                processPosition(level, pos);
+            }
         }
 
         if (pendingDir != null) {
@@ -184,7 +208,9 @@ public class LostCitiesCompat {
         if (!future.isDone()) {
             long key = ChunkPos.asLong(cx, cz);
             pendingBuffer.computeIfAbsent(key, k -> new ArrayList<>()).add(pos);
-            pendingChunks.add(key);
+            if (pendingChunks.add(key)) {
+                pendingCheckQueue.addLast(key);
+            }
             return;
         }
 

@@ -1,5 +1,6 @@
 package com.bawnorton.dcfixes.compat;
 
+import com.bawnorton.dcfixes.compat.corpse.CorpseCompat;
 import com.bawnorton.dcfixes.compat.hordes.HordesCompat;
 import com.bawnorton.dcfixes.compat.immersive_engineering.IECompat;
 import com.bawnorton.dcfixes.compat.immersive_vehicles.ImmersiveVehiclesCompat;
@@ -17,6 +18,7 @@ public class Compat {
     private LSOCompat lsoCompat;
     private IECompat ieCompat;
     private LostCitiesCompat lostCitiesCompat;
+    private CorpseCompat corpseCompat;
 
     public Optional<ImmersiveVehiclesCompat> getImmersiveVehiclesCompat() {
         if (isModAbsent("mts")) return Optional.empty();
@@ -56,6 +58,14 @@ public class Compat {
             lostCitiesCompat = new LostCitiesCompat();
         }
         return Optional.of(lostCitiesCompat);
+    }
+
+    public Optional<CorpseCompat> getCorpseCompat() {
+        if (isModAbsent("corpse")) return Optional.empty();
+        if (corpseCompat == null) {
+            corpseCompat = new CorpseCompat();
+        }
+        return Optional.of(corpseCompat);
     }
 
     private boolean isModAbsent(String id) {

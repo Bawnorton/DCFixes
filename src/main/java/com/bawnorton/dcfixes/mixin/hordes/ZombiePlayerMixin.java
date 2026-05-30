@@ -4,7 +4,6 @@ import com.bawnorton.dcfixes.extend.PlayerZombieExtender;
 import com.bawnorton.dcfixes.mixin_extensions.annotation.IfModLoaded;
 import de.maxhenkel.corpse.corelib.death.Death;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
 import net.smileycorp.hordes.common.entities.DrownedPlayer;
 import net.smileycorp.hordes.common.entities.HuskPlayer;
 import net.smileycorp.hordes.common.entities.PlayerZombie;
@@ -20,17 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 abstract class ZombiePlayerMixin implements PlayerZombieExtender {
     @Unique
     private Death dcfixes$death;
-
-    @Inject(
-            method = "setPlayer(Lnet/minecraft/world/entity/player/Player;)V",
-            at = @At("TAIL"),
-            remap = false
-    )
-    private void trackDeath(Player player, CallbackInfo ci) {
-        if(player == null) return;
-
-        dcfixes$death = Death.fromPlayer(player);
-    }
 
     @Inject(
             method = "copyFrom",

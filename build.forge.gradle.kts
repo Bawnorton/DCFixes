@@ -66,6 +66,8 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:3.6.1+1.20.1-forge")
 
     // Compats / Fixes
+    withSourcesJar(modCompileOnly("curse.maven:refurbished-furniture-897116:7110922"))
+
     modCompileOnly("curse.maven:chunky-pregenerator-forge-485681:5320028")
 
     modCompileOnly("curse.maven:fungal-infection-spore-678295:8110246")
@@ -101,7 +103,7 @@ dependencies {
 
     modImplementation("curse.maven:immersive-engineering-231951:6206989")
 
-    modCompileOnly("curse.maven:timeless-and-classic-zero-1028108:8055552-sources-8055552")
+    withSourcesJar(modCompileOnly("curse.maven:timeless-and-classic-zero-1028108:8055552-sources-8055552"))
     compileOnly("org.luaj:luaj-jse:3.0.1")
     modCompileOnly("curse.maven:tacz-lesraisins-tactical-equipements-1273094:6751092")
 

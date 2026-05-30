@@ -17,7 +17,8 @@ abstract class WrapperEntityMixin {
     @WrapMethod(
             method = "getWrapperFor"
     )
-    private static WrapperEntity wtfAreWeStoringEverythingInANonLazyParallelMapForDoYouWantAMemoryLeakQuestionMark(Entity entity, Operation<WrapperEntity> original) {
+    private static WrapperEntity optimiseWrapperStorage(Entity entity, Operation<WrapperEntity> original) {
+        if (entity == null) return null;
         if (entity instanceof Player player) {
             return WrapperPlayer.getWrapperFor(player);
         }
